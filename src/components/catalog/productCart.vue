@@ -5,7 +5,7 @@
             <div class="product-img-fix">
                 <div class="product-img" style="background-image: url('../../src/assets/images/files/product1.jpg');"></div>
             </div>
-            <div class="product-info">
+            <div class="product-info product-info-test">
                 <div class="product-name">Кулон "Сяйво". P8.</div>
                 <div class="buy-btn-row">
                     <div class="product-price">150 грн</div>
