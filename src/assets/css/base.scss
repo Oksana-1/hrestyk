@@ -1,0 +1,366 @@
+body{
+	background-color: #fff;
+	color: #000;
+	font-family: $primary;
+	font-size: 16px;
+}
+.main-content{
+	max-width: 100%;
+	overflow-x: hidden;
+}
+.c-box-1100{
+	width: 1100px;
+	max-width: 100%;
+	margin: 0 auto;
+}
+.c-box-700{
+	width: 700px;
+	max-width: 100%;
+	margin: 0 auto;
+}
+img.fits{
+	max-width: 100%;
+	max-height: 100%;
+	width: auto;
+	height: auto;
+}
+.common-title{
+	font-family: $primary;
+	font-size: 28px;
+	margin-bottom: 30px;
+}
+.title-big{
+	@extend .common-title;
+	font-size: 36px;
+}
+.link-abs{
+	position: absolute;
+	display: block;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 2;
+}
+.pc-header{
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 20;
+	&::before{
+		@include pseudo;
+		background-color: #ffffff;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 5.25em;
+		z-index: -1;
+		box-shadow: 0 0 3.75em rgba(0, 0, 0, 0.2);
+		@include transition(all 0.2s ease);
+	}
+	.logo-fix{
+		display: block;
+		height: 75px;
+		width: 75px;
+		margin-right: 50px;
+		padding-right: 50px;
+		position: relative;
+		&::before{
+			@include pseudo;
+			top: -33px;
+			bottom: -33px;
+			right: 0;
+			width: 1px;
+			background-color: rgba(0, 0, 0, 0.05); 
+			@include transition(all 0.2s ease);
+		}
+	}
+}
+.nav-cont{
+	height: 140px;
+	@include flexbox;
+	@include align(center);
+	overflow: hidden;
+}
+.pc-nav{
+	ul{
+		li{
+			display: inline-block;
+			padding: 0 10px;
+			a{
+				color: rgba(0, 0, 0, 0.5);
+				font-family: $secondary;
+				font-size: 14px;
+				text-transform: uppercase;
+					@include transition(all 0.3s ease);
+			}
+			&:hover{
+					a{
+					color: rgba(0, 0, 0, 0.8);
+					}
+			}
+		}
+	}
+}
+.header-fixed{
+	.pc-header{
+		&::before{
+			right: 0;
+		}
+		.logo-fix{
+			&::before{
+				top: -12.5px;
+				bottom: -12.5px;
+			}
+		}
+	}
+	.nav-cont{
+		height: 100px;
+	}
+}
+.waypoint{
+	.animate{
+		@include transition(all 1s ease);
+		&.opacity{
+			opacity: 0;
+		}
+		&.height{
+			height: 0;
+		}
+		&.from-down{
+			@include translate(0, 50px);
+		}
+	}
+	&.waypoint-done{
+		.animate{
+			&.opacity{
+				opacity: 1;
+			}
+			&.height{
+				height: auto;
+			}
+			&.from-down{
+				@include translate(0, 0);
+			}
+		}
+	}
+}
+.hrestyk-btn{
+	height: 60px;
+	line-height: 60px;
+	font-family: $primary;
+	font-size: 14px;
+	display: inline-block;
+	padding: 0 60px;
+	position: relative;
+	cursor: pointer;
+	&::before{
+		@include pseudo;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 0;
+		@include transition(all 0.3s ease);
+	}
+	&:hover{
+		&::before{
+			bottom: 0;
+			height: 100%; 
+		}
+	}
+	span{
+		position: relative;
+	}
+}
+.hrestyk-btn-dark{
+	@extend .hrestyk-btn;
+	color: #fff;
+	background-color: $dark;;
+	&::before{
+		background-color: $grey;
+	}
+	&:hover{
+		color:$text;
+	}
+}
+.hrestyk-btn-light{
+	@extend .hrestyk-btn;
+	background-color: $grey;;
+	color:$text;
+	&::before{
+		background-color: $dark;
+	}
+	&:hover{
+		color: #fff;
+	}
+}
+.hrestyk-btn-200{
+	width: 200px;
+	max-width: 100%;
+	@include box-sizing;
+	text-align: center;
+}
+.hr-footer{
+	background-color: #000;
+	color: #fff;
+	padding: 60px 0;
+	.styled-form{
+		input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { color: #fff; }
+		input:-moz-placeholder, textarea:-moz-placeholder { color: #fff; }
+		input::-moz-placeholder, textarea::-moz-placeholder { color: #fff; }
+		input:not([type="submit"]){
+		height: 40px;
+		border-bottom: 1px solid #fff;
+		padding: 0 10px;
+		width: 100%;
+		@include box-sizing;
+		@include transition(all 0.2s ease);
+		&:focus{
+			background-color: #fff;
+			color: #000;
+			}
+		}
+		textarea{
+			width: 100%;
+			height: 100px;
+			border-bottom: 1px solid #fff;
+			padding: 10px;
+			box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			&:focus{
+				background-color: #fff;
+				color: #000;
+			}
+		}
+		input[type="submit"]{
+			width: 50%;
+			background-color: #fff;
+			border: 1px solid #fff;
+			color: $text;
+			-webkit-transition: all 0.2s ease;
+			transition: all 0.2s ease;
+			height: 45px;
+			padding: 0 10px;
+			box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			cursor: pointer;
+			text-transform: uppercase;
+			margin-top: 40px;
+			&:hover{
+				color: #fff;
+				background-color: transparent;
+			}
+		}
+	}
+}
+.footer-content{
+	@include flexbox;
+	@include justify(space-between);
+}
+.footer-contact-block{
+	width: 300px;
+	max-width: 100%;
+}
+.footer-nav-block{
+	width: 300px;
+	max-width: 100%;
+	@include flexbox;
+	@include flexdir(column);
+	@include justify(space-between);
+}
+.footer-nav{
+	li{
+		margin-bottom: 5px;
+		a{
+			font-size: 14px;
+			position: relative;
+			display: inline-block;
+			overflow: hidden;
+			&::before{
+				@include pseudo;
+				height: 1px;
+				background-color: #000;
+				width: 100%;
+				bottom: 0;
+				left: -100%;
+				z-index: 2;
+				@include transition(all 1.2s ease);
+				transition: all 1.2s ease;
+			}
+			&::after{
+				@include pseudo;
+				height: 1px;
+				background-color: #fff;
+				width: 100%;
+				bottom: 0;
+				left: 0;
+				opacity: .5;
+			}
+			&:hover{
+				&::before{
+					left: 100%;
+				}
+			}
+		}
+	}
+}
+.social-cont{
+	@include flexbox;
+}
+.social-link{
+	width: 20px;
+	height: 20px;
+	@include flexbox;
+	margin-right: 20px;
+	svg{
+		margin: auto;
+	}
+	&:last-child{
+		margin-right: 0;
+	}
+}
+.footer-logo-block{
+	@include flexbox;
+	@include flexdir(column);
+	@include justify(space-between);
+	@include align(center);
+	.logo-fix{
+		display: block;
+		width: 100px;
+		img{
+			-webkit-filter: invert(1);
+			filter: invert(1);
+		}
+	}
+}
+.footer-contact-container{
+	.contact-link{
+		font-size: 13px;
+		display: -webkit-inline-flex;
+		display: inline-flex;
+		@include align(center);
+		@include transition(all 0.2s ease);
+		opacity: 0.5;
+		margin-right: 10px;
+		svg{
+			margin-right: 5px;
+		}
+		&:hover{
+			opacity: 1;
+		}
+		&:last-child{
+			margin-right: 0;
+		}
+	}
+}
+.fade-enter{
+	opacity: 0;
+}
+.fade-enter-active{
+	transition: opacity 1s;
+}
+.fade-leave-active{
+	transition: opacity 0.5s;
+	opacity: 0;
+}

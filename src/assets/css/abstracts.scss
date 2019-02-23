@@ -1,0 +1,59 @@
+$primary: 'Open Sans', sans-serif;
+$secondary: 'Montserrat', sans-serif;
+$compact: 'Open Sans Condensed', sans-serif;
+$bkgnd: hsl(0, 0%, 92%);
+$grey: #a5a5a5;
+$text: #515151;
+$dark: #181818;
+@mixin box-sizing($sizing:border-box) {
+    -moz-box-sizing: $sizing;
+    box-sizing: $sizing;
+}
+@mixin transition($args...) {
+  -webkit-transition: $args;
+  transition: $args;
+}
+@mixin pseudo($display: block, $pos: absolute, $content: ''){
+    content: $content;
+    display: $display;
+    position: $pos;
+}
+@mixin transform($transforms) {
+	-ms-transform: $transforms;
+	-webkit-transform: $transforms;
+  transform: $transforms;
+}
+@mixin rotate ($angle) {
+  @include transform(rotate($angle));
+}
+@mixin translate ($x, $y) {
+  @include transform(translate($x, $y));
+}
+@mixin flexbox() {
+  display: -webkit-flex;
+  display: flex;
+}
+@mixin flexdir($dir) {
+    -webkit-flex-direction: $dir;
+    flex-direction: $dir; 
+}
+@mixin justify ($values) {
+    -webkit-justify-content: $values; // Safari / iOS
+    justify-content: $values;
+}
+@mixin align ($values) {
+  -webkit-align-items: $values; // Safari / iOS
+  align-items: $values;
+}
+@mixin order($val) {
+  -webkit-box-ordinal-group: $val;  
+  -ms-flex-order: $val;     
+  -webkit-order: $val;  
+  order: $val;
+}
+@mixin placeholder{
+  &::-webkit-input-placeholder {@content;}
+  &:-moz-placeholder           {@content;}
+  &::-moz-placeholder          {@content;}
+  &:-ms-input-placeholder      {@content;}
+}
