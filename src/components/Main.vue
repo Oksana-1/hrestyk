@@ -28,11 +28,7 @@ export default {
     },
     data: function(){
         return{
-            mainSlides: [
-                { fileName: 'slide1.jpg', link: '' },
-                { fileName: 'slide2.jpg', link: '' },
-                { fileName: 'slide3.jpg', link: '' }   
-            ],
+            mainSlides: [],
             productSlides: [
                 { fileName: 'product1.jpg', link: '', shopId:'P8', name: 'Кулон "Сяйво".'},
                 { fileName: 'product2.jpg', link: '', shopId:'S2', name: 'Набір "Сонце".'},
@@ -40,6 +36,26 @@ export default {
                 { fileName: 'product4.jpg', link: '', shopId:'S3', name: 'Набір "Оберіг".'}
             ]
         }
+    },
+    methods: {
+        fetchData(){
+            this.$http.get('')
+            .then(response =>{
+                return response.json();
+            }, error =>{
+                console.log(error);
+            })
+            .then(data => {
+                const msliderArray = [];
+                for(let key in data.mslider){
+                  msliderArray.push(data.mslider[key]);
+                }
+                this.mainSlides = msliderArray;
+            });
+        }
+    },
+    created(){
+        this.fetchData();
     },
     mounted() {
         this.initWaypointProp();

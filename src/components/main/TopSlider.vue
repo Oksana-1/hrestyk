@@ -4,7 +4,7 @@
             <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(mainSlide, i) in mainSlider" :key="i">
                     <div class="slide-fix">
-                        <div class="slide-img" v-bind:style="{ 'backgroundImage': 'url(src/assets/images/files/' + mainSlide.fileName + ')' }"></div>
+                        <div class="slide-img" v-bind:style="{ 'backgroundImage': 'url(' + mainSlide.imgUrl + ')' }"></div>
                     </div>
                 </div>
             </div>           
