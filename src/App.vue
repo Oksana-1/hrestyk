@@ -62,7 +62,7 @@
 							<li><a href="#" @click.prevent="currentPage='mainPage'">Головна</a></li>
 							<li><a href="#" @click.prevent="currentPage='catalogPage'">Каталог</a></li>
 							<li><a href="#">Про нас</a></li>
-							<li><a href="#">Оплата та доставка</a></li>
+							<li><a href="#" @click.prevent="currentPage='deliveryPage'">Оплата та доставка</a></li>
 						</ul>
 					</nav> 
 					<div class="footer-contact-container">
