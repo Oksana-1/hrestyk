@@ -6,6 +6,12 @@
                     <div class="slide-fix">
                         <div class="slide-img" v-bind:style="{ 'backgroundImage': 'url(' + mainSlide.imgUrl + ')' }"></div>
                     </div>
+                    <div class="slider-content">
+                        <div class="slider-title">{{ mainSlide.titleText }}</div>
+                        <div class="slider-btn-wrap">
+                            <div class="hrestyk-btn-white hrestyk-btn-200"><span>Докладніше</span></div>
+                        </div>
+                    </div>
                 </div>
             </div>           
         </div>
