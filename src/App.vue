@@ -11,7 +11,7 @@
 						<li><a href="#" @click.prevent="currentPage='mainPage'">Головна</a></li>
 						<li><a href="#" @click.prevent="currentPage='catalogPage'">Каталог</a></li>
 						<li><a href="#">Про нас</a></li>
-						<li><a href="#">Оплата та доставка</a></li>
+						<li><a href="#" @click.prevent="currentPage='deliveryPage'">Оплата та доставка</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -84,6 +84,7 @@
 <script>
 	import Main from './components/Main.vue';
 	import Catalog from './components/Catalog.vue';
+	import Delivery from './components/Delivery.vue';
 	import IconBase from './components/IconBase.vue';
 	import IconFb from './components/icons/IconFb.vue';
 	import IconIg from './components/icons/IconIg.vue';
@@ -94,6 +95,7 @@
 		components:{
 			mainPage: Main,
 			catalogPage: Catalog,
+			deliveryPage: Delivery,
 			IconBase,
 			IconFb,
 			IconIg,
