@@ -66,6 +66,7 @@ img.fits{
 		margin-right: 50px;
 		padding-right: 50px;
 		position: relative;
+		cursor: pointer;
 		&::before{
 			@include pseudo;
 			top: -33px;
@@ -95,7 +96,7 @@ img.fits{
 				text-transform: uppercase;
 					@include transition(all 0.3s ease);
 			}
-			&:hover{
+			&:hover, &.active{
 					a{
 					color: rgba(0, 0, 0, 0.8);
 					}
@@ -339,6 +340,7 @@ img.fits{
 	.logo-fix{
 		display: block;
 		width: 100px;
+		cursor: pointer;
 		img{
 			-webkit-filter: invert(1);
 			filter: invert(1);

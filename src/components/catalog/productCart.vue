@@ -1,14 +1,14 @@
 <template>
     <div class="product-card-wrap">
-        <a class="link-abs" href=#></a>
+        <router-link :to="'/catalog/' + product.productId" class="link-abs"></router-link>
         <div class="product-card-inner">
             <div class="product-img-fix">
-                <div class="product-img" style="background-image: url('../../src/assets/images/files/product1.jpg');"></div>
+                <div class="product-img" v-bind:style="{ 'backgroundImage': 'url(' + product.images.img1 + ')' }"></div>
             </div>
             <div class="product-info product-info-test">
-                <div class="product-name">Кулон "Сяйво". P8.</div>
+                <div class="product-name">{{ product.productName }}. {{ product.productId }}.</div>
                 <div class="buy-btn-row">
-                    <div class="product-price">150 грн</div>
+                    <div class="product-price">{{ product.productPrice }} грн</div>
                     <a href="#" class="hrestyk-btn-dark">
                         <span>Купити</span>
                     </a>
@@ -17,3 +17,16 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    props: {
+        product: {
+            type: Object
+        }
+    },
+    mounted(){
+        console.log(this.products);
+    }
+}
+</script>
+
