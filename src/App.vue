@@ -10,7 +10,7 @@
 					<ul>
 						<router-link to="/" tag="li" active-class="active" exact><a>Головна</a></router-link>
 						<router-link to="/catalog" tag="li" active-class="active" exact><a>Каталог</a></router-link>
-						<router-link to="#" tag="li" active-class="active" exact><a>Про нас</a></router-link>
+						<router-link to="/about" tag="li" active-class="active" exact><a>Про нас</a></router-link>
 						<router-link to="/delivery" tag="li" active-class="active" exact><a>Оплата та доставка</a></router-link>
 					</ul>
 				</nav>
@@ -61,7 +61,7 @@
 						<ul>
 							<li><router-link to="/">Головна</router-link></li>
 							<li><router-link to="/catalog">Каталог</router-link></li>
-							<li><router-link to="#">Про нас</router-link></li>
+							<li><router-link to="/about">Про нас</router-link></li>
 							<li><router-link to="/delivery">Оплата та доставка</router-link></li>
 						</ul>
 					</nav> 
@@ -82,9 +82,6 @@
 </template>
 
 <script>
-	import Main from './components/Main.vue';
-	import Catalog from './components/Catalog.vue';
-	import Delivery from './components/Delivery.vue';
 	import IconBase from './components/IconBase.vue';
 	import IconFb from './components/icons/IconFb.vue';
 	import IconIg from './components/icons/IconIg.vue';
@@ -93,9 +90,6 @@
 	import IconEmail from './components/icons/IconEmail.vue';
 	export default {
 		components:{
-			mainPage: Main,
-			catalogPage: Catalog,
-			deliveryPage: Delivery,
 			IconBase,
 			IconFb,
 			IconIg,
