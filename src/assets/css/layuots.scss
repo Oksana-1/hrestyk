@@ -28,6 +28,7 @@
         margin-bottom: 30px;
         color: #fff;
         text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        font-weight: 700;
     }
 }
 .slide-fix{
@@ -293,4 +294,114 @@
 }
 .product-content{
     padding-top: 140px;
+}
+.about-content{
+    .editor-content{
+        p{
+            margin-bottom: 15px;
+            &:last-child{
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+.about-top-img-fix{
+    height: 100vh;
+    position: relative;
+    &::before{
+        @include pseudo;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.2);
+        z-index: 2;
+    }
+}
+.about-top-img{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.about-top-text{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 50%;
+    &::before{
+        @include pseudo;
+        top: 0;
+        bottom: 100px;
+        left: 5.25em;
+        right: 0;
+        background-color: #fff;
+        z-index: 2;
+        -webkit-transition: all 0.2s ease;
+        transition: all 0.2s ease;
+    }
+}
+.header-fixed .about-top-text{
+    &::before{
+        left: 0;
+    }
+}
+.about-top-text-inner{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 550px;
+    padding: 140px 40px 100px 0;
+    z-index: 2;
+    @include box-sizing;
+    @include flexbox;
+    @include flexdir(column);
+    @include justify(center);
+}
+.about-section{
+    padding: 100px 0 50px 0;
+}
+.about-title{
+    font-family: $secondary;
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+.traditional-img-fix{
+    width: 390px;
+}
+.traditional-text{
+    padding: 0 20px 140px 0;
+    @include box-sizing;
+}
+.goods-section{
+    position: relative;
+    height: 390px;
+    .goods-img-fix{
+        position: absolute;
+        top: -140px;
+        left: 50%;
+        right: 0;
+        bottom: 140px;
+        .goods-img{
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    }
+    .goods-text-col{
+        padding: 0 100px 20px 0;
+        @include box-sizing;
+    }
 }

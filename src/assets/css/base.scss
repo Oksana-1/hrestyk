@@ -24,6 +24,15 @@ img.fits{
 	width: auto;
 	height: auto;
 }
+.c-cont{
+	@include flexbox;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap;
+}
+.col-50{
+	-webkit-flex: 0 0 50%;
+	flex: 0 0 50%;
+}
 .common-title{
 	font-family: $primary;
 	font-size: 28px;
