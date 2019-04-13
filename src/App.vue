@@ -88,6 +88,7 @@
 	import IconTwitter from './components/icons/IconTwitter.vue';
 	import IconPhone from './components/icons/IconPhone.vue';
 	import IconEmail from './components/icons/IconEmail.vue';
+	import { mapActions } from 'vuex';
 	export default {
 		components:{
 			IconBase,
@@ -106,18 +107,8 @@
 				}
 			}
 		},
-		mounted(){
-			let mainWrap = document.querySelector('.main-wrap');
-			window.addEventListener('scroll', function() {
-				if(window.pageYOffset > 70){
-					mainWrap.classList.add('header-fixed');
-				}
-				else{
-					mainWrap.classList.remove('header-fixed');
-				}
-			});
-		},
 		methods:{
+			...mapActions(['setFetchedProducts', 'setFetchedMslider']),
 			initWaypoint() {
 				let waypointElements = document.querySelectorAll('.waypoint');
 				waypointElements.forEach(function(waypointElement){
@@ -132,7 +123,38 @@
 			},
 			navigateToHome(){
 				this.$router.push({path: '/'});
-			}
+			},
+			fetchData () {
+                this.$http.get('https://hrestyk-3428d.firebaseio.com/data.json').
+                then(response =>{
+                    return response.json();
+                }, error =>{
+                    console.log(error);
+                }).then(data => {
+					const productArray = [];
+					const sliderArray = [];
+					for(let key in data.products){
+						productArray.push(data.products[key]);
+					}
+					for(let key in data.mslider){
+						sliderArray.push(data.mslider[key]);
+					}
+					this.setFetchedProducts(productArray);
+					this.setFetchedMslider(sliderArray);
+                });
+            }
+		},
+		created(){
+			let mainWrap = document.querySelector('.main-wrap');
+			window.addEventListener('scroll', function() {
+				if(window.pageYOffset > 70){
+					mainWrap.classList.add('header-fixed');
+				}
+				else{
+					mainWrap.classList.remove('header-fixed');
+				}
+			});
+			this.fetchData();
 		}
 	}
 </script>
