@@ -1,13 +1,26 @@
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+Vue.use(VueRouter);
 import Main from './components/Main.vue';
 import Catalog from './components/Catalog.vue';
 import Product from './components/Product.vue';
 import Delivery from './components/Delivery.vue';
 import About from './components/About.vue';
-export const routes = [
-    { path: '', component: Main },
-    { path: '/catalog', component: Catalog },
-    { path: '/catalog/:id', component: Product },
-    { path: '/delivery', component: Delivery },
-    { path: '/about', component: About },
-    { path: '*', redirect: '/' }
-];
+export  function createRouter (){
+    return new VueRouter({
+        routes: [
+            { path: '', component: Main },
+            { path: '/catalog', component: Catalog },
+            { path: '/catalog/:id', component: Product },
+            { path: '/delivery', component: Delivery },
+            { path: '/about', component: About },
+            { path: '*', redirect: '/' }
+        ],
+        mode: 'history',
+        scrollBehavior(to, from, savedPosition){
+            if(savedPosition){ return savedPosition; }
+            if(to.hash){return {selector: to.hash}}
+            return { x:0, y: 0 }
+        }
+    });
+}

@@ -2,7 +2,7 @@
     <div class="main-slider-section">
         <div class="swiper-container mainSwiperInit">
             <div class="swiper-wrapper">
-                <div class="swiper-slide" v-for="(mainSlide, i) in mainSlider" :key="i">
+                <div class="swiper-slide" v-for="(mainSlide, i) in getMslider" :key="i">
                     <div class="slide-fix">
                         <div class="slide-img" v-bind:style="{ 'backgroundImage': 'url(' + mainSlide.imgUrl + ')' }"></div>
                     </div>
@@ -18,11 +18,10 @@
     </div>
 </template>
 <script>
+    import { mapGetters } from 'vuex';
     export default {
-        props: {
-            mainSlider: {
-                type: Array
-            }
+        computed: {
+            ...mapGetters(['getMslider'])
         },
         mounted(){
             let mainSwiper = new this.$swiper('.mainSwiperInit', { 

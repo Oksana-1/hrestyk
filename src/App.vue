@@ -88,6 +88,7 @@
 	import IconTwitter from './components/icons/IconTwitter.vue';
 	import IconPhone from './components/icons/IconPhone.vue';
 	import IconEmail from './components/icons/IconEmail.vue';
+	import { mapActions } from 'vuex';
 	export default {
 		components:{
 			IconBase,
@@ -106,18 +107,8 @@
 				}
 			}
 		},
-		mounted(){
-			let mainWrap = document.querySelector('.main-wrap');
-			window.addEventListener('scroll', function() {
-				if(window.pageYOffset > 70){
-					mainWrap.classList.add('header-fixed');
-				}
-				else{
-					mainWrap.classList.remove('header-fixed');
-				}
-			});
-		},
 		methods:{
+			...mapActions(['setFetchedProducts', 'setFetchedMslider']),
 			initWaypoint() {
 				let waypointElements = document.querySelectorAll('.waypoint');
 				waypointElements.forEach(function(waypointElement){
@@ -133,7 +124,22 @@
 			navigateToHome(){
 				this.$router.push({path: '/'});
 			}
-		}
+		},
+		created(){
+			this.setFetchedMslider();
+			this.setFetchedProducts();
+		},
+		mounted(){
+			let mainWrap = document.querySelector('.main-wrap');
+			window.addEventListener('scroll', function() {
+				if(window.pageYOffset > 70){
+					mainWrap.classList.add('header-fixed');
+				}
+				else{
+					mainWrap.classList.remove('header-fixed');
+				}
+			});
+		},
 	}
 </script>
 <style lang="scss">
