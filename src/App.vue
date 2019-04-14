@@ -123,28 +123,13 @@
 			},
 			navigateToHome(){
 				this.$router.push({path: '/'});
-			},
-			fetchData () {
-                this.$http.get('https://hrestyk-3428d.firebaseio.com/data.json').
-                then(response =>{
-                    return response.json();
-                }, error =>{
-                    console.log(error);
-                }).then(data => {
-					const productArray = [];
-					const sliderArray = [];
-					for(let key in data.products){
-						productArray.push(data.products[key]);
-					}
-					for(let key in data.mslider){
-						sliderArray.push(data.mslider[key]);
-					}
-					this.setFetchedProducts(productArray);
-					this.setFetchedMslider(sliderArray);
-                });
-            }
+			}
 		},
 		created(){
+			this.setFetchedMslider();
+			this.setFetchedProducts();
+		},
+		mounted(){
 			let mainWrap = document.querySelector('.main-wrap');
 			window.addEventListener('scroll', function() {
 				if(window.pageYOffset > 70){
@@ -154,8 +139,7 @@
 					mainWrap.classList.remove('header-fixed');
 				}
 			});
-			this.fetchData();
-		}
+		},
 	}
 </script>
 <style lang="scss">

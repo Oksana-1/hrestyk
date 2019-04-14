@@ -21,7 +21,7 @@
                     </div>
                      <div class="product-info product-info-test">
                         <div class="buy-btn-row">
-                            <div class="product-price">{{ productInfo.productPrice }} грн</div>
+                            <div class="product-price">{{ getProduct.productPrice }} грн</div>
                             <a href="#" class="hrestyk-btn-dark">
                                 <span>Купити</span>
                             </a>
@@ -33,51 +33,27 @@
     </div>
 </template>
 <script>
-import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 export default {  
     data(){
         return{
             productId: this.$route.params.id
         }
     },
-    computed:{
-        ...mapGetters(['getProducts']),
-    },
     watch: {
         '$route'(to, from){
             this.productId = to.params.id; 
         }
     },
+    computed: {
+        ...mapGetters(['getProduct']),
+    },
     methods: {
-       ...mapActions(['setFetchedProducts']),
-       /*setData (err, post) {
-            if (err) {
-                this.error = err.toString()
-            } else {
-                this.post = post
-            }
-        }*/
+       ...mapActions(['setProductById'])
     },
-    beforeRouteEnter (to, from, next) {
-        console.log('beforeRouteEnter');
-        //Have no access to this
-        console.log(this);
-        next();
-        /*getPost(to.params.id, (err, post) => {
-        next(vm => vm.setData(err, post))
-        })*/
-    },
-    // when route changes and this component is already rendered,
-    // the logic will be slightly different.
-    beforeRouteUpdate (to, from, next) {
-        console.log('beforeRouteUpdate');
-         next();
-        /*this.post = null
-        getPost(to.params.id, (err, post) => {
-        this.setData(err, post)
-        next()
-        });*/
+    created(){
+        this.setProductById(this.productId);
     }
 }
 </script>
