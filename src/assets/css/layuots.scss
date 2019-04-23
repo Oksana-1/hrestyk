@@ -1,7 +1,4 @@
 /*Main*/
-.swiper-container{
-    opacity: 0;
-}
 .main-slider-section{
     .slide-fix{
         height: 100vh;
@@ -55,7 +52,7 @@
  .product-slider-section{
     background-color: $bkgnd;
     padding: 40px 0 80px 0;
-    .swiper-container{
+    .product-slider-wrap{
         padding: 50px 0;
         margin-right: calc(-16.67% + 15px);
     }
@@ -67,6 +64,7 @@
  }
  .product-slide{
      overflow: hidden;
+     margin-right: 30px;
     .slide-fix{
         padding-top: 60%;
         @include transition(all 1s ease);
@@ -293,7 +291,7 @@
     margin-bottom: 50px;
 }
 .product-content{
-    padding-top: 140px;
+    padding-top: 170px;
 }
 .about-content{
     .editor-content{
@@ -340,6 +338,7 @@
         bottom: 100px;
         left: 5.25em;
         right: 0;
+        min-height: 500px;
         background-color: #fff;
         z-index: 2;
         -webkit-transition: all 0.2s ease;
@@ -403,5 +402,60 @@
     .goods-text-col{
         padding: 0 100px 20px 0;
         @include box-sizing;
+    }
+}
+/*Product page*/
+.col-product-desc{
+    padding: 0 0 0 20px;
+}
+.product-inner-slider{
+    position: relative;
+}
+.product-inner-cont{
+    @include flexdir(row-reverse);
+}
+.product-inner-thumb{
+    margin: 0 -5px;
+   .product-inner-thumb-slide{
+       padding: 5px;
+   }
+}
+.hr-product-slide{
+    width: 150px !important;
+}
+.product-inner-mpic-fix{
+    width: 100%;
+    padding-top: 100%;
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto 20px;
+    position: relative;
+    &::before{
+        @include pseudo;
+        top: 20px;
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+        border: 1px solid rgba(250, 250, 250, 0.9);
+        z-index: 2;
+    }
+    &::after{
+        @include pseudo;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border: 20px solid rgba(250, 250, 250, 0.5);
+        z-index: 2;
+    }
+    .product-inner-mpic{
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
     }
 }

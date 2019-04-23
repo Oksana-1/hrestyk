@@ -37,26 +37,6 @@ export default {
             ]
         }
     },
-    methods: {
-        fetchData(){
-            this.$http.get('')
-            .then(response =>{
-                return response.json();
-            }, error =>{
-                console.log(error);
-            })
-            .then(data => {
-                const msliderArray = [];
-                for(let key in data.mslider){
-                  msliderArray.push(data.mslider[key]);
-                }
-                this.mainSlides = msliderArray;
-            });
-        }
-    },
-    created(){
-        this.fetchData();
-    },
     mounted() {
         this.initWaypointProp();
     },

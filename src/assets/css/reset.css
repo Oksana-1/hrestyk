@@ -41,3 +41,5 @@ svg { display: inline-block; fill: currentColor; vertical-align: top; }
 .clear { clear: both; }
 
 .clearfix:after, .clear_after:after { content: ''; display: block; clear: both; }
+
+button, button:active, button:hover, button:focus { background-color: transparent; border: none; outline: none;}

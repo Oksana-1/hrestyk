@@ -18,7 +18,7 @@ export function createStore (){
             },
             getMslider: state =>{
                 return state.mslider;
-            },
+            }
         },
         actions: {
             setFetchedProducts ({commit}) {
@@ -32,8 +32,7 @@ export function createStore (){
 						productArray.push(data.products[key]);
                     }
                     commit('SET_PRODUCTS', productArray);
-                });
-               
+                }); 
             },
             setProductById ({commit}, id) {
                 fetchData().then(response =>{
