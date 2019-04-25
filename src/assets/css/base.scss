@@ -87,6 +87,27 @@ img.fits{
 		}
 	}
 }
+.hr-header-wrap{
+	@include flexbox();
+	@include justify(space-between);
+	@include align(center);
+}
+.hr-cart-wrap{
+	color: $text;
+	opacity: 0.5;
+	position: relative;
+	&::before{
+		@include pseudo();
+		top: -3px;
+		right: -3px;
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		border: 3px solid #fff;
+		background-color: $text;
+		opacity: 0;
+	}
+}
 .nav-cont{
 	height: 140px;
 	@include flexbox;
@@ -164,56 +185,67 @@ img.fits{
 	display: inline-block;
 	padding: 0 60px;
 	position: relative;
-	cursor: pointer;
-	&::before{
-		@include pseudo;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: 0;
-		@include transition(all 0.3s ease);
-	}
-	&:hover{
+	&:not(:disabled){
+		cursor: pointer;
 		&::before{
-			bottom: 0;
-			height: 100%; 
+			@include pseudo;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 0;
+			@include transition(all 0.3s ease);
+		}
+		&:hover:not(:disabled){
+			&::before{
+				bottom: 0;
+				height: 100%; 
+			}
+		}
+		span{
+			position: relative;
 		}
 	}
-	span{
-		position: relative;
+	&:disabled{
+		opacity: 0.8;
 	}
 }
 .hrestyk-btn-dark{
 	@extend .hrestyk-btn;
 	color: #fff;
 	background-color: $dark;;
-	&::before{
-		background-color: $grey;
-	}
-	&:hover{
-		color:$text;
+	&:not(:disabled){
+		&::before{
+			background-color: $grey;
+		}
+		&:hover{
+			color:$text;
+		}
 	}
 }
 .hrestyk-btn-light{
 	@extend .hrestyk-btn;
 	background-color: $grey;;
 	color:$text;
-	&::before{
-		background-color: $dark;
-	}
-	&:hover{
-		color: #fff;
+	&:not(:disabled){
+		&::before{
+			background-color: $dark;
+		}
+		&:hover{
+			color: #fff;
+		}
 	}
 }
 .hrestyk-btn-white{
 	@extend .hrestyk-btn;
 	background-color: #fff;;
 	color:$text;
-	&::before{
-		background-color: $dark;
-	}
-	&:hover{
-		color: #fff;
+	&:not(:disabled){
+		&::before{
+			background-color: $dark;
+		}
+		&:hover{
+			color: #fff;
+		}
 	}
 }
 .hrestyk-btn-200{
@@ -385,4 +417,11 @@ img.fits{
 .fade-leave-active{
 	transition: opacity 0.5s;
 	opacity: 0;
+}
+.editor-content{
+	font-size: 14px;
+	font-family: $primary;
+	p{
+		margin-bottom: 20px;
+	}
 }

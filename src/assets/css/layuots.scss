@@ -253,6 +253,9 @@
 }
 .product-info{
     padding: 20px;
+    &.col-product-info{
+        padding: 0;
+    }
     .product-name{
         color: $text;
         font-size: 20px;
@@ -289,9 +292,6 @@
     font-weight: bold;
     color: #9e9e9e;
     margin-bottom: 50px;
-}
-.product-content{
-    padding-top: 170px;
 }
 .about-content{
     .editor-content{
@@ -405,20 +405,71 @@
     }
 }
 /*Product page*/
+.product-content{
+    .catalog-category-section{
+        .common-title{
+            margin-bottom: 0;
+        }
+    }
+    .product-section{
+        padding: 70px 0 100px 0;
+    }
+}
 .col-product-desc{
-    padding: 0 0 0 20px;
+    padding: 0 0 0 30px;
+    height: 100%;
+    @include flexbox();
+    @include flexdir(column);
+    @include justify(space-between);
 }
 .product-inner-slider{
     position: relative;
+    padding: 0 30px 0 0;
 }
 .product-inner-cont{
     @include flexdir(row-reverse);
 }
 .product-inner-thumb{
     margin: 0 -5px;
+    .product-img-fix{
+        @include transition(all 0.2s ease);
+        opacity: 0.8;
+        &:hover{
+            opacity: 1;
+        }
+    }
    .product-inner-thumb-slide{
        padding: 5px;
+       cursor: pointer;
    }
+   .VueCarousel-navigation-prev,
+   .VueCarousel-navigation-next{
+       font-size: 0;
+       width: 20px;
+       height: 20px;;
+       &:focus{
+           outline: none;
+       }
+       &::before{
+            @include pseudo();
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            border-bottom: 2px solid $text;
+            border-left: 2px solid $text;
+       }
+    }
+    .VueCarousel-navigation-prev{
+        &::before{
+            @include rotate(45deg);
+        } 
+    }
+    .VueCarousel-navigation-next{
+        &::before{
+            @include rotate(-135deg);
+        }
+    }
 }
 .hr-product-slide{
     width: 150px !important;
@@ -430,24 +481,6 @@
     position: relative;
     margin: 0 auto 20px;
     position: relative;
-    &::before{
-        @include pseudo;
-        top: 20px;
-        bottom: 20px;
-        left: 20px;
-        right: 20px;
-        border: 1px solid rgba(250, 250, 250, 0.9);
-        z-index: 2;
-    }
-    &::after{
-        @include pseudo;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        border: 20px solid rgba(250, 250, 250, 0.5);
-        z-index: 2;
-    }
     .product-inner-mpic{
         position: absolute;
         top: 0;
@@ -457,5 +490,106 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: contain;
+    }
+}
+.product-body{
+    position: relative;
+    @include flexbox();
+    @include flexdir(column);
+    @include justify(space-between);
+    padding: 35px 45px 25px 45px;
+    @include box-sizing();
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: none;
+    height: 100%;
+}
+.sep-line-img{
+    position: relative;
+    bottom: -60px;
+    height: 70px;
+    img{
+        width: 70px;
+        position: relative;
+        left: calc( 50% - 35px);
+        opacity: 0.5;
+    }
+    &::before{
+        @include pseudo();
+        top: 50%;
+        left: -45px;
+        width: 50%;
+        height: 1px;
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+    &::after{
+        @include pseudo();
+        top: 50%;
+        right: -45px;
+        width: 50%;
+        height: 1px;
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+}
+.descr-note{
+    font-family: $secondary;
+    font-size: 12px;
+}
+.buy-qnt-row{
+    @include flexbox();
+    @include justify(space-between);
+    @include align(center);
+    margin-bottom: 30px;
+}
+.input-qnt{
+    @include flexbox();
+    margin-right: 20px;
+    input{
+        border: 1px solid $grey;
+        max-width: 40px;
+        height: 40px;
+        padding: 10px;
+        box-sizing: border-box;
+        text-align: center;
+        @include box-sizing();
+        font-size: 16px;
+    }
+    .input-qnt-ctrl{
+        @include flexbox();
+        @include flexdir(column);
+        width: 20px; 
+    }
+    .input-qnt-up, .input-qnt-down{
+        height: 20px;
+        border: 1px solid $grey;
+        border-left-color: transparent;
+        @include box-sizing();
+        cursor: pointer;
+        position: relative;
+        color: $grey;
+        &::before{
+            @include pseudo();
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 4px 8px;
+            border-color: transparent transparent currentColor;
+            @include transition(all 0.2s ease);
+        }
+        &:hover{
+            color: $text;
+        }
+    }
+    .input-qnt-up{
+        border-bottom-color: transparent;
+       &::before{
+        @include translate(-50%,-50%);
+       }
+    }
+    .input-qnt-down{
+        &::before{
+            @include transform(translate(-50%,-50%) scaleY(-1));
+        }
     }
 }
