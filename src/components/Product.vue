@@ -76,6 +76,7 @@
     </div>
 </template>
 <script>
+import eventBus from '../event-bus';
 import { mapActions } from 'vuex';
 import { mapGetters } from 'vuex';
 import { Carousel, Slide } from 'vue-carousel';
@@ -135,6 +136,7 @@ export default {
             };
             this.addToCart(order);
             this.quantity = 1;
+            eventBus.$emit('cartVisibilityChange', true);
        }
     },
     created(){

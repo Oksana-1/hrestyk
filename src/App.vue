@@ -1,5 +1,6 @@
 <template>
-  <div class="main-wrap">
+  <div class="main-wrap"
+  		:class="contentClass">
 		<app-header></app-header>
 		<transition name="fade" mode="out-in">
 			<router-view :initWaypointProp = "initWaypoint"></router-view>
@@ -17,6 +18,35 @@
 			appHeader: Header,
 			appFooter: Footer
 		},
+		data(){
+			return{
+				contentClass: ''
+			}
+		},
+		watch: {
+			'$route'(to, from){
+				switch(to.path) {
+					case '/': 
+						this.contentClass = 'main-page';
+						break;
+					case '/catalog':
+						this.contentClass = 'catalog-page';
+						break;
+					case '/about':
+						this.contentClass = 'about-page';
+						break;
+					case '/delivery':
+						this.contentClass = 'delivery-page';
+						break;
+					case '/checkout':
+						this.contentClass = 'checkout-page';
+						break;	
+				}
+				if(to.params.id){
+					this.contentClass = 'catalog-inner-page';
+				}
+			}
+    	},
 		methods:{
 			...mapActions(['setFetchedProducts', 'setFetchedMslider']),
 			initWaypoint() {

@@ -502,10 +502,20 @@
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-bottom: none;
     height: 100%;
+    .sep-line-img{
+        bottom: -60px;
+        &::before{
+            width: 50%;
+            left: -45px;
+        }
+        &::after{
+            width: 50%;
+            right: -45px;
+        }
+    }
 }
 .sep-line-img{
     position: relative;
-    bottom: -60px;
     height: 70px;
     img{
         width: 70px;
@@ -516,16 +526,16 @@
     &::before{
         @include pseudo();
         top: 50%;
-        left: -45px;
-        width: 50%;
+        left: 0;
+        width: calc(50% - 45px);
         height: 1px;
         background-color: rgba(0, 0, 0, 0.05);
     }
     &::after{
         @include pseudo();
         top: 50%;
-        right: -45px;
-        width: 50%;
+        right: 0;
+        width: calc(50% - 45px);
         height: 1px;
         background-color: rgba(0, 0, 0, 0.05);
     }
@@ -593,7 +603,12 @@
         }
     }
 }
-/*Cart pop-up*/
+/*Cart pop-up and checkout*/
+.catalog-page, .catalog-inner-page{
+    .cart-info .hrestyk-btn-dark{
+        display: none;
+    }
+}
 .hr-cart-wrap{
     &.cartIsEmpty{
         .hr-cart-btn{
@@ -712,6 +727,10 @@
     .product-price{
         font-family: $secondary;
     }
+    .item-summ{
+        font-family: $secondary;
+        font-weight: 700;
+    }
     .cart-price-row{
         @include flexbox();
         @include align(center);
@@ -732,6 +751,7 @@
     margin-bottom: 20px;
 }
 .total-num{
+    font-family: $secondary;
     font-size: 20px;
     line-height: 20px;
     font-weight: 700;
@@ -746,4 +766,41 @@
     &:hover{
         color: $text;
     }
+}
+/*Check out*/
+.checkout-section{
+    padding: 50px 0;
+    .styled-form{
+        border-bottom: 1px solid $bkgnd;
+        padding-bottom: 30px;
+    }
+}
+.small-title{
+    font-family: $secondary;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.cart-note{
+    font-size: 14px;
+    color: $grey;
+    margin-bottom: 20px;
+}
+.cart-note-wrap {
+    text-align: center;
+    margin-bottom: 50px;
+}
+.checkout-links-wrap{
+	padding-top: 20px;
+	a{
+		font-size: 12px;
+		color: $grey;
+		&:hover{
+			color: $text;
+		}
+	}
+}
+.checkout-page .hr-cart-wrap{
+    display: none;
 }
