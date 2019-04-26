@@ -52,7 +52,8 @@
                                         </div>
                                         <div class="product-price">{{ getProduct.productPrice }} грн</div>
                                         <button class="hrestyk-btn-dark"
-                                        :disabled=" quantity <= 0 || !Number.isInteger(quantity)">
+                                        :disabled=" quantity <= 0 || !Number.isInteger(quantity)"
+                                        @click="addToCartProduct">
                                             <span>Купити</span>
                                         </button>
                                     </div>
@@ -112,13 +113,13 @@ export default {
         ...mapGetters(['getProduct'])
     },
     methods: {
-       ...mapActions(['setProductById']),
+       ...mapActions(['setProductById', 'addToCart']),
        changeMainPic(imgSrc){
            let mainPic = document.querySelector('.mainPic');
             mainPic.style.backgroundImage = 'url(' + imgSrc + ')';
        },
        addOne(){
-           if(this.quantity >= 1){
+           if(this.quantity >= 0){
                this.quantity++;
            }
        },
@@ -126,6 +127,14 @@ export default {
             if(this.quantity > 1){
                this.quantity--;
            } 
+       },
+       addToCartProduct(){
+            const order = {
+                productId: this.productId,
+                quantity: this.quantity
+            };
+            this.addToCart(order);
+            this.quantity = 1;
        }
     },
     created(){

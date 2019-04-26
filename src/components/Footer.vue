@@ -59,7 +59,21 @@
     </div>
 </template>
 <script>
+    import IconBase from '../components/IconBase.vue';
+    import IconFb from '../components/icons/IconFb.vue';
+	import IconIg from '../components/icons/IconIg.vue';
+	import IconTwitter from '../components/icons/IconTwitter.vue';
+	import IconPhone from '../components/icons/IconPhone.vue';
+	import IconEmail from '../components/icons/IconEmail.vue';
 export default {
+    components: {
+        IconBase,
+        IconFb,
+        IconIg,
+        IconTwitter,
+        IconPhone,
+        IconEmail,
+    },
     data(){
         return{
             footerFormData: {

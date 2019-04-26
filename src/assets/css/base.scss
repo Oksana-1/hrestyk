@@ -94,19 +94,7 @@ img.fits{
 }
 .hr-cart-wrap{
 	color: $text;
-	opacity: 0.5;
 	position: relative;
-	&::before{
-		@include pseudo();
-		top: -3px;
-		right: -3px;
-		width: 6px;
-		height: 6px;
-		border-radius: 50%;
-		border: 3px solid #fff;
-		background-color: $text;
-		opacity: 0;
-	}
 }
 .nav-cont{
 	height: 140px;

@@ -9,20 +9,32 @@
                 <div class="product-name">{{ product.productName }}. {{ product.productId }}.</div>
                 <div class="buy-btn-row">
                     <div class="product-price">{{ product.productPrice }} грн</div>
-                    <a href="#" class="hrestyk-btn-dark">
+                    <button class="hrestyk-btn-dark"
+                    @click="addToCartProduct()">
                         <span>Купити</span>
-                    </a>
+                    </button>
                 </div>
             </div> 
         </div>
     </div>
 </template>
 <script>
+import { mapActions } from 'vuex';
 export default {
     props: {
         product: {
             type: Object
         }
+    },
+     methods: {
+        ...mapActions(['addToCart']),
+         addToCartProduct(){
+            const order = {
+                productId: this.product.productId,
+                quantity: 1
+            };
+            this.addToCart(order);
+       }
     }
 }
 </script>

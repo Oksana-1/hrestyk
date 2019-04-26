@@ -14,34 +14,40 @@
                     </ul>
                 </nav>
             </div>
-            <div class="hr-cart-wrap">
-                <icon-base icon-name="cart" view-box="0 0 459.529 459.529" width="25" height="21"><icon-cart /></icon-base>
+            <div class="hr-cart-wrap"
+                :class="{ hiddenCart: !cartIsShown, cartIsEmpty: getCart.length === 0 }">
+                <button class="hr-cart-btn"
+                    @click="cartIsShown = !cartIsShown">
+                    <icon-base icon-name="cart" view-box="0 0 459.529 459.529" width="25" height="21"><icon-cart /></icon-base>
+                </button>
+                <app-cart></app-cart>
             </div>
         </div>
     </div>
 </template>
 <script>
     import IconBase from '../components/IconBase.vue';
-	import IconFb from '../components/icons/IconFb.vue';
-	import IconIg from '../components/icons/IconIg.vue';
-	import IconTwitter from '../components/icons/IconTwitter.vue';
-	import IconPhone from '../components/icons/IconPhone.vue';
-	import IconEmail from '../components/icons/IconEmail.vue';
-	import IconCart from '../components/icons/IconCart.vue';
+    import IconCart from '../components/icons/IconCart.vue';
+    import Cart from '../components/Cart.vue';
+    import { mapGetters } from 'vuex';
 export default {
-   components: {
-        IconBase,
-        IconFb,
-        IconIg,
-        IconTwitter,
-        IconPhone,
-        IconEmail,
-        IconCart
-   },
-   methods: {
-       navigateToHome(){
+    components: {
+            IconBase,
+            IconCart,
+            appCart : Cart
+    },
+    data(){
+        return{
+        cartIsShown: false
+        }
+    },
+    computed: {
+        ...mapGetters(['getCart'])
+    },
+    methods: {
+        navigateToHome(){
             this.$router.push({path: '/'});
         }
-   }
+    }
 }
 </script>
