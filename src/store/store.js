@@ -9,7 +9,8 @@ export function createStore (){
             product: {},
             mslider: [],
             cart: [],
-            total: 0
+            totalSumm: 0,
+            totalQnt: 0
         },
         getters: {
             getProducts: state =>{
@@ -24,8 +25,8 @@ export function createStore (){
             getCart: state =>{
                 return state.cart;
             },
-            getTotal: state =>{
-                return state.total;
+            getTotalSumm: state =>{
+                return state.totalSumm;
             }
         },
         actions: {
@@ -115,16 +116,16 @@ export function createStore (){
                     }
                     state.cart.splice(productIndex, 1, newItem);
                 }
-                const total = state.cart.reduce((total, item) => {return total + item.quantity*item.productPrice},0);
-                state.total = total;
+                const totalSumm = state.cart.reduce((total, item) => {return total + item.quantity*item.productPrice},0);
+                state.totalSumm = totalSumm;
             },
             'DELETE_ITEM': (state, itemId) =>{
                 const itemIndex = state.cart.findIndex(item => item.productId === itemId);
                 if(itemIndex != -1){
                     state.cart.splice(itemIndex, 1);
                 }
-                const total = state.cart.reduce((total, item) => {return total + item.quantity*item.productPrice},0);
-                state.total = total;
+                const totalSumm = state.cart.reduce((total, item) => {return total + item.quantity*item.productPrice},0);
+                state.totalSumm = totalSumm;
             },
             'ADD_ONE': (state, itemId) =>{
                 const itemIndex = state.cart.findIndex(item => item.productId === itemId);
@@ -139,8 +140,8 @@ export function createStore (){
                     }
                     state.cart.splice(itemIndex, 1, renewedItem);
                 }
-                const total = state.cart.reduce((total, item) => {return total + item.quantity*item.productPrice},0);
-                state.total = total;
+                const totalSumm = state.cart.reduce((total, item) => {return total + item.quantity*item.productPrice},0);
+                state.totalSumm = totalSumm;
             },
             'REMOVE_ONE': (state, itemId) =>{
                 const itemIndex = state.cart.findIndex(item => item.productId === itemId);
@@ -154,8 +155,8 @@ export function createStore (){
                     }
                     state.cart.splice(itemIndex, 1, renewedItem);
                 }
-                const total = state.cart.reduce((total, item) => {return total + item.quantity*item.productPrice},0);
-                state.total = total;
+                const totalSumm = state.cart.reduce((total, item) => {return total + item.quantity*item.productPrice},0);
+                state.totalSumm = totalSumm;
             }
         }
     });

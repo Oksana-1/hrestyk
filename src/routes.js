@@ -6,6 +6,7 @@ import Catalog from './components/Catalog.vue';
 import Product from './components/Product.vue';
 import Delivery from './components/Delivery.vue';
 import About from './components/About.vue';
+import Checkout from './components/Checkout.vue';
 export  function createRouter (){
     return new VueRouter({
         routes: [
@@ -14,6 +15,7 @@ export  function createRouter (){
             { path: '/catalog/:id', component: Product },
             { path: '/delivery', component: Delivery },
             { path: '/about', component: About },
+            { path: '/checkout', component: Checkout },
             { path: '*', redirect: '/' }
         ],
         mode: 'history',

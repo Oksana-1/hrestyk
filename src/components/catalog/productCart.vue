@@ -20,6 +20,7 @@
 </template>
 <script>
 import { mapActions } from 'vuex';
+import eventBus from '../../event-bus';
 export default {
     props: {
         product: {
@@ -34,7 +35,8 @@ export default {
                 quantity: 1
             };
             this.addToCart(order);
-       }
+            eventBus.$emit('cartVisibilityChange', true);
+        }
     }
 }
 </script>

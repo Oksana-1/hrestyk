@@ -2,8 +2,12 @@
     <div class="hr-cart-content">
         <div class="hr-cart-content-inner">
             <div class="cart-info" v-if="getCart.length === 0">
-                <div class="cart-title">Ваша корзина пуста</div>
-                <router-link to="/catalog" class="hrestyk-btn-dark"><span>В каталог</span></router-link>
+                <div class="cart-title">Ваш кошик пустий</div>
+                <router-link to="/catalog" 
+                    class="hrestyk-btn-dark">
+                    <div class="link-abs" @click="closeCart"></div>
+                    <span>В магазин</span>
+                </router-link>
             </div>
             <div class="cart-product" v-else>
                <div class="cart-item" v-for="(cartItem, i) in getCart" :key="i" >
@@ -31,8 +35,13 @@
                    </div>
                </div>
                <div class="card-total-row">
-                    <div class="total-sum">Загальна cума: <span class="total-num">{{getTotal}} грн</span></div>
-                    <router-link to="/catalog" class="hrestyk-btn-dark"><span>Оформити замовлення</span></router-link>
+                    <div class="total-sum">Загальна cума: <span class="total-num">{{getTotalSumm}} грн</span></div>
+                    <router-link 
+                        to="/checkout" 
+                        class="hrestyk-btn-dark">
+                        <div class="link-abs" @click="closeCart"></div>
+                        <span>Оформити замовлення</span>
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -40,11 +49,12 @@
 </template>
 
 <script>
+import eventBus from '../event-bus';
 import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex';
 export default {
     computed:{
-        ...mapGetters(['getCart', 'getTotal'])
+        ...mapGetters(['getCart', 'getTotalSumm'])
     },
     methods:{
         ...mapActions(['deleteItem', 'addOne', 'removeOne']),
@@ -56,6 +66,9 @@ export default {
         },
         removeOneFromCart(productId){
             this.removeOne(productId);
+        },
+        closeCart(){
+            eventBus.$emit('cartVisibilityChange', false);
         }
     }
 }
