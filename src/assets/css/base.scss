@@ -255,9 +255,11 @@ img.fits{
 	color: #fff;
 	padding: 60px 0;
 	.styled-form{
-		input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { color: #fff; }
-		input:-moz-placeholder, textarea:-moz-placeholder { color: #fff; }
-		input::-moz-placeholder, textarea::-moz-placeholder { color: #fff; }
+		input, textarea{
+			@include placeholder{
+				color: #fff;
+			}
+		}
 		input:not([type="submit"]){
 		height: 40px;
 		border-bottom: 1px solid #fff;
