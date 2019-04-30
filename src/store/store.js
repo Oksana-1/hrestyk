@@ -2,12 +2,14 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
 import { fetchData } from '../api';
+import { loadOrder } from '../api';
 export function createStore (){
     return new Vuex.Store({
         state: {
             products: [],
             product: {},
             mslider: [],
+            pslider: [],
             cart: [],
             totalSumm: 0,
             totalQnt: 0
@@ -22,25 +24,36 @@ export function createStore (){
             getMslider: state =>{
                 return state.mslider;
             },
-            getCart: state =>{
-                return state.cart;
+            getpSlider:  state =>{
+                return state.pslider;
             },
             getTotalSumm: state =>{
                 return state.totalSumm;
+            },
+            getCart: state =>{
+                return state.cart;
             }
         },
         actions: {
-            setFetchedProducts ({commit}) {
+            setFetchedData ({commit}) {
                 fetchData().then(response =>{
                     return response.json();
                 }, error =>{
                     console.log(error);
                 }).then(data => {  
-					const productArray = [];
+                    const productArray = [];
+                    const mSliderArray = [];
 					for(let key in data.products){
 						productArray.push(data.products[key]);
                     }
+                    const pSliderArr = productArray.filter((product) => product.toMainPage === true);
+					for(let key in data.mslider){
+						mSliderArray.push(data.mslider[key]);
+                    }
+                    commit('SET_MSLIDER', mSliderArray);
+                    commit('SET_PSLIDER', pSliderArr);
                     commit('SET_PRODUCTS', productArray);
+                    commit('SET_CART');
                 }); 
             },
             setProductById ({commit}, id) {
@@ -57,19 +70,6 @@ export function createStore (){
                     commit('SET_PRODUCT', productObj);
                 });
             },
-            setFetchedMslider({commit}) {
-                fetchData().then(response =>{
-                    return response.json();
-                }, error =>{
-                    console.log(error);
-                }).then(data => {
-					const mSliderArray = [];
-					for(let key in data.mslider){
-						mSliderArray.push(data.mslider[key]);
-                    }
-                    commit('SET_MSLIDER', mSliderArray);
-                });
-            },
             addToCart({commit}, order){
                 commit('ADD_TO_CARD', order);
             },
@@ -80,7 +80,10 @@ export function createStore (){
                 commit('ADD_ONE', itemId);
             },
             removeOne({commit}, itemId){
-                commit('REMOVE_ONE', itemId);
+                commit('MINUS_ONE', itemId);
+            },
+            sendOrder({commit}, order){
+                commit('SEND_ORDER', order);
             }
         },
         mutations: {
@@ -92,6 +95,9 @@ export function createStore (){
             },
             'SET_MSLIDER': (state, data) =>{
                 state.mslider = data;
+            },
+            'SET_PSLIDER': (state, data) =>{
+                state.pslider = data;
             },
             'ADD_TO_CARD': (state, {productId, quantity}) =>{
                 const productIndex = state.cart.findIndex(item => item.productId === productId);
@@ -116,8 +122,14 @@ export function createStore (){
                     }
                     state.cart.splice(productIndex, 1, newItem);
                 }
-                const totalSumm = state.cart.reduce((total, item) => {return total + item.quantity*item.productPrice},0);
+                const totalSumm = state.cart.reduce((total, item) => {
+                    return total + item.quantity*item.productPrice
+                }, 0);
                 state.totalSumm = totalSumm;
+                const storageStr = state.cart.reduce((string, item) => {
+                    return string.concat(item.productId , ":" , item.quantity, ',')
+                }, '')
+                localStorage.setItem("storageCart", storageStr);
             },
             'DELETE_ITEM': (state, itemId) =>{
                 const itemIndex = state.cart.findIndex(item => item.productId === itemId);
@@ -126,10 +138,13 @@ export function createStore (){
                 }
                 const totalSumm = state.cart.reduce((total, item) => {return total + item.quantity*item.productPrice},0);
                 state.totalSumm = totalSumm;
+                const storageStr = state.cart.reduce((string, item) => {
+                    return string.concat(item.productId , ":" , item.quantity, ',')
+                }, '')
+                localStorage.setItem("storageCart", storageStr);
             },
             'ADD_ONE': (state, itemId) =>{
                 const itemIndex = state.cart.findIndex(item => item.productId === itemId);
-              
                 if(itemIndex != -1){
                     const renewedItem =  {
                         productId: itemId,
@@ -142,8 +157,12 @@ export function createStore (){
                 }
                 const totalSumm = state.cart.reduce((total, item) => {return total + item.quantity*item.productPrice},0);
                 state.totalSumm = totalSumm;
+                const storageStr = state.cart.reduce((string, item) => {
+                    return string.concat(item.productId , ":" , item.quantity, ',')
+                }, '')
+                localStorage.setItem("storageCart", storageStr);
             },
-            'REMOVE_ONE': (state, itemId) =>{
+            'MINUS_ONE': (state, itemId) =>{
                 const itemIndex = state.cart.findIndex(item => item.productId === itemId);
                 if(itemIndex != -1 && state.cart[itemIndex].quantity > 1){
                     const renewedItem =  {
@@ -157,6 +176,39 @@ export function createStore (){
                 }
                 const totalSumm = state.cart.reduce((total, item) => {return total + item.quantity*item.productPrice},0);
                 state.totalSumm = totalSumm;
+                const storageStr = state.cart.reduce((string, item) => {
+                    return string.concat(item.productId , ":" , item.quantity, ',')
+                }, '')
+                localStorage.setItem("storageCart", storageStr);
+            },
+            'SET_CART': (state) =>{
+                const storageCartStr = localStorage.getItem('storageCart');
+                if(storageCartStr) {
+                    const storageCartArr = storageCartStr.split(',').filter((item)=> item.length > 0);
+                    const cartArr = storageCartArr.map((storageItem)=>{
+                        const curProduct = state.products.find(item => item.productId === storageItem.split(':')[0]);
+                        return{
+                            productId: storageItem.split(':')[0],
+                            quantity: Number(storageItem.split(':')[1]),
+                            mainImage: curProduct.mainImage,
+                            productName: curProduct.productName,
+                            productPrice: curProduct.productPrice
+                        }
+                    });
+                    state.cart = cartArr;
+                }
+                const totalSumm = state.cart.reduce((total, item) => {
+                    return total + item.quantity*item.productPrice
+                }, 0);
+                state.totalSumm = totalSumm;
+            },
+            'SEND_ORDER': (state, customerInfo) => {
+                const order = {
+                    cartInfo: state.cart,
+                    customerInfo: customerInfo
+                }
+                loadOrder(order);
+                localStorage.removeItem('storageCart');
             }
         }
     });

@@ -48,7 +48,7 @@
 			}
     	},
 		methods:{
-			...mapActions(['setFetchedProducts', 'setFetchedMslider']),
+			...mapActions(['setFetchedData']),
 			initWaypoint() {
 				let waypointElements = document.querySelectorAll('.waypoint');
 				waypointElements.forEach(function(waypointElement){
@@ -63,8 +63,7 @@
 			}
 		},
 		created(){
-			this.setFetchedMslider();
-			this.setFetchedProducts();
+			this.setFetchedData();
 		},
 		mounted(){
 			let mainWrap = document.querySelector('.main-wrap');

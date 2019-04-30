@@ -27,7 +27,7 @@
                                     <textarea placeholder="Ваші коментарі"  v-model="checkoutFormData.message"></textarea>
                                 </div>
                                 <div class="input-row">
-                                    <input type="submit" value="Відправити"/>
+                                    <button type="submit" @click="sendOrder(checkoutFormData)">Відправити</button>
                                 </div>
                             </form>
                         </div>
@@ -45,36 +45,38 @@
                                     <span>Продовжити покупки</span>
                                 </router-link>
                             </div>
-                            <div class="cart-item" v-for="(cartItem, i) in getCart" :key="i" >
-                                <div class="cart-item-img-fix">
-                                    <router-link :to="'/catalog/' + cartItem.productId" class="link-abs"></router-link>
-                                    <div class="cart-item-img"
-                                    v-bind:style="{ 'backgroundImage': 'url(' + cartItem.mainImage + ')' }"></div>
-                                </div>
-                                <div class="cart-item-info">
-                                    <router-link :to="'/catalog/' + cartItem.productId" class="cart-item-name">
-                                        {{cartItem.productName}}
-                                    </router-link>
-                                    <div class="cart-price-row">
-                                        <div class="input-qnt">
-                                            <input
-                                            v-model.number="cartItem.quantity">
-                                            <div class="input-qnt-ctrl">
-                                                <div class="input-qnt-up"
-                                                @click="addOneToCart(cartItem.productId)"></div>
-                                                <div class="input-qnt-down"
-                                                @click="removeOneFromCart(cartItem.productId)"></div>
+                            <div class="checkout-cart-cont">
+                                <div class="cart-item" v-for="(cartItem, i) in getCart" :key="i" >
+                                    <div class="cart-item-img-fix">
+                                        <router-link :to="'/catalog/' + cartItem.productId" class="link-abs"></router-link>
+                                        <div class="cart-item-img"
+                                        v-bind:style="{ 'backgroundImage': 'url(' + cartItem.mainImage + ')' }"></div>
+                                    </div>
+                                    <div class="cart-item-info">
+                                        <router-link :to="'/catalog/' + cartItem.productId" class="cart-item-name">
+                                            {{cartItem.productName}}
+                                        </router-link>
+                                        <div class="cart-price-row">
+                                            <div class="input-qnt">
+                                                <input
+                                                v-model.number="cartItem.quantity">
+                                                <div class="input-qnt-ctrl">
+                                                    <div class="input-qnt-up"
+                                                    @click="addOneToCart(cartItem.productId)"></div>
+                                                    <div class="input-qnt-down"
+                                                    @click="removeOneFromCart(cartItem.productId)"></div>
+                                                </div>
                                             </div>
+                                            <div class="product-price">{{ cartItem.productPrice }} грн</div>
+                                            <div class="item-summ">{{ cartItem.productPrice * cartItem.quantity }} грн</div>
+                                            <div class="cart-item-del"
+                                            @click="deleteItemFromCart(cartItem.productId)">+</div>
                                         </div>
-                                        <div class="product-price">{{ cartItem.productPrice }} грн</div>
-                                        <div class="item-summ">{{ cartItem.productPrice * cartItem.quantity }} грн</div>
-                                        <div class="cart-item-del"
-                                        @click="deleteItemFromCart(cartItem.productId)">+</div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card-total-row">
-                                <div class="total-sum">Загальна cума: <span class="total-num">{{getTotalSumm}} грн</span></div>
+                                <div class="card-total-row">
+                                    <div class="total-sum">Загальна cума: <span class="total-num">{{getTotalSumm}} грн</span></div>
+                                </div>
                             </div>
                         </div>
                         <div class="checkout-cart-empty" v-else>
@@ -132,7 +134,7 @@ export default {
         }
     },
     methods:{
-        ...mapActions(['deleteItem', 'addOne', 'removeOne']),
+        ...mapActions(['deleteItem', 'addOne', 'removeOne', 'sendOrder']),
         deleteItemFromCart(productId){
             this.deleteItem(productId);
         },

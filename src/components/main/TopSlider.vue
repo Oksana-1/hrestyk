@@ -7,7 +7,7 @@
                       <div class="slider-content">
                     <div class="slider-title">{{ mainSlide.titleText }}</div>
                         <div class="slider-btn-wrap">
-                            <div class="hrestyk-btn-white hrestyk-btn-200"><span>Докладніше</span></div>
+                            <router-link :to="'/catalog/'" class="hrestyk-btn-white hrestyk-btn-200"><span>В магазин</span></router-link>
                         </div>
                     </div>
                 </div>

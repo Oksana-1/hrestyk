@@ -95,6 +95,7 @@
         background: -o-linear-gradient(20deg, rgba(0, 0, 0, 0.8), transparent);
         background: linear-gradient(110deg, rgba(0, 0, 0, 0.8), transparent);
         opacity: 0;
+        z-index: 2;
         @include transition(all 0.3s ease);
         color: #fff;
         padding: 1.85em 2.5em;
@@ -604,7 +605,7 @@
     }
 }
 /*Cart pop-up and checkout*/
-.catalog-page, .catalog-inner-page{
+.catalog-page{
     .cart-info .hrestyk-btn-dark{
         display: none;
     }
@@ -622,6 +623,7 @@
         .hr-cart-content{
             opacity: 0;
             visibility: hidden;
+            @include transform(translateY(calc(100% - 30px)));
         }
     }
 }
@@ -644,9 +646,9 @@
     position: absolute;
     bottom: -30px;
     right: -40px;
-    @include translate(0, 100%);
+    @include transform(translateY(100%));
     background-color: #fff;
-    @include transition(all 0.2s ease);
+    @include transition(opacity 0.2s ease, transform 0.5s ease);
     opacity: 1;
     visibility: visible;
 }
@@ -654,6 +656,8 @@
     border: 1px solid $bkgnd;
     @include transition(all 0.2s ease); 
     padding: 20px 0;
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
     &:hover{
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
@@ -803,4 +807,8 @@
 }
 .checkout-page .hr-cart-wrap{
     display: none;
+}
+.checkout-cart-cont{
+    max-height: 405px;
+    overflow-y: auto;
 }
