@@ -77,8 +77,7 @@
 </template>
 <script>
 import eventBus from '../event-bus';
-import { mapActions } from 'vuex';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 import { Carousel, Slide } from 'vue-carousel';
 import AboutBanner from './main/AboutBanner';
 export default { 
@@ -114,7 +113,8 @@ export default {
         ...mapGetters(['getProduct'])
     },
     methods: {
-       ...mapActions(['setProductById', 'addToCart']),
+       ...mapActions(['setProductById']),
+       ...mapMutations(['ADD_TO_CARD']),
        changeMainPic(imgSrc){
            let mainPic = document.querySelector('.mainPic');
             mainPic.style.backgroundImage = 'url(' + imgSrc + ')';
@@ -134,7 +134,7 @@ export default {
                 productId: this.productId,
                 quantity: this.quantity
             };
-            this.addToCart(order);
+            this.ADD_TO_CARD(order);
             this.quantity = 1;
             eventBus.$emit('cartVisibilityChange', true);
        }

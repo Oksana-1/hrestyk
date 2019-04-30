@@ -14,7 +14,8 @@
                             <textarea placeholder="Ваше повідомлення"  v-model="footerFormData.message"></textarea>
                         </div>
                         <div class="input-row">
-                            <input type="submit" value="Відправити"/>
+                            <button
+                            @click.prevent="SEND_FORM(footerFormData)" type="submit">Відправити</button>
                         </div>
                     </form>
                 </div>
@@ -59,6 +60,7 @@
     </div>
 </template>
 <script>
+    import { mapMutations } from 'vuex';
     import IconBase from '../components/IconBase.vue';
     import IconFb from '../components/icons/IconFb.vue';
 	import IconIg from '../components/icons/IconIg.vue';
@@ -74,9 +76,9 @@ export default {
         IconPhone,
         IconEmail,
     },
-    data(){
-        return{
-            footerFormData: {
+    computed:{
+        footerFormData(){
+            return {
                 name: '',
                 phone: '',
                 message: ''
@@ -84,6 +86,7 @@ export default {
         }
     },
     methods: {
+        ...mapMutations(['SEND_FORM']),
         navigateToHome(){
             this.$router.push({path: '/'});
         }

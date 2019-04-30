@@ -19,7 +19,7 @@
     </div>
 </template>
 <script>
-import { mapActions } from 'vuex';
+import { mapMutations } from 'vuex';
 import eventBus from '../../event-bus';
 export default {
     props: {
@@ -28,13 +28,13 @@ export default {
         }
     },
      methods: {
-        ...mapActions(['addToCart']),
+        ...mapMutations(['ADD_TO_CARD']),
          addToCartProduct(){
             const order = {
                 productId: this.product.productId,
                 quantity: 1
             };
-            this.addToCart(order);
+            this.ADD_TO_CARD(order);
             eventBus.$emit('cartVisibilityChange', true);
         }
     }

@@ -27,7 +27,7 @@
                                     <textarea placeholder="Ваші коментарі"  v-model="checkoutFormData.message"></textarea>
                                 </div>
                                 <div class="input-row">
-                                    <button type="submit" @click="sendOrder(checkoutFormData)">Відправити</button>
+                                    <button type="submit" @click.prevent="SEND_ORDER(checkoutFormData)">Відправити</button>
                                 </div>
                             </form>
                         </div>
@@ -39,7 +39,7 @@
                         <h2 class="small-title">Кошик</h2>                        
                         <div class="checkout-cart" v-if="getCart.length > 0">
                             <div class="cart-note-wrap">
-                                <div class="cart-note">У Вашому кошику <span class="cart-qnt">{{getCart.length}}</span> {{item}}</div>
+                                <div class="cart-note">У Вашому кошику <span class="cart-qnt">{{getCart.length}}</span> {{itemString}}</div>
                                 <router-link to="/catalog" class="hrestyk-btn-bordered-white">
                                     <div class="link-abs" @click="closeCart"></div>
                                     <span>Продовжити покупки</span>
@@ -62,21 +62,21 @@
                                                 v-model.number="cartItem.quantity">
                                                 <div class="input-qnt-ctrl">
                                                     <div class="input-qnt-up"
-                                                    @click="addOneToCart(cartItem.productId)"></div>
+                                                    @click="PLUS_ONE(cartItem.productId)"></div>
                                                     <div class="input-qnt-down"
-                                                    @click="removeOneFromCart(cartItem.productId)"></div>
+                                                    @click="MINUS_ONE(cartItem.productId)"></div>
                                                 </div>
                                             </div>
                                             <div class="product-price">{{ cartItem.productPrice }} грн</div>
                                             <div class="item-summ">{{ cartItem.productPrice * cartItem.quantity }} грн</div>
                                             <div class="cart-item-del"
-                                            @click="deleteItemFromCart(cartItem.productId)">+</div>
+                                            @click="DELETE_ITEM(cartItem.productId)">+</div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-total-row">
-                                    <div class="total-sum">Загальна cума: <span class="total-num">{{getTotalSumm}} грн</span></div>
-                                </div>
+                            </div>
+                            <div class="card-total-row">
+                                <div class="total-sum">Загальна cума: <span class="total-num">{{getTotalSumm}} грн</span></div>
                             </div>
                         </div>
                         <div class="checkout-cart-empty" v-else>
@@ -96,8 +96,7 @@
 </template>
 <script>
 import eventBus from '../event-bus';
-import { mapGetters } from 'vuex';
-import { mapActions } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 export default {
      data(){
         return{
@@ -111,7 +110,7 @@ export default {
     },
     computed:{
         ...mapGetters(['getCart', 'getTotalSumm']),
-        item(){
+        itemString(){
             let getCartLengthStr = this.getCart.length.toString();
             let singleNumExeptions = ['2', '3', '4'];
             let doubleNumExeptions = ['11', '12', '13', '14'];
@@ -134,16 +133,7 @@ export default {
         }
     },
     methods:{
-        ...mapActions(['deleteItem', 'addOne', 'removeOne', 'sendOrder']),
-        deleteItemFromCart(productId){
-            this.deleteItem(productId);
-        },
-        addOneToCart(productId){
-            this.addOne(productId);
-        },
-        removeOneFromCart(productId){
-            this.removeOne(productId);
-        },
+        ...mapMutations(['DELETE_ITEM', 'PLUS_ONE', 'MINUS_ONE', 'SEND_ORDER']),
         closeCart(){
             eventBus.$emit('cartVisibilityChange', false);
         }

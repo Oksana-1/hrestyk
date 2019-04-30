@@ -1,22 +1,28 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
-import { fetchData } from '../api';
-import { loadOrder } from '../api';
+import { fetchData, loadOrder, loadForm } from '../api';
 export function createStore (){
     return new Vuex.Store({
         state: {
             products: [],
+            categories: [],
+            filteredProducts: [],
             product: {},
             mslider: [],
             pslider: [],
             cart: [],
-            totalSumm: 0,
-            totalQnt: 0
+            totalSumm: 0
         },
         getters: {
             getProducts: state =>{
                 return state.products;
+            },
+            getCategories: state =>{
+               return state.categories;
+            },
+            getfilteredProducts: state =>{
+                return state.filteredProducts;
             },
             getProduct: state =>{
                 return state.product;
@@ -54,6 +60,7 @@ export function createStore (){
                     commit('SET_PSLIDER', pSliderArr);
                     commit('SET_PRODUCTS', productArray);
                     commit('SET_CART');
+                    commit('SET_CATEGORIES');
                 }); 
             },
             setProductById ({commit}, id) {
@@ -69,26 +76,20 @@ export function createStore (){
                     const productObj = productArray.filter(item => item.productId === id)[0];
                     commit('SET_PRODUCT', productObj);
                 });
-            },
-            addToCart({commit}, order){
-                commit('ADD_TO_CARD', order);
-            },
-            deleteItem({commit}, itemId){
-                commit('DELETE_ITEM', itemId);
-            },
-            addOne({commit}, itemId){
-                commit('ADD_ONE', itemId);
-            },
-            removeOne({commit}, itemId){
-                commit('MINUS_ONE', itemId);
-            },
-            sendOrder({commit}, order){
-                commit('SEND_ORDER', order);
             }
         },
         mutations: {
             'SET_PRODUCTS': (state, data) =>{
                 state.products = data;
+            },
+            'SET_CATEGORIES': (state) => {
+                const catArr = [];
+                state.products.forEach((product)=> {
+                    if(!catArr.includes(product.productCat)){
+                        catArr.push(product.productCat);
+                    }
+                });
+                state.categories = catArr;
             },
             'SET_PRODUCT': (state, data) =>{
                 state.product = data;
@@ -143,7 +144,7 @@ export function createStore (){
                 }, '')
                 localStorage.setItem("storageCart", storageStr);
             },
-            'ADD_ONE': (state, itemId) =>{
+            'PLUS_ONE': (state, itemId) =>{
                 const itemIndex = state.cart.findIndex(item => item.productId === itemId);
                 if(itemIndex != -1){
                     const renewedItem =  {
@@ -204,11 +205,23 @@ export function createStore (){
             },
             'SEND_ORDER': (state, customerInfo) => {
                 const order = {
+                    date: Date.now(),
                     cartInfo: state.cart,
                     customerInfo: customerInfo
                 }
                 loadOrder(order);
                 localStorage.removeItem('storageCart');
+            },
+            'FILTER_CAT': (state, category) =>{
+                const filteredCatalog = state.products.filter((product)=> product.productCat === category);
+                state.filteredProducts = filteredCatalog;
+            },
+            'SEND_FORM': (state, footerFormData) => {
+                const formData ={
+                    date: Date.now(),
+                    formInfo: footerFormData
+                };
+                loadForm(formData);
             }
         }
     });

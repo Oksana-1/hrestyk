@@ -23,14 +23,14 @@
                                 v-model.number="cartItem.quantity">
                                 <div class="input-qnt-ctrl">
                                     <div class="input-qnt-up"
-                                    @click="addOneToCart(cartItem.productId)"></div>
+                                    @click="PLUS_ONE(cartItem.productId)"></div>
                                     <div class="input-qnt-down"
-                                    @click="removeOneFromCart(cartItem.productId)"></div>
+                                    @click="MINUS_ONE(cartItem.productId)"></div>
                                 </div>
                             </div>
                             <div class="product-price">{{ cartItem.productPrice }} грн</div>
                             <div class="cart-item-del"
-                            @click="deleteItemFromCart(cartItem.productId)">+</div>
+                            @click="DELETE_ITEM(cartItem.productId)">+</div>
                         </div>
                    </div>
                </div>
@@ -50,23 +50,13 @@
 
 <script>
 import eventBus from '../event-bus';
-import { mapGetters } from 'vuex';
-import { mapActions } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 export default {
     computed:{
         ...mapGetters(['getCart', 'getTotalSumm'])
     },
     methods:{
-        ...mapActions(['deleteItem', 'addOne', 'removeOne']),
-        deleteItemFromCart(productId){
-            this.deleteItem(productId);
-        },
-        addOneToCart(productId){
-            this.addOne(productId);
-        },
-        removeOneFromCart(productId){
-            this.removeOne(productId);
-        },
+        ...mapMutations(['DELETE_ITEM', 'PLUS_ONE', 'MINUS_ONE']),
         closeCart(){
             eventBus.$emit('cartVisibilityChange', false);
         }

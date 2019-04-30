@@ -5,22 +5,32 @@
                 <div class="c-box-1100">
                     <div class="catalog-category-container c-box-700">
                         <ul class="catalog-category-list">
-                            <li class="active"><a href="#">Всі товари</a></li>
-                            <li><a href="#">Картини</a></li>
-                            <li><a href="#">Гольниці</a></li>
-                            <li><a href="#">Брошки</a></li>
-                            <li><a href="#">Сережки</a></li>
-                            <li><a href="#">Кулони</a></li>
-                            <li><a href="#">Набори</a></li>
+                            <li :class="{active: currentCat==='all'}">
+                                <a 
+                                @click.prevent="filterOn = false, currentCat = 'all'" 
+                                href="#">Всі товари</a>
+                            </li>
+                            <li 
+                                v-for="(category, i) in getCategories" :key="i" 
+                                :class="{active: currentCat===category}">
+                                <a 
+                                @click.prevent="FILTER_CAT(category), filterOn = true, currentCat = category"
+                                href="#">
+                                {{category}}
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="catalog-products-section">
                 <div class="c-box-1100">
-                    <div class="catalog-products-container">
+                    <div class="catalog-products-container" v-if="!filterOn">
                         <app-product-card  v-for="(productItem, i) in getProducts" :key="i" :product="getProducts[i]"></app-product-card>
                     </div>
+                     <div class="catalog-products-container" v-else>
+                        <app-product-card  v-for="(productItem, i) in getfilteredProducts" :key="i" :product="getfilteredProducts[i]"></app-product-card>
+                     </div>
                 </div>
             </div>
         </slot>
@@ -29,12 +39,22 @@
 <script>
 import productCard from './catalog/productCart';
 import { mapGetters } from 'vuex';
+import { mapMutations } from 'vuex';
 export default {
+    data(){
+        return{
+            filterOn: false,
+            currentCat: 'all'
+        }
+    },
     components: {
         appProductCard: productCard
     } ,
     computed:{
-        ...mapGetters(['getProducts'])
+        ...mapGetters(['getProducts' , 'getCategories', 'getfilteredProducts'])
+    },
+    methods:{
+        ...mapMutations(['FILTER_CAT'])
     }
 }
 </script>
