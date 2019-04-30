@@ -20,12 +20,13 @@
                         <div class="cart-price-row">
                             <div class="input-qnt">
                                 <input
-                                v-model.number="cartItem.quantity">
+                                v-model.number="cartItem.quantity"
+                                @keyup="changeQnt(cartItem.productId, cartItem.quantity)">
                                 <div class="input-qnt-ctrl">
                                     <div class="input-qnt-up"
-                                    @click="PLUS_ONE(cartItem.productId)"></div>
+                                    @click="changeQnt(cartItem.productId, cartItem.quantity + 1)"></div>
                                     <div class="input-qnt-down"
-                                    @click="MINUS_ONE(cartItem.productId)"></div>
+                                    @click="changeQnt(cartItem.productId, cartItem.quantity - 1)"></div>
                                 </div>
                             </div>
                             <div class="product-price">{{ cartItem.productPrice }} грн</div>
@@ -56,7 +57,14 @@ export default {
         ...mapGetters(['getCart', 'getTotalSumm'])
     },
     methods:{
-        ...mapMutations(['DELETE_ITEM', 'PLUS_ONE', 'MINUS_ONE']),
+        ...mapMutations(['DELETE_ITEM', 'CHANGE_QNT']),
+        changeQnt(id, qnt){
+            const itemToChange = {
+                itemId: id,
+                itemQnt: qnt
+            };
+            this.CHANGE_QNT(itemToChange);
+        },
         closeCart(){
             eventBus.$emit('cartVisibilityChange', false);
         }

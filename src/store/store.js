@@ -144,12 +144,13 @@ export function createStore (){
                 }, '')
                 localStorage.setItem("storageCart", storageStr);
             },
-            'PLUS_ONE': (state, itemId) =>{
+            'CHANGE_QNT': (state, {itemId, itemQnt}) =>{
+                console.log(itemId, itemQnt);
                 const itemIndex = state.cart.findIndex(item => item.productId === itemId);
-                if(itemIndex != -1){
+                if(itemIndex != -1 && itemQnt > 0){
                     const renewedItem =  {
                         productId: itemId,
-                        quantity: state.cart[itemIndex].quantity + 1,
+                        quantity: itemQnt,
                         mainImage: state.cart[itemIndex].mainImage,
                         productName: state.cart[itemIndex].productName,
                         productPrice: state.cart[itemIndex].productPrice
@@ -162,25 +163,7 @@ export function createStore (){
                     return string.concat(item.productId , ":" , item.quantity, ',')
                 }, '')
                 localStorage.setItem("storageCart", storageStr);
-            },
-            'MINUS_ONE': (state, itemId) =>{
-                const itemIndex = state.cart.findIndex(item => item.productId === itemId);
-                if(itemIndex != -1 && state.cart[itemIndex].quantity > 1){
-                    const renewedItem =  {
-                        productId: itemId,
-                        quantity: state.cart[itemIndex].quantity - 1,
-                        mainImage: state.cart[itemIndex].mainImage,
-                        productName: state.cart[itemIndex].productName,
-                        productPrice: state.cart[itemIndex].productPrice
-                    }
-                    state.cart.splice(itemIndex, 1, renewedItem);
-                }
-                const totalSumm = state.cart.reduce((total, item) => {return total + item.quantity*item.productPrice},0);
-                state.totalSumm = totalSumm;
-                const storageStr = state.cart.reduce((string, item) => {
-                    return string.concat(item.productId , ":" , item.quantity, ',')
-                }, '')
-                localStorage.setItem("storageCart", storageStr);
+               
             },
             'SET_CART': (state) =>{
                 const storageCartStr = localStorage.getItem('storageCart');
