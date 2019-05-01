@@ -14,6 +14,9 @@ Object.defineProperty(Vue.prototype, '$waypoint', { value: Waypoint });
 import VueCarousel from 'vue-carousel';
 Vue.use(VueCarousel);
 
+import Vuelidate from 'vuelidate';
+Vue.use(Vuelidate);
+
 import App from './App.vue';
 
 new Vue({

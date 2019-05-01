@@ -1,5 +1,5 @@
 <template>
-    <div class="about-content">
+    <div class="about-content hr-content">
         <div class="about-top-img-fix">
             <div class="about-top-img" style="background-image: url('src/assets/images/about-img.jpg')"></div>
             <div class="about-top-text">

@@ -4,18 +4,27 @@
             <div class="footer-contact-block">
                 <div class="styled-form">
                     <form>
-                        <div class="input-row">
-                            <input type="text" placeholder="Ваше ім'я" v-model="footerFormData.name"/>
+                        <div class="input-row" :class="{invalid: $v.name.$error}">
+                            <input 
+                            type="text" 
+                            placeholder="Ваше ім'я" 
+                            @blur="$v.name.$touch()"
+                            v-model="name"/>
+                        </div>
+                        <div class="input-row" :class="{invalid: $v.phone.$error}">
+                            <input 
+                                type="text" 
+                                placeholder="Ваш телефон" 
+                                 @blur="$v.phone.$touch()"
+                                v-model="phone"/>
                         </div>
                         <div class="input-row">
-                            <input type="text" placeholder="Ваш телефон" v-model="footerFormData.phone"/>
-                        </div>
-                        <div class="input-row">
-                            <textarea placeholder="Ваше повідомлення"  v-model="footerFormData.message"></textarea>
+                            <textarea placeholder="Ваше повідомлення"  v-model="message"></textarea>
                         </div>
                         <div class="input-row">
                             <button
-                            @click.prevent="SEND_FORM(footerFormData)" type="submit">Відправити</button>
+                            type="submit"
+                            @click.prevent="sendForm(), $v.$touch()" >Відправити</button>
                         </div>
                     </form>
                 </div>
@@ -66,8 +75,16 @@
 	import IconIg from '../components/icons/IconIg.vue';
 	import IconTwitter from '../components/icons/IconTwitter.vue';
 	import IconPhone from '../components/icons/IconPhone.vue';
-	import IconEmail from '../components/icons/IconEmail.vue';
+    import IconEmail from '../components/icons/IconEmail.vue';
+    import { required, numeric, minLength } from 'vuelidate/lib/validators';
 export default {
+    data(){
+        return{
+            name: '',
+            phone: '',
+            message: ''
+        }
+    },
     components: {
         IconBase,
         IconFb,
@@ -76,19 +93,28 @@ export default {
         IconPhone,
         IconEmail,
     },
-    computed:{
-        footerFormData(){
-            return {
-                name: '',
-                phone: '',
-                message: ''
-            }
+    validations: {
+        phone: {
+            required, 
+            numeric,
+            minLength: minLength(10)
+        },
+        name: {
+            required
         }
     },
     methods: {
         ...mapMutations(['SEND_FORM']),
         navigateToHome(){
             this.$router.push({path: '/'});
+        },
+        sendForm(){
+            const footerFormData = {
+                name: this.name,
+                phone:  this.phone,
+                message: this.message
+            }
+            this.SEND_FORM(footerFormData);
         }
     }
 }

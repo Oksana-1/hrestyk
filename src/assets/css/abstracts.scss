@@ -5,6 +5,7 @@ $bkgnd: hsl(0, 0%, 92%);
 $grey: #a5a5a5;
 $text: #515151;
 $dark: #181818;
+$error: #ff0000;
 @mixin box-sizing($sizing:border-box) {
     -moz-box-sizing: $sizing;
     box-sizing: $sizing;

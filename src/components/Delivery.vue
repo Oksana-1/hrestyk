@@ -1,5 +1,5 @@
 <template>
-    <div class="delivery-content">
+    <div class="delivery-content hr-content">
         <div class="delivery-content-block">
             <div class="c-box-1100">
                 <div class="delivery-content-title">Строки виготовлення</div>
