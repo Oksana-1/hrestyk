@@ -1,5 +1,5 @@
 <template>
-    <div class="main-content">
+    <div class="main-content hr-content">
         <slot>
             <app-top-slider></app-top-slider>  
             <app-product-slider></app-product-slider>

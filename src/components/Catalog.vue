@@ -1,5 +1,5 @@
 <template>
-    <div class="catalog-content">
+    <div class="catalog-content hr-content">
         <slot>
             <div class="catalog-category-section">
                 <div class="c-box-1100">

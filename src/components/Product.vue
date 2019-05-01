@@ -1,5 +1,5 @@
 <template>
-    <div class="product-content">
+    <div class="product-content hr-content">
         <div class="catalog-category-section">
             <div class="c-box-1100">
                 <div class="catalog-category-container">

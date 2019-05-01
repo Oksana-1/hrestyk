@@ -145,7 +145,6 @@ export function createStore (){
                 localStorage.setItem("storageCart", storageStr);
             },
             'CHANGE_QNT': (state, {itemId, itemQnt}) =>{
-                console.log(itemId, itemQnt);
                 const itemIndex = state.cart.findIndex(item => item.productId === itemId);
                 if(itemIndex != -1 && itemQnt > 0){
                     const renewedItem =  {
@@ -186,14 +185,19 @@ export function createStore (){
                 }, 0);
                 state.totalSumm = totalSumm;
             },
-            'SEND_ORDER': (state, customerInfo) => {
+            'SEND_ORDER': (state, checkoutFormData) => {
+                console.log(checkoutFormData);
                 const order = {
                     date: Date.now(),
                     cartInfo: state.cart,
-                    customerInfo: customerInfo
+                    customerInfo: checkoutFormData
                 }
-                loadOrder(order);
-                localStorage.removeItem('storageCart');
+                loadOrder(order)
+                    .then(response => {
+                        console.log(response);
+                        window.location.href='/thankyou';
+                        localStorage.removeItem('storageCart');
+                    });
             },
             'FILTER_CAT': (state, category) =>{
                 const filteredCatalog = state.products.filter((product)=> product.productCat === category);

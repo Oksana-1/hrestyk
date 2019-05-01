@@ -1,5 +1,5 @@
 <template>
-    <div class="checkout-content">
+    <div class="checkout-content hr-content">
        <div class="catalog-category-section">
             <div class="c-box-1100">
                 <div class="catalog-category-container">
@@ -13,21 +13,42 @@
                     <div class="col-50 col-form">
                         <div class="styled-form white-bkgnd-form styled-form-400">
                             <div class="cart-note">Будь ласка, заповніть форму, і наш менеджер зконтактує з Вами найближчого часу.</div>
-                            <form>
-                                <div class="input-row">
-                                    <input type="text" placeholder="Ваше ім'я" v-model="checkoutFormData.name"/>
+                            <form :class="{'form-disabled' : getCart.length < 1}">
+                                <div class="input-row" :class="{invalid: $v.name.$error}">
+                                    <input 
+                                        type="text" 
+                                        placeholder="Ваше ім'я" 
+                                        @blur="$v.name.$touch()"
+                                        v-model="name"/>
+                                        <p v-if="!$v.name.required && $v.name.$dirty" class="invalid-message">{{formErrors.empty}}
+                                        </p>
+                                </div>
+                                <div class="input-row" :class="{invalid: $v.email.$error}">
+                                    <input 
+                                        type="text" 
+                                        placeholder="Ваш email" 
+                                        @blur="$v.email.$touch()"
+                                        v-model="email"/>
+                                    <p v-if="!$v.email.email" class="invalid-message">{{formErrors.invalidEmail}}</p>
+                                    <p v-if="!$v.email.required && $v.email.$dirty" class="invalid-message">{{formErrors.empty}}
+                                    </p>
+                                </div>
+                                <div class="input-row" :class="{invalid: $v.phone.$error}">
+                                    <input 
+                                        type="text" 
+                                        placeholder="Ваш телефон" 
+                                        @blur="$v.phone.$touch()"
+                                        v-model="phone"/>
+                                    <p v-if="!$v.phone.numeric || !$v.phone.minLength" class="invalid-message">{{formErrors.invalidPhonel}}</p>
+                                    <p v-if="!$v.phone.required && $v.phone.$dirty" class="invalid-message">{{formErrors.empty}}</p>
                                 </div>
                                 <div class="input-row">
-                                    <input type="text" placeholder="Ваш email" v-model="checkoutFormData.email"/>
+                                    <textarea placeholder="Ваші коментарі"  v-model="message"></textarea>
                                 </div>
                                 <div class="input-row">
-                                    <input type="text" placeholder="Ваш телефон" v-model="checkoutFormData.phone"/>
-                                </div>
-                                <div class="input-row">
-                                    <textarea placeholder="Ваші коментарі"  v-model="checkoutFormData.message"></textarea>
-                                </div>
-                                <div class="input-row">
-                                    <button type="submit" @click.prevent="SEND_ORDER(checkoutFormData)">Відправити</button>
+                                    <button type="submit" 
+                                    :disabled="getCart.length < 1"
+                                    @click.prevent="sendOrder(), $v.$touch()">Відправити</button>
                                 </div>
                             </form>
                         </div>
@@ -59,6 +80,7 @@
                                         <div class="cart-price-row">
                                             <div class="input-qnt">
                                                 <input
+                                                
                                                 v-model.number="cartItem.quantity"
                                                 @keyup="changeQnt(cartItem.productId, cartItem.quantity)">
                                                 <div class="input-qnt-ctrl">
@@ -98,15 +120,33 @@
 <script>
 import eventBus from '../event-bus';
 import { mapGetters, mapMutations } from 'vuex';
+import { required, email, numeric, minLength, minValue } from 'vuelidate/lib/validators';
 export default {
      data(){
         return{
-            checkoutFormData: {
-                name: '',
-                email: '',
-                phone: '',
-                message: ''
+            name: '',
+            email: '',
+            phone: '',
+            message: '',
+            formErrors: {
+                invalidEmail: 'Будь-ласка, введіть корректний email.',
+                invalidPhonel: 'Будь-ласка, введіть корректний телефон',
+                empty: 'Це поле обов\'язкове.'
             }
+        }
+    },
+    validations: {
+        email: {
+            required,
+            email
+        },
+        phone: {
+            required, 
+            numeric,
+            minLength: minLength(10)
+        },
+        name: {
+            required
         }
     },
     computed:{
@@ -144,6 +184,18 @@ export default {
         },
         closeCart(){
             eventBus.$emit('cartVisibilityChange', false);
+        },
+        sendOrder(){
+            console.log('sjlsjkdskldfj')
+            const checkoutFormData = {
+                name: this.name,
+                email: this.email,
+                phone: this.phone,
+                message: this.message
+            }
+            if(!this.$v.$invalid){
+                this.SEND_ORDER(checkoutFormData);
+            }
         }
     }
 }

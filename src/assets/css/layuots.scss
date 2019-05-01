@@ -812,3 +812,23 @@
     max-height: 405px;
     overflow-y: auto;
 }
+/*Thank you page*/
+.thankyou-section{
+    padding: 50px 0;
+    .sep-line-img{
+        margin-bottom: 50px;
+    }
+    .hrestyk-btn-wrap{
+        margin-top: 50px;
+    }
+    .editor-content{
+        font-size: 18px;
+        a{
+            font-weight: 700;
+            @include transition(all 0.2s ease);
+            &:hover{
+                color: $grey;
+            }
+        }
+    }
+}
