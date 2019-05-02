@@ -49,6 +49,7 @@ export function createStore (){
                 }).then(data => {  
                     const productArray = [];
                     const mSliderArray = [];
+                    if (data.products.length === 0) return;
 					for(let key in data.products){
 						productArray.push(data.products[key]);
                     }

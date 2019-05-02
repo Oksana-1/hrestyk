@@ -14,7 +14,7 @@
                                 v-for="(category, i) in getCategories" :key="i" 
                                 :class="{active: currentCat===category}">
                                 <a 
-                                @click.prevent="FILTER_CAT(category), filterOn = true, currentCat = category"
+                                @click.prevent="filterCat(category), filterOn = true, currentCat = category"
                                 href="#">
                                 {{category}}
                                 </a>
@@ -25,7 +25,7 @@
             </div>
             <div class="catalog-products-section">
                 <div class="c-box-1100">
-                    <div class="catalog-products-container" v-if="!filterOn">
+                    <div class="catalog-products-container productContainer" v-if="!filterOn">
                         <app-product-card  v-for="(productItem, i) in getProducts" :key="i" :product="getProducts[i]"></app-product-card>
                     </div>
                      <div class="catalog-products-container" v-else>
@@ -47,6 +47,11 @@ export default {
             currentCat: 'all'
         }
     },
+    props: {
+        initWaypointProp : {
+            type : Function
+        }
+    },
     components: {
         appProductCard: productCard
     } ,
@@ -54,7 +59,16 @@ export default {
         ...mapGetters(['getProducts' , 'getCategories', 'getfilteredProducts'])
     },
     methods:{
-        ...mapMutations(['FILTER_CAT'])
+        ...mapMutations(['FILTER_CAT']),
+        filterCat(category){
+            this.FILTER_CAT(category);
+        }
+    },
+    mounted() {
+        this.initWaypointProp();
+    },
+    updated() {
+        this.initWaypointProp();
     }
 }
 </script>

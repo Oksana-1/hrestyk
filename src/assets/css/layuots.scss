@@ -214,6 +214,11 @@
     @include flexbox;
     flex-wrap: wrap;
     margin: 0 -20px;
+    @include transition(all 0.5s ease);
+    opacity: 1;
+    &.transparent{
+        opacity: 0;
+    }
 }
 .catalog-products-section{
     background-color: #fff;

@@ -1,7 +1,7 @@
 <template>
-    <div class="product-card-wrap">
+    <div class="product-card-wrap waypoint">
         <router-link :to="'/catalog/' + product.productId" class="link-abs"></router-link>
-        <div class="product-card-inner">
+        <div class="product-card-inner animate opacity">
             <div class="product-img-fix">
                 <div class="product-img" v-bind:style="{ 'backgroundImage': 'url(' + product.mainImage + ')' }"></div>
             </div>
