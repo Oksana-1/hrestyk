@@ -25,12 +25,16 @@
             </div>
             <div class="catalog-products-section">
                 <div class="c-box-1100">
-                    <div class="catalog-products-container productContainer" v-if="!filterOn">
-                        <app-product-card  v-for="(productItem, i) in getProducts" :key="i" :product="getProducts[i]"></app-product-card>
-                    </div>
-                     <div class="catalog-products-container" v-else>
-                        <app-product-card  v-for="(productItem, i) in getfilteredProducts" :key="i" :product="getfilteredProducts[i]"></app-product-card>
-                     </div>
+                    <transition name="fade" mode="out-in">
+                        <div :key="currentCat">
+                            <div class="catalog-products-container productContainer" v-if="!filterOn">
+                                <app-product-card  v-for="(productItem, i) in getProducts" :key="i" :product="getProducts[i]"></app-product-card>
+                            </div>
+                            <div class="catalog-products-container" v-else>
+                                <app-product-card  v-for="(productItem, i) in getfilteredProducts" :key="i" :product="getfilteredProducts[i]"></app-product-card>
+                            </div>
+                        </div>
+                    </transition>
                 </div>
             </div>
         </slot>
@@ -47,11 +51,6 @@ export default {
             currentCat: 'all'
         }
     },
-    props: {
-        initWaypointProp : {
-            type : Function
-        }
-    },
     components: {
         appProductCard: productCard
     } ,
@@ -63,12 +62,6 @@ export default {
         filterCat(category){
             this.FILTER_CAT(category);
         }
-    },
-    mounted() {
-        this.initWaypointProp();
-    },
-    updated() {
-        this.initWaypointProp();
     }
 }
 </script>

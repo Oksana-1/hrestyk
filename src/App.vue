@@ -55,6 +55,7 @@
 					let waypoint = new Waypoint({
 						element: waypointElement,
 						handler: function() {
+							console.log(waypointElement);
 							waypointElement.classList.add('waypoint-done')
 						},
 						offset: '80%'
