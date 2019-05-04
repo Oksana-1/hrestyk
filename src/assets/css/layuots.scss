@@ -837,3 +837,14 @@
         }
     }
 }
+@media only screen and (max-width: 1300px){
+    .pc-header::before{
+        right: 3em;
+    }
+    .about-top-text::before{
+        left: 3em;
+    }
+    .main-slider-section .slider-title{
+        font-size: 38px;
+    }
+}
