@@ -18,8 +18,18 @@
                             </div>
                             <div class="product-inner-thumb">
                                 <carousel :perPage="3" :paginationEnabled="false" :navigationEnabled="true">
+                                    <slide>
+                                        <div class="product-inner-thumb-slide productThumb active">
+                                            <div class="product-img-fix">
+                                                <div class="product-img" 
+                                                v-bind:style="{ 'backgroundImage': 'url(' + getProduct.mainImage + ')' }"
+                                                @click="changeMainPic(getProduct.mainImage)"
+                                                ></div>
+                                            </div>
+                                        </div>
+                                    </slide>
                                     <slide v-for="(productImage, i) in getProduct.images" :key="i">
-                                        <div class="product-inner-thumb-slide">
+                                        <div class="product-inner-thumb-slide productThumb">
                                             <div class="product-img-fix">
                                                 <div class="product-img" 
                                                 v-bind:style="{ 'backgroundImage': 'url(' + productImage + ')' }"
