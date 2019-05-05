@@ -4,7 +4,7 @@
             <div class="common-title">Товари</div>
         </div>
         <div class="product-slider-wrap">
-            <carousel :perPage="3" :paginationEnabled="false">
+            <carousel :perPage="3" :scrollPerPage=false :paginationEnabled="false">
                 <slide v-for="(productSlide, i) in getpSlider" :key="i" class="product-slide">
                     <div class="slide-fix animate opacity from-down">
                         <div class="slide-img" v-bind:style="{ 'backgroundImage': 'url(' + productSlide.toMainImage + ')' }"></div>
