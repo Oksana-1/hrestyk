@@ -2,9 +2,6 @@
   <div class="main-wrap"
   		:class="contentClass">
 		<app-header></app-header>
-		<div class="hr-overlay" 
-			:class="{hidden: !cartIsShown}"
-			@click="hideCart">{{cartIsShown}}</div>
 		<transition name="fade" mode="out-in">
 			<router-view :initWaypointProp = "initWaypoint"></router-view>
 		</transition>
@@ -13,7 +10,6 @@
 </template>
 
 <script>
-	import eventBus from './event-bus';
 	import { mapActions } from 'vuex';
 	import Header from './components/Header.vue';
 	import Footer from './components/Footer.vue';
@@ -24,8 +20,7 @@
 		},
 		data(){
 			return{
-				contentClass: '',
-				cartIsShown: false
+				contentClass: ''
 			}
 		},
 		watch: {
@@ -66,17 +61,10 @@
 						offset: '80%'
 					});
 				});
-			},
-			hideCart(){
-				this.cartIsShown = false;
-				eventBus.$emit('cartVisibilityChange', false);
 			}
 		},
 		created(){
 			this.setFetchedData();
-			eventBus.$on('cartVisibilityChange', (cartIsShown) =>{
-				this.cartIsShown = cartIsShown;
-			});
 		},
 		mounted(){
 			let mainWrap = document.querySelector('.main-wrap');
