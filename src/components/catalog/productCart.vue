@@ -9,7 +9,7 @@
                 <div class="product-name">{{ product.productName }}. {{ product.productId }}.</div>
                 <div class="buy-btn-row">
                     <div class="product-price">{{ product.productPrice }} грн</div>
-                    <button class="hrestyk-btn-dark"
+                    <button class="hrestyk-btn-dark buyBtn"
                     @click="addToCartProduct()">
                         <span>Купити</span>
                     </button>

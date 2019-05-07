@@ -16,7 +16,8 @@
                     </nav>
                 </div>
                 <div class="hr-cart-wrap cartContainer"
-                    :class="{ hiddenCart: !cartIsShown, cartIsEmpty: getCart.length === 0 }">
+                    :class="{ hiddenCart: !cartIsShown, cartIsEmpty: getCart.length === 0 }"
+                    v-click-outside="closeEvent">
                     <button class="hr-cart-btn"
                         @click="cartVisibilityCtrl">
                         <icon-base icon-name="cart" view-box="0 0 459.529 459.529" width="25" height="21"><icon-cart /></icon-base>
@@ -53,6 +54,25 @@ export default {
         },
         cartVisibilityCtrl(){
             this.cartIsShown = this.cartIsShown === false?true:false;
+        },
+        closeEvent() {
+            this.cartIsShown = false;
+            eventBus.$emit('cartVisibilityChange', false);
+        }
+    },
+     directives:{
+        'click-outside': {
+            bind: function (el, binding, vnode) {
+                el.clickOutsideEvent = function (event) {
+                    if (!(el == event.target || el.contains(event.target) || event.target.closest('.buyBtn'))) {
+                        vnode.context[binding.expression](event);
+                    }
+                };
+                document.body.addEventListener('click', el.clickOutsideEvent)
+            },
+            unbind: function (el) {
+                document.body.removeEventListener('click', el.clickOutsideEvent)
+            },
         }
     },
     created(){

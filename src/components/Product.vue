@@ -61,7 +61,7 @@
                                             </div>
                                         </div>
                                         <div class="product-price">{{ getProduct.productPrice }} грн</div>
-                                        <button class="hrestyk-btn-dark"
+                                        <button class="hrestyk-btn-dark buyBtn"
                                         :disabled=" quantity <= 0 || !Number.isInteger(quantity)"
                                         @click="addToCartProduct">
                                             <span>Купити</span>

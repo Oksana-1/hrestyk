@@ -75,7 +75,7 @@
 					mainWrap.classList.remove('header-fixed');
 				}
 			});
-		},
+		}
 	}
 </script>
 <style lang="scss">
