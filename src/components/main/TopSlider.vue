@@ -1,6 +1,6 @@
 <template>
     <div class="main-slider-section">
-        <carousel :perPage="1" :paginationEnabled="false">
+        <carousel :perPage="1" :paginationEnabled="false" :autoplay="true" :loop="true">
             <slide  v-for="(mainSlide, i) in getMslider" :key="i">
                 <div class="slide-fix">
                     <div class="slide-img" v-bind:style="{ 'backgroundImage': 'url(' + mainSlide.imgUrl + ')' }"></div>
