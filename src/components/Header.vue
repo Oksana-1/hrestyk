@@ -3,6 +3,10 @@
         <div class="pc-header">
             <div class="c-box-1100 hr-header-wrap">
                 <div class="nav-cont">
+                    <div class="hr-sandwich-wrap">
+                        <button class="hr-sandwich"  @click="showMobMenu()">
+                        </button>
+                    </div>
                     <div @click="navigateToHome()" class="logo-fix">
                         <img class="fits" src="../assets/images/logo.png" alt="Logo"/>
                     </div>
@@ -58,6 +62,9 @@ export default {
         closeEvent() {
             this.cartIsShown = false;
             eventBus.$emit('cartVisibilityChange', false);
+        },
+        showMobMenu(){
+            console.log('you need to write this function!');
         }
     },
      directives:{
