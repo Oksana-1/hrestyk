@@ -141,9 +141,6 @@ img.fits{
 		height: 100px;
 	}
 }
-.hr-sandwich-wrap{
-	
-}
 .waypoint{
 	.animate{
 		@include transition(all 1s ease);
@@ -494,4 +491,55 @@ img.fits{
 }
 .hr-sandwich-wrap{
 	display: none;
+	margin-right: 50px;
+    padding-right: 50px;
+}
+.hr-sandwich{
+	width: 30px;
+    height: 2px;
+    background-color: $text;
+    position: relative;
+	margin: auto;
+	&::before{
+		@include pseudo();
+		top: -10px;
+		right: 0;
+		width: 25px;
+		height: 2px;
+		background-color: $text;
+		@include transition(all 0.2s ease);
+	}
+	&::after{
+		@include pseudo();
+		bottom: -10px;
+		right: 0;
+		width: 18px;
+		height: 2px;
+		background-color: $text;
+		@include transition(all 0.2s ease);
+	}
+}
+.mobMenuIsOpened{
+	.hr-sandwich{
+		height: 0;
+		&::before{
+			@include rotate(-45deg);
+			-webkit-transform-origin: right;
+			transform-origin: right;
+		}
+		&::after{
+			width: 25px;
+			@include rotate(45deg);
+			-webkit-transform-origin: right;
+			transform-origin: right;
+		}
+	}
+}
+@media only screen and (max-width: 768px){
+	.hr-sandwich-wrap{
+		@include flexbox();
+	}
+	.pc-nav{
+		display: none;
+	}
 }

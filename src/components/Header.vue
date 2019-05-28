@@ -1,12 +1,8 @@
 <template>
-    <div class="hr-header-wrap">
+    <div class="hr-header-wrap" :class="{mobMenuIsOpened: mobMenuIsOpened}">
         <div class="pc-header">
             <div class="c-box-1100 hr-header-wrap">
                 <div class="nav-cont">
-                    <div class="hr-sandwich-wrap">
-                        <button class="hr-sandwich"  @click="showMobMenu()">
-                        </button>
-                    </div>
                     <div @click="navigateToHome()" class="logo-fix">
                         <img class="fits" src="../assets/images/logo.png" alt="Logo"/>
                     </div>
@@ -18,6 +14,10 @@
                             <router-link to="/delivery" tag="li" active-class="active" exact><a>Оплата та доставка</a></router-link>
                         </ul>
                     </nav>
+                </div>
+                <div class="hr-sandwich-wrap">
+                    <button class="hr-sandwich"  @click="mobMenuIsOpened=!mobMenuIsOpened">
+                    </button>
                 </div>
                 <div class="hr-cart-wrap cartContainer"
                     :class="{ hiddenCart: !cartIsShown, cartIsEmpty: getCart.length === 0 }"
@@ -46,7 +46,8 @@ export default {
     },
     data(){
         return {
-            cartIsShown: false
+            cartIsShown: false,
+            mobMenuIsOpened: false
         }
     },
     computed: {
@@ -62,9 +63,6 @@ export default {
         closeEvent() {
             this.cartIsShown = false;
             eventBus.$emit('cartVisibilityChange', false);
-        },
-        showMobMenu(){
-            console.log('you need to write this function!');
         }
     },
      directives:{
