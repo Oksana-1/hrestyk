@@ -14,6 +14,7 @@
                         </div>
                     </div>
                 </slide>
+                <slide class="product-slide"></slide>
             </carousel>
         </div>
      

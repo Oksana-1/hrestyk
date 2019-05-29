@@ -118,9 +118,9 @@ img.fits{
 					@include transition(all 0.3s ease);
 			}
 			&:hover, &.active{
-					a{
-					color: rgba(0, 0, 0, 0.8);
-					}
+				a{
+				color: rgba(0, 0, 0, 1);
+				}
 			}
 		}
 	}
@@ -491,8 +491,6 @@ img.fits{
 }
 .hr-sandwich-wrap{
 	display: none;
-	margin-right: 50px;
-    padding-right: 50px;
 }
 .hr-sandwich{
 	width: 30px;
@@ -537,9 +535,52 @@ img.fits{
 }
 @media only screen and (max-width: 768px){
 	.hr-sandwich-wrap{
-		@include flexbox();
+		display: block;
+	}
+	.nav-cont{
+		height: 100px;
 	}
 	.pc-nav{
-		display: none;
+		position: fixed;
+		top: 100px;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background-color: #fff;
+		max-height: 0;
+		overflow: hidden;
+		@include transition(all 0.5s ease);
+		ul{
+			@include flexbox();
+			@include flexdir(column);
+			@include align(center);
+			padding: 10px 0;
+			li{
+				padding: 10px;
+			}
+		}
+	}
+	.mobMenuIsOpened .pc-nav{
+		max-height: calc(100vh - 100px);
+	}
+	.pc-header{
+		.logo-fix{
+			height: 60px;
+			width: 60px;
+			margin-right: 0;
+			padding-right: 0;
+			&::before{
+				content: none;
+			}
+		}
+	}
+	.hr-cart-btn{
+		svg{
+			width: 30px;
+			height: 30px;
+		}
+	}
+	.hr-cart-wrap{
+		margin-right: 0;
 	}
 }
