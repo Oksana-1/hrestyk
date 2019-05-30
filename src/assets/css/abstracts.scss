@@ -1,3 +1,26 @@
+@mixin addfont ($style-name, $fontweight, $filepath) {
+  @font-face {
+    font-family: $style-name;
+    src: url($filepath + '.eot'),
+    url($filepath + '.eot?#iefix') format('embedded-opentype'),
+    url($filepath + '.woff') format('woff'),
+    url($filepath + '.woff2') format('woff2'),
+    url($filepath + '.ttf') format('truetype'),
+    url($filepath + '.svg#' + $style-name + '') format('svg');
+    font-weight: $fontweight;
+    font-style: normal;
+  }
+}
+
+@include addfont('Open Sans', 400, '/src/assets/fonts/opensans-regular-webfont');
+@include addfont('Open Sans', 600, '/src/assets/fonts/opensans-semibold-webfont');
+@include addfont('Open Sans', 700, '/src/assets/fonts/opensans-bold-webfont');
+@include addfont('Montserrat', 400, '/src/assets/fonts/montserrat-regular-webfont');
+@include addfont('Montserrat', 500, '/src/assets/fonts/montserrat-medium-webfont');
+@include addfont('Montserrat', 700, '/src/assets/fonts/montserrat-bold-webfont');
+@include addfont('Open Sans Condensed', 300, '/src/assets/fonts/opensanscondensed-light-webfont');
+@include addfont('Open Sans Condensed', 700, '/src/assets/fonts/opensanscondensed-bold-webfont');
+
 $primary: 'Open Sans', sans-serif;
 $secondary: 'Montserrat', sans-serif;
 $compact: 'Open Sans Condensed', sans-serif;
