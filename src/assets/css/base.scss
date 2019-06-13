@@ -533,7 +533,18 @@ img.fits{
 		}
 	}
 }
+.mobMenuOpened{
+	overflow: hidden;
+}
+.social-cont-mobMenu{
+	display: none;
+	@include justify(center);
+	padding: 20px;
+}
 @media only screen and (max-width: 768px){
+	.social-cont-mobMenu{
+		@include flexbox();
+	}
 	.hr-sandwich-wrap{
 		display: block;
 	}
@@ -550,6 +561,9 @@ img.fits{
 		max-height: 0;
 		overflow: hidden;
 		@include transition(all 0.5s ease);
+		@include flexbox();
+		@include flexdir(column);
+		@include justify(space-between);
 		ul{
 			@include flexbox();
 			@include flexdir(column);

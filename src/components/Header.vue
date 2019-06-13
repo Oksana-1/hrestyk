@@ -13,10 +13,21 @@
                             <router-link to="/about" tag="li" active-class="active" exact><a>Про нас</a></router-link>
                             <router-link to="/delivery" tag="li" active-class="active" exact><a>Оплата та доставка</a></router-link>
                         </ul>
+                        <div class="social-cont social-cont-mobMenu">
+                            <a href="#" class="social-link">
+                                <icon-base icon-name="fb"><icon-fb /></icon-base>
+                            </a>
+                            <a href="#" class="social-link">
+                                <icon-base icon-name="ig"><icon-ig /></icon-base>
+                            </a>  
+                            <a href="#" class="social-link">
+                                <icon-base icon-name="ig"><icon-twitter /></icon-base>
+                            </a>   
+                        </div>         
                     </nav>
                 </div>
                 <div class="hr-sandwich-wrap">
-                    <button class="hr-sandwich"  @click="mobMenuIsOpened=!mobMenuIsOpened">
+                    <button class="hr-sandwich"  @click="mobMenuCtrl">
                     </button>
                 </div>
                 <div class="hr-cart-wrap cartContainer"
@@ -37,11 +48,21 @@ import eventBus from '../event-bus';
 import IconBase from '../components/IconBase.vue';
 import IconCart from '../components/icons/IconCart.vue';
 import Cart from '../components/Cart.vue';
+import IconFb from '../components/icons/IconFb.vue';
+import IconIg from '../components/icons/IconIg.vue';
+import IconTwitter from '../components/icons/IconTwitter.vue';
+import IconPhone from '../components/icons/IconPhone.vue';
+import IconEmail from '../components/icons/IconEmail.vue';
 import { mapGetters } from 'vuex';
 export default {
     components: {
             IconBase,
             IconCart,
+            IconFb,
+            IconIg,
+            IconTwitter,
+            IconPhone,
+            IconEmail,
             appCart : Cart
     },
     data(){
@@ -58,11 +79,16 @@ export default {
             this.$router.push({path: '/'});
         },
         cartVisibilityCtrl(){
-            this.cartIsShown = this.cartIsShown === false?true:false;
+            this.cartIsShown = !this.cartIsShown;
         },
         closeEvent() {
             this.cartIsShown = false;
             eventBus.$emit('cartVisibilityChange', false);
+        },
+       mobMenuCtrl(){
+            this.mobMenuIsOpened = !this.mobMenuIsOpened;
+            eventBus.$emit('mobMenuVisibilityChange', this.mobMenuIsOpened);
+            document.querySelector('body').classList.toggle('mobMenuOpened');
         }
     },
      directives:{
@@ -83,6 +109,9 @@ export default {
     created(){
         eventBus.$on('cartVisibilityChange', (cartIsShown) =>{
             this.cartIsShown = cartIsShown;
+        });
+        eventBus.$on('mobMenuVisibilityChange', (mobMenuIsOpened) =>{
+            this.mobMenuIsOpened = mobMenuIsOpened;
         });
     }
 }

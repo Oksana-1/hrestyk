@@ -1,7 +1,13 @@
 import Vue from 'vue';
 
+import eventBus from './event-bus';
 import { createRouter } from './routes';
 const router = createRouter();
+router.beforeEach((to, from, next) => {
+	eventBus.$emit('mobMenuVisibilityChange', false);
+	document.querySelector('body').classList.remove('mobMenuOpened');
+	next();
+});
 import { createStore } from './store/store';
 const store = createStore();
 
