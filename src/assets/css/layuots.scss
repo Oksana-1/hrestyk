@@ -918,3 +918,115 @@
         margin-top: 20px;
     }
 }
+@media only screen and (max-width: 768px){
+    .product-slide{
+        margin-right: 10px;
+    }
+    .about-img-fix{
+        padding-top: 60%;
+    }
+    .footer-content{
+        -webkit-flex-wrap: wrap;
+        flex-wrap: wrap;
+    }
+    .footer-contact-block{
+        -webkit-order: 1;
+        order: 1;
+    }
+    .footer-nav-block{
+        -webkit-order: 2;
+        order: 2;
+    }
+    .footer-logo-block{
+        width: 100%;
+        -webkit-order: 3;
+        order: 3;
+        margin-top: 40px;
+    }
+    .footer-contact-container{
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: column;
+        flex-direction: column;
+    }
+    .footer-contact-container .contact-link{
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+}
+@media only screen and (max-width: 767px){
+    .main-slider-section .slide-fix{
+        height: 100vh;
+    }
+    .main-slider-section .slider-content{
+        width: 90%;
+        padding: 50px 20px;
+    }
+    .main-slider-section .slider-title{
+        font-size: 30px;
+        text-align: center;
+    }
+    .product-slider-section .product-slider-wrap{
+        padding: 0 0 40px 0;
+    }
+    .product-slide{
+        margin-right: 0;
+    }
+    .about-img-fix{
+        padding-top: 150%;
+    }
+    .about-text-section .about-text-container{
+        -webkit-column-count: 1;
+        column-count: 1;
+        text-align: justify;
+    }
+    .hr-footer{
+        padding: 40px 0;
+    }
+    .footer-content{
+        -webkit-flex-direction: column;
+        flex-direction: column;
+        -webkit-align-items: center;
+        align-items: center;
+    }
+    .footer-contact-block{
+        -webkit-order: 1;
+        order: 1;
+        margin-bottom: 40px;
+    }
+    .hr-footer .styled-form input[type="submit"], .hr-footer .styled-form button{
+        margin: 20px auto 0;
+        display: block;
+    }
+    .hr-footer .styled-form input:not([type="submit"]){
+        text-align: center;
+    }
+    .hr-footer .styled-form textarea{
+        text-align: center;
+    }
+    .footer-nav-block{
+        -webkit-order: 2;
+        order: 2;
+        margin-bottom: 20px;
+    }
+    .footer-logo-block{
+        -webkit-order: 3;
+        order: 3;
+    }
+    .footer-nav ul{
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-wrap: wrap;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+        -webkit-justify-content: center;
+        justify-content: center;
+    }
+    .footer-nav li{
+        padding: 0 5px;
+    }
+    .footer-contact-container{
+        -webkit-align-items: center;
+        align-items: center;
+    }
+}
