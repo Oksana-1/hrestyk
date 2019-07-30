@@ -4,7 +4,7 @@
             <div class="common-title">Товари</div>
         </div>
         <div class="product-slider-wrap">
-            <carousel :perPage="slidesPerPage" :scrollPerPage="false" :paginationEnabled="false"> 
+            <carousel :perPage=1 :perPageCustom="[[768, 2],  [1024, 3]]" :scrollPerPage="false" :paginationEnabled="false" :navigationEnabled="true"> 
                 <slide v-for="(productSlide, i) in getpSlider" :key="i" class="product-slide">
                     <div class="slide-fix animate opacity from-down">
                         <div class="slide-img" v-bind:style="{ 'backgroundImage': 'url(' + productSlide.toMainImage + ')' }"></div>
@@ -35,17 +35,6 @@ export default {
         ...mapGetters(['getpSlider']),
         windowWidth(){
             return window.innerWidth;
-        },
-        slidesPerPage(){
-            if(this.windowWidth < 767){
-                return 1;
-            }
-            else if(this.windowWidth >= 767 && this.windowWidth< 1024){
-                return 2;
-            }
-            else{
-                return 3;
-            }
         }
     }
 }

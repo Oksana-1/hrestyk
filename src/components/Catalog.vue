@@ -3,7 +3,8 @@
         <slot>
             <div class="catalog-category-section">
                 <div class="c-box-1100">
-                    <div class="catalog-category-container c-box-700">
+                    <div class="catalog-category-container c-box-700"
+                    :class="filtersHidden?'hidden':''">
                         <ul class="catalog-category-list">
                             <li :class="{active: currentCat==='all'}">
                                 <a 
@@ -20,6 +21,8 @@
                                 </a>
                             </li>
                         </ul>
+                        <div class="mob-filters-ctrl"
+                        @click="filtersHidden=!filtersHidden"></div>
                     </div>
                 </div>
             </div>
@@ -48,6 +51,7 @@ export default {
     data(){
         return{
             filterOn: false,
+            filtersHidden: false,
             currentCat: 'all'
         }
     },

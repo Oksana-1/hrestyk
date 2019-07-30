@@ -1,5 +1,5 @@
 <template>
-    <div class="hr-header-wrap" :class="{mobMenuIsOpened: mobMenuIsOpened}">
+    <div class="hr-header-wrap" :class="{mobMenuIsOpened: mobMenuIsOpened, cartIsShown: cartIsShown}">
         <div class="pc-header">
             <div class="c-box-1100 hr-header-wrap">
                 <div class="nav-cont">
@@ -41,6 +41,7 @@
                 </div>
             </div>
         </div>
+        <div class="mob-overlay"></div>
     </div>
 </template>
 <script>
