@@ -45,7 +45,7 @@ export function createStore (){
                 fetchData().then(response =>{
                     return response.json();
                 }, error =>{
-                    console.log(error);
+                    console.error(error);
                 }).then(data => {  
                     const productArray = [];
                     const mSliderArray = [];
@@ -68,7 +68,7 @@ export function createStore (){
                 fetchData().then(response =>{
                     return response.json();
                 }, error =>{
-                    console.log(error);
+                    console.error(error);
                 }).then(data => {  
 					const productArray = [];
 					for(let key in data.products){
@@ -187,7 +187,6 @@ export function createStore (){
                 state.totalSumm = totalSumm;
             },
             'SEND_ORDER': (state, checkoutFormData) => {
-                console.log(checkoutFormData);
                 const order = {
                     date: Date.now(),
                     cartInfo: state.cart,
@@ -195,7 +194,6 @@ export function createStore (){
                 }
                 loadOrder(order)
                     .then(response => {
-                        console.log(response);
                         window.location.href='/thankyou';
                         localStorage.removeItem('storageCart');
                     });

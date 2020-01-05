@@ -120,7 +120,7 @@
 <script>
 import eventBus from '../event-bus';
 import { mapGetters, mapMutations } from 'vuex';
-import { required, email, numeric, minLength, minValue } from 'vuelidate/lib/validators';
+import { required, email, numeric, minLength } from 'vuelidate/lib/validators';
 export default {
      data(){
         return{
@@ -186,7 +186,6 @@ export default {
             eventBus.$emit('cartVisibilityChange', false);
         },
         sendOrder(){
-            console.log('sjlsjkdskldfj')
             const checkoutFormData = {
                 name: this.name,
                 email: this.email,

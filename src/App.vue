@@ -1,6 +1,6 @@
 <template>
   <div class="main-wrap"
-  		:class="contentClass">
+		:class="contentClass">
 		<app-header></app-header>
 		<transition name="fade" mode="out-in">
 			<router-view :initWaypointProp = "initWaypoint"></router-view>
@@ -24,7 +24,7 @@
 			}
 		},
 		watch: {
-			'$route'(to, from){
+			'$route'(to){
 				switch(to.path) {
 					case '/': 
 						this.contentClass = 'main-page';
@@ -46,13 +46,13 @@
 					this.contentClass = 'catalog-inner-page';
 				}
 			}
-    	},
+		},
 		methods:{
 			...mapActions(['setFetchedData']),
 			initWaypoint() {
 				let waypointElements = document.querySelectorAll('.waypoint');
 				waypointElements.forEach(function(waypointElement){
-					let waypoint = new Waypoint({
+					new Waypoint({
 						element: waypointElement,
 						handler: function() {
 							waypointElement.classList.add('waypoint-done')
@@ -79,8 +79,5 @@
 	}
 </script>
 <style lang="scss">
-  @import './assets/css/reset.css';
-  @import './assets/css/abstracts.scss';
-  @import './assets/css/base.scss';
-  @import './assets/css/layuots.scss';
+  @import './assets/css/main.scss';
 </style>
