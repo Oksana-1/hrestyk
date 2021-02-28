@@ -1,10 +1,16 @@
 <template>
-  <div class="main-wrap" :class="contentClass">
-    <app-header></app-header>
-    <transition name="fade" mode="out-in">
-      <router-view :initWaypointProp="initWaypoint"></router-view>
+  <div 
+    class="main-wrap" 
+    :class="contentClass"
+  >
+    <app-header />
+    <transition 
+      name="fade" 
+      mode="out-in" 
+    >
+      <router-view :init-waypoint-prop="initWaypoint" />
     </transition>
-    <app-footer></app-footer>
+    <app-footer />
   </div>
 </template>
 

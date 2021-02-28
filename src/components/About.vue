@@ -3,11 +3,13 @@
     <div class="about-top-img-fix">
       <div
         class="about-top-img"
-        style="background-image: url('src/assets/images/about-img.jpg')"
-      ></div>
+        :style="{ backgroundImage: `url('${require('../assets/images/about-img.jpg')}')`}"
+      />
       <div class="about-top-text">
         <div class="about-top-text-inner">
-          <h1 class="about-title">Магазин "Хрестик"</h1>
+          <h1 class="about-title">
+            Магазин "Хрестик"
+          </h1>
           <div class="editor-content">
             <p>
               Наша історія бере початок у 2015 році. Саме тоді було виготовлена
@@ -33,14 +35,16 @@
           <div class="col-50">
             <div class="traditional-img-fix">
               <img
-                class="fits"
-                src="src/assets/images/traditional.jpg"
+                :src="require('../assets/images/traditional.jpg')"
                 alt="Традиції і сучасність у вишивці"
-              />
+                class="fits"
+              >
             </div>
           </div>
           <div class="col-50 traditional-text">
-            <h2 class="common-title">Традиції і сучасність</h2>
+            <h2 class="common-title">
+              Традиції і сучасність
+            </h2>
             <div class="editor-content">
               <p>
                 Головне джерело натхнення для нас - це традиційна українська
@@ -69,12 +73,14 @@
       <div class="c-box-1100">
         <div class="c-cont">
           <div class="col-50 goods-text-col">
-            <h2 class="common-title">Майстерність у деталях</h2>
+            <h2 class="common-title">
+              Майстерність у деталях
+            </h2>
             <div class="editor-content">
               <p>Ми приділяємо особливу увагу деталям.</p>
               <p>
                 Так, наприклад, всі наші сережки мають спеціальні стопери, аби
-                не губилися.<br />
+                не губилися.<br>
                 А ланцюжки - зручні защіпки-ґудзики, що зберігають Ваш манікюр.
               </p>
               <p>
@@ -88,12 +94,9 @@
       <div class="goods-img-fix">
         <div
           class="goods-img"
-          style="background-image: url('src/assets/images/product.jpg')"
-        ></div>
+          :style="{backgroundImage: `url('${require('../assets/images/product.jpg')}')`}"
+        />
       </div>
     </div>
   </div>
 </template>
-<script>
-export default {};
-</script>
