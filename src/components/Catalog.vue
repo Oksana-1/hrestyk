@@ -12,10 +12,11 @@
                 <a
                   href="#"
                   @click.prevent="(filterOn = false), (currentCat = 'all')"
-                  >Всі товари</a>
+                  >Всі товари</a
+                >
               </li>
               <li
-                v-for="(category, i) in getCategories"
+                v-for="(category, i) in categories"
                 :key="i"
                 :class="{ active: currentCat === category }"
               >
@@ -47,16 +48,16 @@
                 v-if="!filterOn"
               >
                 <app-product-card
-                  v-for="(productItem, i) in getProducts"
-                  :key="i"
-                  :product="getProducts[i]"
+                  v-for="(productItem) in products"
+                  :key="productItem.id"
+                  :product="productItem"
                 ></app-product-card>
               </div>
-              <div class="catalog-products-container" v-else>
+              <div v-else class="catalog-products-container">
                 <app-product-card
-                  v-for="(productItem, i) in getfilteredProducts"
-                  :key="i"
-                  :product="getfilteredProducts[i]"
+                  v-for="(productItem) in getfilteredProducts"
+                  :key="productItem.id"
+                  :product="productItem"
                 ></app-product-card>
               </div>
             </div>
@@ -68,27 +69,37 @@
 </template>
 <script>
 import productCard from "./catalog/productCart";
-import { mapGetters } from "vuex";
+import {mapActions, mapGetters} from "vuex";
 import { mapMutations } from "vuex";
 export default {
+  components: {
+    appProductCard: productCard,
+  },
   data() {
     return {
       filterOn: false,
       filtersHidden: false,
       currentCat: "all",
+      busy: false,
     };
   },
-  components: {
-    appProductCard: productCard,
-  },
   computed: {
-    ...mapGetters(["getProducts", "getCategories", "getfilteredProducts"]),
+    ...mapGetters(["products", "categories", "getfilteredProducts"]),
   },
   methods: {
+    ...mapActions(['fetchProducts']),
     ...mapMutations(["FILTER_CAT"]),
     filterCat(category) {
       this.FILTER_CAT(category);
     },
+    async init() {
+      this.busy = true;
+      await this.fetchProducts();
+      this.busy = false;
+    }
   },
+  created() {
+    this.init();
+  }
 };
 </script>

@@ -1,7 +1,10 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { fetchData, loadForm, loadOrder } from "@/api";
+import { getProducts } from "@/api/publicApi";
+
 Vue.use(Vuex);
-import { fetchData, loadOrder, loadForm } from "../api";
+
 export function createStore() {
   return new Vuex.Store({
     state: {
@@ -15,10 +18,10 @@ export function createStore() {
       totalSumm: 0,
     },
     getters: {
-      getProducts: (state) => {
+      products: (state) => {
         return state.products;
       },
-      getCategories: (state) => {
+      categories: (state) => {
         return state.categories;
       },
       getfilteredProducts: (state) => {
@@ -66,9 +69,9 @@ export function createStore() {
             }
             commit("SET_MSLIDER", mSliderArray);
             commit("SET_PSLIDER", pSliderArr);
-            commit("SET_PRODUCTS", productArray);
+            //commit("SET_PRODUCTS", productArray);
             commit("SET_CART");
-            commit("SET_CATEGORIES");
+            //commit("SET_CATEGORIES");
           });
       },
       setProductById({ commit }, id) {
@@ -92,19 +95,22 @@ export function createStore() {
             commit("SET_PRODUCT", productObj);
           });
       },
+      async fetchProducts({ commit }) {
+        try {
+          const response = await getProducts();
+          commit("SET_PRODUCTS", response.products);
+          commit("SET_CATEGORIES", response.categories);
+        } catch (e) {
+          throw e;
+        }
+      },
     },
     mutations: {
       SET_PRODUCTS: (state, data) => {
         state.products = data;
       },
-      SET_CATEGORIES: (state) => {
-        const catArr = [];
-        state.products.forEach((product) => {
-          if (!catArr.includes(product.productCat)) {
-            catArr.push(product.productCat);
-          }
-        });
-        state.categories = catArr;
+      SET_CATEGORIES: (state, data) => {
+        state.categories = data;
       },
       SET_PRODUCT: (state, data) => {
         state.product = data;
@@ -141,10 +147,9 @@ export function createStore() {
           };
           state.cart.splice(productIndex, 1, newItem);
         }
-        const totalSumm = state.cart.reduce((total, item) => {
+        state.totalSumm = state.cart.reduce((total, item) => {
           return total + item.quantity * item.productPrice;
         }, 0);
-        state.totalSumm = totalSumm;
         const storageStr = state.cart.reduce((string, item) => {
           return string.concat(item.productId, ":", item.quantity, ",");
         }, "");
@@ -154,13 +159,12 @@ export function createStore() {
         const itemIndex = state.cart.findIndex(
           (item) => item.productId === itemId
         );
-        if (itemIndex != -1) {
+        if (itemIndex !== -1) {
           state.cart.splice(itemIndex, 1);
         }
-        const totalSumm = state.cart.reduce((total, item) => {
+        state.totalSumm = state.cart.reduce((total, item) => {
           return total + item.quantity * item.productPrice;
         }, 0);
-        state.totalSumm = totalSumm;
         const storageStr = state.cart.reduce((string, item) => {
           return string.concat(item.productId, ":", item.quantity, ",");
         }, "");
@@ -226,10 +230,9 @@ export function createStore() {
         });
       },
       FILTER_CAT: (state, category) => {
-        const filteredCatalog = state.products.filter(
+        state.filteredProducts = state.products.filter(
           (product) => product.productCat === category
         );
-        state.filteredProducts = filteredCatalog;
       },
       SEND_FORM: (state, footerFormData) => {
         const formData = {

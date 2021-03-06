@@ -1,23 +1,22 @@
 <template>
   <div class="product-card-wrap">
-    <router-link
-      :to="'/catalog/' + product.productId"
-      class="link-abs"
-    ></router-link>
+    <router-link :to="'/catalog/' + product.id" class="link-abs" />
     <div class="product-card-inner">
       <div class="product-img-fix">
         <div
           class="product-img"
-          v-bind:style="{ backgroundImage: 'url(' + product.mainImage + ')' }"
-        ></div>
+          :style="{ backgroundImage: 'url(' + product.images[0].url + ')' }"
+        />
       </div>
       <div class="product-info">
         <div class="product-name">
-          {{ product.productName }}. {{ product.productId }}.
+          {{ product.title }}.
         </div>
         <div class="buy-btn-row">
-          <div class="product-price">{{ product.productPrice }} грн</div>
-          <button class="hrestyk-btn-dark buyBtn" @click="addToCartProduct()">
+          <div class="product-price">
+            {{ product.price }} грн
+          </div>
+          <button @click="addToCartProduct()" class="hrestyk-btn-dark buyBtn">
             <span>Купити</span>
           </button>
         </div>
@@ -28,10 +27,12 @@
 <script>
 import { mapMutations } from "vuex";
 import eventBus from "../../event-bus";
+import Product from "@/entities/Product";
 export default {
   props: {
     product: {
-      type: Object,
+      type: Product,
+      default: {},
     },
   },
   methods: {
