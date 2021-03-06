@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { fetchData, loadForm, loadOrder } from "@/api";
-import { getProducts } from "@/api/publicApi";
+import { getProducts, getSingleProduct } from "@/api/publicApi";
 
 Vue.use(Vuex);
 
@@ -27,7 +27,7 @@ export function createStore() {
       getfilteredProducts: (state) => {
         return state.filteredProducts;
       },
-      getProduct: (state) => {
+      product: (state) => {
         return state.product;
       },
       getMslider: (state) => {
@@ -99,6 +99,15 @@ export function createStore() {
         try {
           const response = await getProducts();
           commit("SET_PRODUCTS", response.products);
+          commit("SET_CATEGORIES", response.categories);
+        } catch (e) {
+          throw e;
+        }
+      },
+      async fetchSingleProduct({ commit }, productId) {
+        try {
+          const response = await getSingleProduct(productId);
+          commit("SET_PRODUCT", response.product);
           commit("SET_CATEGORIES", response.categories);
         } catch (e) {
           throw e;
