@@ -1,11 +1,14 @@
 <template>
   <div class="product-card-wrap">
-    <router-link :to="'/catalog/' + product.id" class="link-abs" />
+    <router-link
+      :to="'/catalog/' + product.id"
+      class="link-abs"
+    />
     <div class="product-card-inner">
       <div class="product-img-fix">
         <div
           class="product-img"
-          :style="{ backgroundImage: 'url(' + product.images[0].url + ')' }"
+          :style="{ backgroundImage: 'url(' + mainImageUrl + ')' }"
         />
       </div>
       <div class="product-info">
@@ -16,7 +19,10 @@
           <div class="product-price">
             {{ product.price }} грн
           </div>
-          <button @click="addToCartProduct()" class="hrestyk-btn-dark buyBtn">
+          <button
+            class="hrestyk-btn-dark buyBtn"
+            @click="addToCartProduct()"
+          >
             <span>Купити</span>
           </button>
         </div>
@@ -34,6 +40,13 @@ export default {
       type: Product,
       default: {},
     },
+  },
+  computed: {
+    mainImageUrl() {
+      if (this.product.images.length === 0) return '';
+      const mainImage = this.product.images.find(image => image.is_main);
+      return mainImage ? mainImage.url : this.product.images[0].url;
+    }
   },
   methods: {
     ...mapMutations(["ADD_TO_CARD"]),
