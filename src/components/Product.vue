@@ -19,19 +19,30 @@
             <div class="col-50">
               <div class="col-inner col-product-desc">
                 <div class="product-body">
-                  <div class="editor-content`" v-html="product.description" />
+                  <div
+                    class="editor-content`"
+                    v-html="product.description"
+                  />
                   <div class="product-info col-product-info">
                     <div class="buy-qnt-row">
                       <div class="input-qnt">
                         <label>
-                          <input v-model.number="quantity" />
+                          <input v-model.number="quantity">
                         </label>
                         <div class="input-qnt-ctrl">
-                          <div class="input-qnt-up" @click="addOne"></div>
-                          <div class="input-qnt-down" @click="minusOne"></div>
+                          <div
+                            class="input-qnt-up"
+                            @click="addOne"
+                          />
+                          <div
+                            class="input-qnt-down"
+                            @click="minusOne"
+                          />
                         </div>
                       </div>
-                      <div class="product-price">{{ product.price }} грн</div>
+                      <div class="product-price">
+                        {{ product.price }} грн
+                      </div>
                       <button
                         class="hrestyk-btn-dark buyBtn"
                         :disabled="quantity <= 0 || !Number.isInteger(quantity)"
@@ -55,7 +66,7 @@
                       class="fits"
                       src="@/assets/images/logo.png"
                       alt="Logo"
-                    />
+                    >
                   </div>
                 </div>
               </div>
