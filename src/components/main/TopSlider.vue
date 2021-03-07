@@ -1,26 +1,32 @@
 <template>
   <div class="main-slider-section">
     <carousel
-      :perPage="1"
-      :paginationEnabled="false"
+      :per-page="1"
+      :pagination-enabled="false"
       :autoplay="true"
       :loop="true"
-      :autoplayTimeout="6000"
+      :autoplay-timeout="6000"
     >
-      <slide v-for="(mainSlide, i) in getMslider" :key="i">
+      <slide
+        v-for="(mainSlide, index) in mainSliderImages"
+        :key="`main-slider-${index}`"
+      >
         <div class="slide-fix">
           <div
             class="slide-img"
-            v-bind:style="{ backgroundImage: 'url(' + mainSlide.imgUrl + ')' }"
-          ></div>
+            :style="{backgroundImage: `url('${require('../../assets/images/mainSlider/' + mainSlide.filename)}')`}"
+          />
           <div class="slider-content">
-            <div class="slider-title">{{ mainSlide.titleText }}</div>
+            <div class="slider-title">
+              {{ mainSlide.title }}
+            </div>
             <div class="slider-btn-wrap">
               <router-link
                 :to="'/catalog/'"
                 class="hrestyk-btn-white hrestyk-btn-200"
-                ><span>В магазин</span></router-link
               >
+                <span>В магазин</span>
+              </router-link>
             </div>
           </div>
         </div>
@@ -31,10 +37,17 @@
 <script>
 import { mapGetters } from "vuex";
 import { Carousel, Slide } from "vue-carousel";
+import {mainSliderImages} from "@/entities/data/mainSliderImages";
+
 export default {
   components: {
     Carousel,
     Slide,
+  },
+  data() {
+    return {
+      mainSliderImages
+    }
   },
   computed: {
     ...mapGetters(["getMslider"]),
