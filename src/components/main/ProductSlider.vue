@@ -1,44 +1,48 @@
 <template>
   <div class="product-slider-section waypoint">
     <div class="c-box-1100">
-      <div class="common-title">Товари</div>
+      <div class="common-title">
+        Товари
+      </div>
     </div>
     <div class="product-slider-wrap">
       <carousel
-        :perPage="1"
-        :perPageCustom="[
+        :per-page="1"
+        :per-page-custom="[
           [768, 2],
           [1024, 3],
         ]"
-        :scrollPerPage="false"
-        :paginationEnabled="false"
-        :navigationEnabled="true"
+        :scroll-per-page="false"
+        :pagination-enabled="false"
+        :navigation-enabled="true"
       >
         <slide
-          v-for="(productSlide, i) in getpSlider"
-          :key="i"
+          v-for="(product, index) in productWithImages"
+          :key="`product-slide-${index}`"
           class="product-slide"
         >
           <div class="slide-fix animate opacity from-down">
             <div
               class="slide-img"
-              v-bind:style="{
-                backgroundImage: 'url(' + productSlide.toMainImage + ')',
-              }"
-            ></div>
+              :style="{ backgroundImage: `url(${product.images[0].url})` }"
+            />
             <div class="hidden-block">
               <div class="product-name">
-                {{ productSlide.productName }} {{ productSlide.productId }}
+                {{ product.title }}
               </div>
               <router-link
-                :to="'/catalog/' + productSlide.productId"
+                :to="'/catalog/' + product.id"
                 class="product-more"
-                >Детальніше</router-link
               >
+                Детальніше
+              </router-link>
             </div>
           </div>
         </slide>
-        <slide v-if="windowWidth > 767" class="product-slide"></slide>
+        <slide
+          v-if="windowWidth > 767"
+          class="product-slide"
+        />
       </carousel>
     </div>
 
@@ -46,8 +50,11 @@
       <router-link
         :to="'/catalog/'"
         class="hrestyk-btn-dark hrestyk-btn-200 animate opacity"
-        ><span>Всі товари</span></router-link
       >
+        <span>
+          Всі товари
+        </span>
+      </router-link>
     </div>
   </div>
 </template>
@@ -60,10 +67,13 @@ export default {
     Slide,
   },
   computed: {
-    ...mapGetters(["getpSlider"]),
+    ...mapGetters(["products"]),
     windowWidth() {
       return window.innerWidth;
     },
+    productWithImages() {
+      return this.products.filter(item => item.images.length > 0);
+    }
   },
 };
 </script>
