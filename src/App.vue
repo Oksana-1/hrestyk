@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
 export default {
@@ -53,7 +52,6 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["setFetchedData"]),
     initWaypoint() {
       let waypointElements = document.querySelectorAll(".waypoint");
       waypointElements.forEach(function (waypointElement) {
@@ -66,9 +64,6 @@ export default {
         });
       });
     },
-  },
-  created() {
-    this.setFetchedData();
   },
   mounted() {
     let mainWrap = document.querySelector(".main-wrap");

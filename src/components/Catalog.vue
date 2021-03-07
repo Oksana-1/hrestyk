@@ -9,25 +9,16 @@
           >
             <ul class="catalog-category-list">
               <li :class="{ active: currentCat === 'all' }">
-                <a
-                  href="#"
-                  @click.prevent="(filterOn = false), (currentCat = 'all')"
-                  >Всі товари</a
-                >
+                <a @click="filter('all')">
+                  Всі товари
+                </a>
               </li>
               <li
-                v-for="(category, i) in categories"
-                :key="i"
+                v-for="(category, index) in categories"
+                :key="`category-${index}`"
                 :class="{ active: currentCat === category }"
               >
-                <a
-                  @click.prevent="
-                    filterCat(category),
-                      (filterOn = true),
-                      (currentCat = category)
-                  "
-                  href="#"
-                >
+                <a @click="filter(category)">
                   {{ category }}
                 </a>
               </li>
@@ -35,31 +26,25 @@
             <div
               class="mob-filters-ctrl"
               @click="filtersHidden = !filtersHidden"
-            ></div>
+            />
           </div>
         </div>
       </div>
       <div class="catalog-products-section">
         <div class="c-box-1100">
-          <transition name="fade" mode="out-in">
-            <div :key="currentCat">
-              <div
-                class="catalog-products-container productContainer"
-                v-if="!filterOn"
-              >
-                <app-product-card
-                  v-for="(productItem) in products"
-                  :key="productItem.id"
-                  :product="productItem"
-                ></app-product-card>
-              </div>
-              <div v-else class="catalog-products-container">
-                <app-product-card
-                  v-for="(productItem) in getfilteredProducts"
-                  :key="productItem.id"
-                  :product="productItem"
-                ></app-product-card>
-              </div>
+          <transition
+            name="fade"
+            mode="out-in"
+          >
+            <div
+              v-if="!busy"
+              class="catalog-products-container"
+            >
+              <app-product-card
+                v-for="(product) in filteredProducts"
+                :key="product.id"
+                :product="product"
+              />
             </div>
           </transition>
         </div>
@@ -70,31 +55,36 @@
 <script>
 import productCard from "./catalog/productCart";
 import {mapActions, mapGetters} from "vuex";
-import { mapMutations } from "vuex";
+
 export default {
   components: {
     appProductCard: productCard,
   },
   data() {
     return {
-      filterOn: false,
       filtersHidden: false,
       currentCat: "all",
       busy: false,
     };
   },
   computed: {
-    ...mapGetters(["products", "categories", "getfilteredProducts"]),
+    ...mapGetters(["products", "categories"]),
+    filteredProducts() {
+      return this.currentCat === 'all'
+      ? this.products
+      : this.products.filter(product => product.category === this.currentCat)
+    }
   },
   methods: {
     ...mapActions(['fetchProducts']),
-    ...mapMutations(["FILTER_CAT"]),
-    filterCat(category) {
-      this.FILTER_CAT(category);
-    },
     async init() {
       this.busy = true;
       await this.fetchProducts();
+      this.busy = false;
+    },
+    filter(category) {
+      this.busy = true;
+      this.currentCat = category;
       this.busy = false;
     }
   },

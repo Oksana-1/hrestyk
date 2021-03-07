@@ -10,7 +10,6 @@ export function createStore() {
     state: {
       products: [],
       categories: [],
-      filteredProducts: [],
       product: {},
       cart: [],
       totalSumm: 0,
@@ -21,9 +20,6 @@ export function createStore() {
       },
       categories: (state) => {
         return state.categories;
-      },
-      getfilteredProducts: (state) => {
-        return state.filteredProducts;
       },
       product: (state) => {
         return state.product;
@@ -36,57 +32,6 @@ export function createStore() {
       },
     },
     actions: {
-      setFetchedData({ commit }) {
-        fetchData()
-          .then(
-            (response) => {
-              return response.json();
-            },
-            (error) => {
-              console.error(error);
-            }
-          )
-          .then((data) => {
-            const productArray = [];
-            const mSliderArray = [];
-            if (data.products.length === 0) return;
-            for (let key in data.products) {
-              productArray.push(data.products[key]);
-            }
-            const pSliderArr = productArray.filter(
-              (product) => product.toMainPage === true
-            );
-            for (let key in data.mslider) {
-              mSliderArray.push(data.mslider[key]);
-            }
-            //commit("SET_MSLIDER", mSliderArray);
-            //commit("SET_PSLIDER", pSliderArr);
-            //commit("SET_PRODUCTS", productArray);
-            commit("SET_CART");
-            //commit("SET_CATEGORIES");
-          });
-      },
-      setProductById({ commit }, id) {
-        fetchData()
-          .then(
-            (response) => {
-              return response.json();
-            },
-            (error) => {
-              console.error(error);
-            }
-          )
-          .then((data) => {
-            const productArray = [];
-            for (let key in data.products) {
-              productArray.push(data.products[key]);
-            }
-            const productObj = productArray.filter(
-              (item) => item.productId === id
-            )[0];
-            commit("SET_PRODUCT", productObj);
-          });
-      },
       async fetchProducts({ commit }) {
         try {
           const response = await getProducts();
@@ -223,11 +168,6 @@ export function createStore() {
           window.location.href = "/thankyou";
           localStorage.removeItem("storageCart");
         });
-      },
-      FILTER_CAT: (state, category) => {
-        state.filteredProducts = state.products.filter(
-          (product) => product.productCat === category
-        );
       },
       SEND_FORM: (state, footerFormData) => {
         const formData = {
