@@ -51,7 +51,7 @@ export default {
   computed: {
     ...mapGetters(["product"]),
     mainImageUrl() {
-      if (!this.mainImage || !this.product.images) return '';
+      if (!this.product.images) return '';
       return this.mainImage ? this.mainImage.url : this.product.images[0].url;
     },
   },

@@ -14,7 +14,7 @@
         <div class="c-box-1100 animate opacity">
           <div class="c-cont">
             <div class="col-50">
-              <product-images v-if="product.images.length > 0" />
+              <product-images />
             </div>
             <div class="col-50">
               <div class="col-inner col-product-desc">
