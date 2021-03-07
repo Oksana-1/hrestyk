@@ -8,11 +8,14 @@
     </div>
     <div class="product-inner-thumb">
       <carousel
-        :perPage="3"
-        :paginationEnabled="false"
-        :navigationEnabled="true"
+        :per-page="3"
+        :pagination-enabled="false"
+        :navigation-enabled="true"
       >
-        <slide v-for="productImage in product.images" :key="productImage.id">
+        <slide
+          v-for="productImage in product.images"
+          :key="productImage.id"
+        >
           <div class="product-inner-thumb-slide productThumb">
             <div class="product-img-fix">
               <div
@@ -20,7 +23,7 @@
                 :style="{
                   backgroundImage: `url(${productImage.url})`,
                 }"
-                @click="changeMainPic(productImage)"
+                @click="changeMainImage(productImage.id)"
               />
             </div>
           </div>
@@ -40,18 +43,30 @@ export default {
     Carousel,
     Slide,
   },
+  data() {
+    return {
+      mainImage: null
+    }
+  },
   computed: {
     ...mapGetters(["product"]),
     mainImageUrl() {
-      return this.product.images ? this.product.images[0].url : "";
+      if (!this.mainImage || !this.product.images) return '';
+      return this.mainImage ? this.mainImage.url : this.product.images[0].url;
     },
   },
   methods: {
-    changeMainPic(imgSrc) {
-      let mainPic = document.querySelector(".mainPic");
-      mainPic.style.backgroundImage = "url(" + imgSrc + ")";
+    setDefaultMainImage() {
+      if (!this.product.images) return;
+      this.mainImage = this.product.images.find(image => image.is_main) || null;
+    },
+    changeMainImage(imageId) {
+      this.mainImage = this.product.images.find(image => image.id === imageId) || null;
     },
   },
+  created() {
+    this.setDefaultMainImage();
+  }
 };
 </script>
 

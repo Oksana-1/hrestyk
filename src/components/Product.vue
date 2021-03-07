@@ -76,7 +76,8 @@ import ProductImages from "@/components/product/ProductImages";
 export default {
   props: {
     initWaypointProp: {
-      type: Function,
+      "type": Function,
+      "default": {},
     },
   },
   components: {
