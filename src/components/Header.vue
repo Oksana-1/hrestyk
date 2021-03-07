@@ -37,8 +37,11 @@
             </div>
           </nav>
         </div>
-        <div class="hr-sandwich-wrap">
-          <button class="hr-sandwich" @click="mobMenuCtrl" />
+        <div
+          class="hr-sandwich-wrap"
+          @click="mobMenuCtrl"
+        >
+          <button class="hr-sandwich" />
         </div>
         <div
           v-click-outside="closeEvent"
