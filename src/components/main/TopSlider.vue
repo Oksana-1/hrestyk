@@ -35,7 +35,6 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
 import { Carousel, Slide } from "vue-carousel";
 import {mainSliderImages} from "@/entities/data/mainSliderImages";
 
@@ -48,9 +47,6 @@ export default {
     return {
       mainSliderImages
     }
-  },
-  computed: {
-    ...mapGetters(["getMslider"]),
   },
 };
 </script>

@@ -12,7 +12,6 @@ export function createStore() {
       categories: [],
       filteredProducts: [],
       product: {},
-      mslider: [],
       pslider: [],
       cart: [],
       totalSumm: 0,
@@ -29,9 +28,6 @@ export function createStore() {
       },
       product: (state) => {
         return state.product;
-      },
-      getMslider: (state) => {
-        return state.mslider;
       },
       getpSlider: (state) => {
         return state.pslider;
@@ -67,7 +63,7 @@ export function createStore() {
             for (let key in data.mslider) {
               mSliderArray.push(data.mslider[key]);
             }
-            commit("SET_MSLIDER", mSliderArray);
+            //commit("SET_MSLIDER", mSliderArray);
             commit("SET_PSLIDER", pSliderArr);
             //commit("SET_PRODUCTS", productArray);
             commit("SET_CART");
@@ -123,9 +119,6 @@ export function createStore() {
       },
       SET_PRODUCT: (state, data) => {
         state.product = data;
-      },
-      SET_MSLIDER: (state, data) => {
-        state.mslider = data;
       },
       SET_PSLIDER: (state, data) => {
         state.pslider = data;
