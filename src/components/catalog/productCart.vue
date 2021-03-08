@@ -1,6 +1,9 @@
 <template>
   <div class="product-card-wrap">
-    <router-link :to="'/catalog/' + product.id" class="link-abs" />
+    <router-link
+      :to="'/catalog/' + product.id"
+      class="link-abs"
+    />
     <div class="product-card-inner">
       <div class="product-img-fix">
         <div
@@ -19,10 +22,17 @@
         </icon-base>
       </div>
       <div class="product-info">
-        <div class="product-name">{{ product.title }}.</div>
+        <div class="product-name">
+          {{ product.title }}.
+        </div>
         <div class="buy-btn-row">
-          <div class="product-price">{{ product.price }} грн</div>
-          <button class="hrestyk-btn-dark buyBtn" @click="addProductToCart()">
+          <div class="product-price">
+            {{ product.price }} грн
+          </div>
+          <button
+            class="hrestyk-btn-dark buyBtn"
+            @click="addProductToCart()"
+          >
             <span>Купити</span>
           </button>
         </div>
