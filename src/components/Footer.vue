@@ -46,7 +46,7 @@
             <icon-base icon-name="ig"><icon-ig /></icon-base>
           </a>
           <a href="#" class="social-link">
-            <icon-base icon-name="ig"><icon-twitter /></icon-base>
+            <icon-base icon-name="twitter"><icon-twitter /></icon-base>
           </a>
         </div>
       </div>

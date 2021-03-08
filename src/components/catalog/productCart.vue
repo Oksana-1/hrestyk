@@ -7,9 +7,19 @@
     <div class="product-card-inner">
       <div class="product-img-fix">
         <div
+          v-if="mainImageUrl"
           class="product-img"
           :style="{ backgroundImage: 'url(' + mainImageUrl + ')' }"
         />
+        <icon-base
+          v-else
+          class="product-img no-image"
+          height="200"
+          width="200"
+          view-box="41.64 164.945 512 512"
+        >
+          <icon-no-image />
+        </icon-base>
       </div>
       <div class="product-info">
         <div class="product-name">
@@ -34,12 +44,19 @@
 import { mapMutations } from "vuex";
 import eventBus from "../../event-bus";
 import Product from "@/entities/Product";
+import IconBase from "@/components/IconBase";
+import IconNoImage from "@/components/icons/IconNoImage";
+
 export default {
   props: {
     product: {
       type: Product,
       default: {},
     },
+  },
+  components: {
+    IconBase,
+    IconNoImage
   },
   computed: {
     mainImageUrl() {
