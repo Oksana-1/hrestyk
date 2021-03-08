@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { fetchData, loadForm, loadOrder } from "@/api";
-import { getProducts, getSingleProduct } from "@/api/publicApi";
+import { loadForm, loadOrder } from "@/api";
+import { getProducts, getSingleProduct, addToCart } from "@/api/publicApi";
 
 Vue.use(Vuex);
 
@@ -12,18 +12,14 @@ export function createStore() {
       categories: [],
       product: {},
       cart: [],
+      cartId: null,
       totalSumm: 0,
     },
     getters: {
-      products: (state) => {
-        return state.products;
-      },
-      categories: (state) => {
-        return state.categories;
-      },
-      product: (state) => {
-        return state.product;
-      },
+      products: (state) => state.products,
+      categories: (state) => state.categories,
+      product: (state) => state.product,
+      cartId: (state) => state.cartId,
       getTotalSumm: (state) => {
         return state.totalSumm;
       },
@@ -50,6 +46,14 @@ export function createStore() {
           throw e;
         }
       },
+      async addToCart({ commit }, order) {
+        try {
+          const response = await addToCart(order);
+          commit("SET_CART_ID", response.data._id);
+        } catch (e) {
+          throw e;
+        }
+      },
     },
     mutations: {
       SET_PRODUCTS: (state, data) => {
@@ -60,6 +64,9 @@ export function createStore() {
       },
       SET_PRODUCT: (state, data) => {
         state.product = data;
+      },
+      SET_CART_ID: (state, data) => {
+        state.cartId = data;
       },
       ADD_TO_CARD: (state, { productId, quantity }) => {
         const productIndex = state.cart.findIndex(
