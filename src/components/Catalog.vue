@@ -36,8 +36,11 @@
             name="fade"
             mode="out-in"
           >
+            <spinner-cube
+              v-if="busy"
+            />
             <div
-              v-if="!busy"
+              v-else
               class="catalog-products-container"
             >
               <app-product-card
@@ -54,10 +57,12 @@
 </template>
 <script>
 import productCard from "./catalog/productCart";
+import SpinnerCube from "@/components/ui/SpinnerCube";
 import {mapActions, mapGetters} from "vuex";
 
 export default {
   components: {
+    SpinnerCube,
     appProductCard: productCard,
   },
   data() {
