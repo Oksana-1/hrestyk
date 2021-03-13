@@ -48,7 +48,7 @@
           class="hr-cart-wrap cartContainer"
           :class="{
             hiddenCart: !cartIsShown,
-            cartIsEmpty: getCart.length === 0,
+            cartIsEmpty: cart.length === 0,
           }"
         >
           <button class="hr-cart-btn" @click="cartVisibilityCtrl">
@@ -114,7 +114,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getCart"]),
+    ...mapGetters(["cart"]),
   },
   created() {
     eventBus.$on("cartVisibilityChange", (cartIsShown) => {

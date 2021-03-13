@@ -1,7 +1,7 @@
 <template>
   <div class="hr-cart-content">
     <div class="hr-cart-content-inner">
-      <div v-if="getCart.length === 0" class="cart-info">
+      <div v-if="cart.length === 0" class="cart-info">
         <div class="cart-title">Ваш кошик пустий</div>
         <router-link class="hrestyk-btn-dark" to="/catalog">
           <div class="link-abs" @click="closeCart" />
@@ -9,7 +9,7 @@
         </router-link>
       </div>
       <div class="cart-product" v-else>
-        <div class="cart-item" v-for="(cartItem, i) in getCart" :key="i">
+        <div class="cart-item" v-for="(cartItem, i) in cart" :key="i">
           <div class="cart-item-img-fix">
             <div
               class="cart-item-img"
@@ -70,7 +70,7 @@ import eventBus from "../event-bus";
 import { mapGetters, mapMutations } from "vuex";
 export default {
   computed: {
-    ...mapGetters(["getCart", "getTotalSumm"]),
+    ...mapGetters(["cart", "getTotalSumm"]),
   },
   methods: {
     ...mapMutations(["DELETE_ITEM", "CHANGE_QNT"]),

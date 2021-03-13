@@ -1,7 +1,12 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { loadForm, loadOrder } from "@/api";
-import { getProducts, getSingleProduct, addToCart } from "@/api/publicApi";
+import {
+  getProducts,
+  getSingleProduct,
+  addToCart,
+  getCart,
+} from "@/api/publicApi";
 
 Vue.use(Vuex);
 
@@ -23,9 +28,7 @@ export function createStore() {
       getTotalSumm: (state) => {
         return state.totalSumm;
       },
-      getCart: (state) => {
-        return state.cart;
-      },
+      cart: (state) => state.cart,
     },
     actions: {
       async fetchProducts({ commit }) {
@@ -49,7 +52,17 @@ export function createStore() {
       async addToCart({ commit }, order) {
         try {
           const response = await addToCart(order);
-          commit("SET_CART_ID", response.data._id);
+          console.log(response);
+          commit("SET_CART_ID", response._id);
+          commit("SET_CART", response.products);
+        } catch (e) {
+          throw e;
+        }
+      },
+      async getCart({ commit }) {
+        try {
+          const response = await getCart();
+          commit("SET_CART", response);
         } catch (e) {
           throw e;
         }
@@ -140,30 +153,8 @@ export function createStore() {
         }, "");
         localStorage.setItem("storageCart", storageStr);
       },
-      SET_CART: (state) => {
-        const storageCartStr = localStorage.getItem("storageCart");
-        if (storageCartStr) {
-          const storageCartArr = storageCartStr
-            .split(",")
-            .filter((item) => item.length > 0);
-          const cartArr = storageCartArr.map((storageItem) => {
-            const curProduct = state.products.find(
-              (item) => item.productId === storageItem.split(":")[0]
-            );
-            return {
-              productId: storageItem.split(":")[0],
-              quantity: Number(storageItem.split(":")[1]),
-              mainImage: curProduct.mainImage,
-              productName: curProduct.productName,
-              productPrice: curProduct.productPrice,
-            };
-          });
-          state.cart = cartArr;
-        }
-        const totalSumm = state.cart.reduce((total, item) => {
-          return total + item.quantity * item.productPrice;
-        }, 0);
-        state.totalSumm = totalSumm;
+      SET_CART: (state, data) => {
+        state.cart = data;
       },
       SEND_ORDER: (state, checkoutFormData) => {
         const order = {

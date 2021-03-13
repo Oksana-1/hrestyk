@@ -16,7 +16,7 @@
                 Будь ласка, заповніть форму, і наш менеджер зконтактує з Вами
                 найближчого часу.
               </div>
-              <form :class="{ 'form-disabled': getCart.length < 1 }">
+              <form :class="{ 'form-disabled': cart.length < 1 }">
                 <div class="input-row" :class="{ invalid: $v.name.$error }">
                   <input
                     type="text"
@@ -77,7 +77,7 @@
                 <div class="input-row">
                   <button
                     type="submit"
-                    :disabled="getCart.length < 1"
+                    :disabled="cart.length < 1"
                     @click.prevent="sendOrder(), $v.$touch()"
                   >
                     Відправити
@@ -91,11 +91,11 @@
           </div>
           <div class="col-50 col-cart">
             <h2 class="small-title">Кошик</h2>
-            <div class="checkout-cart" v-if="getCart.length > 0">
+            <div class="checkout-cart" v-if="cart.length > 0">
               <div class="cart-note-wrap">
                 <div class="cart-note">
                   У Вашому кошику
-                  <span class="cart-qnt">{{ getCart.length }}</span>
+                  <span class="cart-qnt">{{ cart.length }}</span>
                   {{ itemString }}
                 </div>
                 <router-link to="/catalog" class="hrestyk-btn-bordered-white">
@@ -106,7 +106,7 @@
               <div class="checkout-cart-cont">
                 <div
                   class="cart-item"
-                  v-for="(cartItem, i) in getCart"
+                  v-for="(cartItem, i) in cart"
                   :key="i"
                 >
                   <div class="cart-item-img-fix">
@@ -228,13 +228,13 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["getCart", "getTotalSumm"]),
+    ...mapGetters(["cart", "getTotalSumm"]),
     itemString() {
-      let getCartLengthStr = this.getCart.length.toString();
+      let cartLengthStr = this.cart.length.toString();
       let singleNumExeptions = ["2", "3", "4"];
       let doubleNumExeptions = ["11", "12", "13", "14"];
-      let lastChar = getCartLengthStr.substr(-1);
-      let lastTwo = getCartLengthStr.substr(-2);
+      let lastChar = cartLengthStr.substr(-1);
+      let lastTwo = cartLengthStr.substr(-2);
       if (doubleNumExeptions.indexOf(lastTwo) != -1) {
         return "товарів";
       } else {

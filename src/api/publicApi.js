@@ -8,6 +8,7 @@ const API_VERSION = "api/v1/";
 const PRODUCTS_URL = "product/all";
 const SINGLE_PRODUCT_URL = "product/single/";
 const ADD_TO_CART = "/cart/add-product";
+const GET_CART = "/cart/all";
 
 axios.defaults.baseURL = BASE_HOST + API_VERSION;
 
@@ -39,7 +40,18 @@ export const getSingleProduct = async (productId) => {
 export const addToCart = async (order) => {
   try {
     const response = await axios.post(ADD_TO_CART, order);
-    return response.data;
+    const order = new Order(response.data.data);
+    order.setOrderId(response.data.data.id);
+    return order;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
+export const getCart = async () => {
+  try {
+    const response = await axios.get(GET_CART);
+    return new Order(response.data);
   } catch (e) {
     console.error(e);
     throw e;
