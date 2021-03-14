@@ -28,6 +28,7 @@
           :key="prefix + index"
           :product="cartItem"
           @deleteItem="deleteItem"
+          @changeAmount="changeAmount($event)"
         />
         <div class="card-total-row">
           <div class="total-sum">
@@ -73,6 +74,11 @@ export default {
     deleteItem(itemKey) {
       const index = itemKey.replace(this.prefix, '');
       console.log(index);
+    },
+    changeAmount({itemKey, amount}) {
+      const index = itemKey.replace(this.prefix, '');
+      console.log(`index: ${index}`);
+      console.log(`amount: ${amount}`);
     }
   },
 };

@@ -15,18 +15,18 @@
           <label for="amount">
             <input
               id="amount"
-              v-model.number="product.amount"
-              @keyup="changeAmount($vnode.key)"
+              v-model.number="amount"
+              @keyup="$emit('changeAmount', {itemKey: $vnode.key, amount})"
             >
           </label>
           <div class="input-qnt-ctrl">
             <div
               class="input-qnt-up"
-              @click="changeAmount($vnode.key)"
+              @click="increase"
             />
             <div
               class="input-qnt-down"
-              @click="changeAmount($vnode.key)"
+              @click="decrease"
             />
           </div>
         </div>
@@ -52,6 +52,11 @@ export default {
   props: {
     product: OrderProduct
   },
+  data() {
+    return {
+      amount: null
+    }
+  },
   computed: {
     mainImageUrl() {
       if (this.product.images.length === 0) return "";
@@ -60,9 +65,23 @@ export default {
     },
   },
   methods: {
-    changeAmount(index) {
-      console.log(index);
+    increase() {
+      this.amount += 1;
+      this.$emit('changeAmount', {
+        itemKey: this.$vnode.key,
+        amount: this.amount
+      });
     },
+    decrease() {
+      this.amount -= 1;
+      this.$emit('changeAmount', {
+        itemKey: this.$vnode.key,
+        amount: this.amount
+      });
+    }
+  },
+  created() {
+    this.amount = this.product.amount;
   }
 }
 </script>
