@@ -23,55 +23,18 @@
         v-else
         class="cart-product"
       >
-        <div
+        <cart-item
           v-for="(cartItem, index) in cart"
-          :key="`cart${cart.id}-product${index}`"
-          class="cart-item"
-        >
-          <div class="cart-item-img-fix">
-            <div
-              class="cart-item-img"
-              :style="{
-                backgroundImage: 'url(' + cartItem.images[0].url + ')',
-              }"
-            />
-          </div>
-          <div class="cart-item-info">
-            <div class="cart-item-name">
-              {{ cartItem.title }}
-            </div>
-            <div class="cart-price-row">
-              <div class="input-qnt">
-                <input
-                  v-model.number="cartItem.amount"
-                  @keyup="changeAmount(index)"
-                >
-                <div class="input-qnt-ctrl">
-                  <div
-                    class="input-qnt-up"
-                    @click="changeAmount(index)"
-                  />
-                  <div
-                    class="input-qnt-down"
-                    @click="changeAmount(index)"
-                  />
-                </div>
-              </div>
-              <div class="product-price">
-                {{ cartItem.price }} грн
-              </div>
-              <div
-                class="cart-item-del"
-                @click="deleteItem(index)"
-              >
-                +
-              </div>
-            </div>
-          </div>
-        </div>
+          :key="prefix + index"
+          :product="cartItem"
+          @deleteItem="deleteItem"
+        />
         <div class="card-total-row">
           <div class="total-sum">
-            Загальна cума: <span class="total-num">{{ getTotalSumm }} грн</span>
+            Загальна cума:
+            <span class="total-num">
+              {{ total }} грн
+            </span>
           </div>
           <router-link
             to="/checkout"
@@ -91,20 +54,24 @@
 
 <script>
 import eventBus from "../event-bus";
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters } from "vuex";
+import CartItem from "@/components/cart/CartItem";
 export default {
+  components: {CartItem},
+  data() {
+    return {
+      prefix: 'cart-product-'
+    }
+  },
   computed: {
-    ...mapGetters(["cart", "getTotalSumm"]),
+    ...mapGetters(["cart", "total"]),
   },
   methods: {
-    ...mapMutations(["DELETE_ITEM", "CHANGE_QNT"]),
-    changeAmount(index) {
-      console.log(index);
-    },
     closeCart() {
       eventBus.$emit("cartVisibilityChange", false);
     },
-    deleteItem(index) {
+    deleteItem(itemKey) {
+      const index = itemKey.replace(this.prefix, '');
       console.log(index);
     }
   },
