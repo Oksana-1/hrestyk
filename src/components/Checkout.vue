@@ -176,7 +176,7 @@
               <div class="card-total-row">
                 <div class="total-sum">
                   Загальна cума:
-                  <span class="total-num">{{ getTotalSumm }} грн</span>
+                  <span class="total-num">{{ total }} грн</span>
                 </div>
               </div>
             </div>
@@ -228,7 +228,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["cart", "getTotalSumm"]),
+    ...mapGetters(["cart", "total"]),
     itemString() {
       let cartLengthStr = this.cart.length.toString();
       let singleNumExeptions = ["2", "3", "4"];

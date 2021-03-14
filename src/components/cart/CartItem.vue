@@ -73,6 +73,7 @@ export default {
       });
     },
     decrease() {
+      if (this.amount <= 1) return;
       this.amount -= 1;
       this.$emit('changeAmount', {
         itemKey: this.$vnode.key,
