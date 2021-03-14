@@ -1,12 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { loadForm, loadOrder } from "@/api";
-import {
-  getProducts,
-  getSingleProduct,
-  addToCart,
-  getCart,
-} from "@/api/publicApi";
+import PublicApi from "@/api/publicApi";
+const api = new PublicApi();
 
 Vue.use(Vuex);
 
@@ -33,7 +29,7 @@ export function createStore() {
     actions: {
       async fetchProducts({ commit }) {
         try {
-          const response = await getProducts();
+          const response = await api.getProducts();
           commit("SET_PRODUCTS", response.products);
           commit("SET_CATEGORIES", response.categories);
         } catch (e) {
@@ -42,7 +38,7 @@ export function createStore() {
       },
       async fetchSingleProduct({ commit }, productId) {
         try {
-          const response = await getSingleProduct(productId);
+          const response = await api.getSingleProduct(productId);
           commit("SET_PRODUCT", response.product);
           commit("SET_CATEGORIES", response.categories);
         } catch (e) {
@@ -51,9 +47,8 @@ export function createStore() {
       },
       async addToCart({ commit }, order) {
         try {
-          const response = await addToCart(order);
-          console.log(response);
-          commit("SET_CART_ID", response._id);
+          const response = await api.addToCart(order);
+          commit("SET_CART_ID", response.id);
           commit("SET_CART", response.products);
         } catch (e) {
           throw e;
@@ -61,7 +56,7 @@ export function createStore() {
       },
       async getCart({ commit }) {
         try {
-          const response = await getCart();
+          const response = await api.getCart();
           commit("SET_CART", response);
         } catch (e) {
           throw e;

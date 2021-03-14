@@ -1,50 +1,68 @@
 <template>
   <div class="hr-cart-content">
     <div class="hr-cart-content-inner">
-      <div v-if="cart.length === 0" class="cart-info">
-        <div class="cart-title">Ваш кошик пустий</div>
-        <router-link class="hrestyk-btn-dark" to="/catalog">
-          <div class="link-abs" @click="closeCart" />
+      <div
+        v-if="cart.length === 0"
+        class="cart-info"
+      >
+        <div class="cart-title">
+          Ваш кошик пустий
+        </div>
+        <router-link
+          to="/catalog"
+          class="hrestyk-btn-dark"
+        >
+          <div
+            class="link-abs"
+            @click="closeCart"
+          />
           <span>В магазин</span>
         </router-link>
       </div>
-      <div class="cart-product" v-else>
-        <div class="cart-item" v-for="(cartItem, i) in cart" :key="i">
+      <div
+        v-else
+        class="cart-product"
+      >
+        <div
+          v-for="(cartItem, index) in cart"
+          :key="`cart${cart.id}-product${index}`"
+          class="cart-item"
+        >
           <div class="cart-item-img-fix">
             <div
               class="cart-item-img"
               :style="{
-                backgroundImage: 'url(' + cartItem.mainImage + ')',
+                backgroundImage: 'url(' + cartItem.images[0].url + ')',
               }"
-            ></div>
+            />
           </div>
           <div class="cart-item-info">
-            <div class="cart-item-name">{{ cartItem.productName }}</div>
+            <div class="cart-item-name">
+              {{ cartItem.title }}
+            </div>
             <div class="cart-price-row">
               <div class="input-qnt">
                 <input
-                  v-model.number="cartItem.quantity"
-                  @keyup="changeQnt(cartItem.productId, cartItem.quantity)"
-                />
+                  v-model.number="cartItem.amount"
+                  @keyup="changeAmount(index)"
+                >
                 <div class="input-qnt-ctrl">
                   <div
                     class="input-qnt-up"
-                    @click="
-                      changeQnt(cartItem.productId, cartItem.quantity + 1)
-                    "
-                  ></div>
+                    @click="changeAmount(index)"
+                  />
                   <div
                     class="input-qnt-down"
-                    @click="
-                      changeQnt(cartItem.productId, cartItem.quantity - 1)
-                    "
-                  ></div>
+                    @click="changeAmount(index)"
+                  />
                 </div>
               </div>
-              <div class="product-price">{{ cartItem.productPrice }} грн</div>
+              <div class="product-price">
+                {{ cartItem.price }} грн
+              </div>
               <div
                 class="cart-item-del"
-                @click="DELETE_ITEM(cartItem.productId)"
+                @click="deleteItem(index)"
               >
                 +
               </div>
@@ -55,8 +73,14 @@
           <div class="total-sum">
             Загальна cума: <span class="total-num">{{ getTotalSumm }} грн</span>
           </div>
-          <router-link to="/checkout" class="hrestyk-btn-dark">
-            <div class="link-abs" @click="closeCart"></div>
+          <router-link
+            to="/checkout"
+            class="hrestyk-btn-dark"
+          >
+            <div
+              class="link-abs"
+              @click="closeCart"
+            />
             <span>Оформити замовлення</span>
           </router-link>
         </div>
@@ -74,16 +98,15 @@ export default {
   },
   methods: {
     ...mapMutations(["DELETE_ITEM", "CHANGE_QNT"]),
-    changeQnt(id, qnt) {
-      const itemToChange = {
-        itemId: id,
-        itemQnt: qnt,
-      };
-      this.CHANGE_QNT(itemToChange);
+    changeAmount(index) {
+      console.log(index);
     },
     closeCart() {
       eventBus.$emit("cartVisibilityChange", false);
     },
+    deleteItem(index) {
+      console.log(index);
+    }
   },
 };
 </script>

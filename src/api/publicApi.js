@@ -12,48 +12,52 @@ const GET_CART = "/cart/all";
 
 axios.defaults.baseURL = BASE_HOST + API_VERSION;
 
-export const getProducts = async () => {
-  try {
-    const response = (await axios.get(PRODUCTS_URL)).data.data;
-    return {
-      products: response.products.map((item) => new Product(item)),
-      categories: response.categories,
-    };
-  } catch (e) {
-    console.error(e);
-    throw e;
+export default class PublicApi {
+  async getProducts() {
+    try {
+      const response = (await axios.get(PRODUCTS_URL)).data.data;
+      return {
+        products: response.products.map((item) => new Product(item)),
+        categories: response.categories,
+      };
+    } catch (e) {
+      console.error(e);
+      throw e;
+    }
   }
-};
-export const getSingleProduct = async (productId) => {
-  try {
-    const response = (await axios.get(SINGLE_PRODUCT_URL + productId)).data
-      .data;
-    return {
-      product: new Product(response.product),
-      categories: response.categories,
-    };
-  } catch (e) {
-    console.error(e);
-    throw e;
+  async getSingleProduct(productId) {
+    try {
+      const response = (await axios.get(SINGLE_PRODUCT_URL + productId)).data
+        .data;
+      return {
+        product: new Product(response.product),
+        categories: response.categories,
+      };
+    } catch (e) {
+      console.error(e);
+      throw e;
+    }
   }
-};
-export const addToCart = async (order) => {
-  try {
-    const response = await axios.post(ADD_TO_CART, order);
-    const order = new Order(response.data.data);
-    order.setOrderId(response.data.data.id);
-    return order;
-  } catch (e) {
-    console.error(e);
-    throw e;
+  async addToCart(order) {
+    try {
+      const response = await axios.post(ADD_TO_CART, order);
+      const responseOrder = new Order(response.data.data);
+      responseOrder.setOrderId(response.data.data._id);
+      return responseOrder;
+    } catch (e) {
+      console.error(e);
+      throw e;
+    }
   }
-};
-export const getCart = async () => {
-  try {
-    const response = await axios.get(GET_CART);
-    return new Order(response.data);
-  } catch (e) {
-    console.error(e);
-    throw e;
+  async getCart() {
+    try {
+      const response = await axios.get(GET_CART);
+      const responseOrder = new Order(response.data.data);
+      responseOrder.setOrderId(response.data.data._id);
+      return responseOrder;
+    } catch (e) {
+      console.error(e);
+      throw e;
+    }
   }
-};
+}
