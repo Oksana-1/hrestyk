@@ -66,7 +66,7 @@ export default {
     IconNoImage,
   },
   computed: {
-    ...mapGetters(["cartId"]),
+    ...mapGetters(["cartId", "cart"]),
     mainImageUrl() {
       if (this.product.images.length === 0) return "";
       const mainImage = this.product.images.find((image) => image.is_main);
@@ -99,7 +99,7 @@ export default {
     orderObject() {
       return new Order({
         userInfo: this.userInfoObject,
-        products: [this.productCartObject],
+        products: [...this.cart, this.productCartObject],
         processing: [this.processingStatusObject],
         orderStatus: "started",
       });
