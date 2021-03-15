@@ -3,7 +3,7 @@
     <div class="cart-item-img-fix">
       <div
         class="cart-item-img"
-        :style="{ backgroundImage: 'url(' + mainImageUrl + ')' }"
+        :style="{ backgroundImage: 'url(data:image/jpg;base64,' + mainImageUrl + ')' }"
       />
     </div>
     <div class="cart-item-info">
@@ -79,6 +79,16 @@ export default {
         itemKey: this.$vnode.key,
         amount: this.amount
       });
+    },
+    decodeBase64Image(dataString) {
+    const matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+      response = {};
+    if (matches.length !== 3) {
+      return new Error('Invalid input string');
+    }
+    response.type = matches[1];
+    response.data = new Buffer(matches[2], 'base64');
+      return response;
     }
   },
   created() {

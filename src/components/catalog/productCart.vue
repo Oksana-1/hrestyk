@@ -81,7 +81,7 @@ export default {
           (image) =>
             new OrderProductImage({
               alt: image.alt,
-              image: image.url,
+              url: image.url,
               is_main: image.is_main,
             })
         ),

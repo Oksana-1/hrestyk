@@ -31,10 +31,11 @@ export class OrderProduct {
 export class OrderProductImage {
   constructor(orderProductImage) {
     this.alt = orderProductImage.alt;
-    this.image = orderProductImage.image;
+    this.url = orderProductImage.url;
     this.is_main = orderProductImage.is_main;
   }
 }
+
 export class ProcessingStatus {
   constructor(processing) {
     this.processingStatus = processing.processingStatus;
