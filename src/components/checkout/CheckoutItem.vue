@@ -7,7 +7,7 @@
       />
       <div
         class="cart-item-img"
-        :style="{ backgroundImage: 'url(' + cartItem.mainImage + ')' }"
+        :style="{ backgroundImage: 'url(data:image/jpg;base64,' + mainImageBase64 + ')' }"
       />
     </div>
     <div class="cart-item-info">
@@ -22,7 +22,7 @@
           <label for="quantity">
             <input
               id="quantity"
-              v-model.number="cartItem.quantity"
+              v-model.number="quantity"
               @keyup="changeAmount"
             >
           </label>
@@ -62,6 +62,18 @@ export default {
   props: {
     cartItem: OrderProduct
   },
+  data() {
+    return {
+      quantity: null
+    }
+  },
+  computed: {
+    mainImageBase64() {
+      if (this.cartItem.images.length === 0) return "";
+      const mainImage = this.cartItem.images.find((image) => image.is_main);
+      return mainImage ? mainImage.image : this.product.images[0].image;
+    },
+  },
   methods: {
     changeAmount() {
       console.log('working hard...');
@@ -69,6 +81,9 @@ export default {
     deleteProduct() {
       console.log('working so hard...');
     }
+  },
+  created() {
+    this.quantity = this.cartItem.amount;
   }
 }
 </script>

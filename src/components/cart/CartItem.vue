@@ -3,7 +3,7 @@
     <div class="cart-item-img-fix">
       <div
         class="cart-item-img"
-        :style="{ backgroundImage: 'url(data:image/jpg;base64,' + mainImageUrl + ')' }"
+        :style="{ backgroundImage: 'url(data:image/jpg;base64,' + mainImageBase64 + ')' }"
       />
     </div>
     <div class="cart-item-info">
@@ -58,7 +58,7 @@ export default {
     }
   },
   computed: {
-    mainImageUrl() {
+    mainImageBase64() {
       if (this.product.images.length === 0) return "";
       const mainImage = this.product.images.find((image) => image.is_main);
       return mainImage ? mainImage.image : this.product.images[0].image;
