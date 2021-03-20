@@ -46,7 +46,7 @@
                       <button
                         class="hrestyk-btn-dark buyBtn"
                         :disabled="quantity <= 0 || !Number.isInteger(quantity)"
-                        @click="addToCartProduct"
+                        @click="addProductToCart"
                       >
                         <span>Купити</span>
                       </button>
@@ -75,15 +75,16 @@
         </div>
       </div>
     </template>
-    <app-about-banner />
+    <about-banner />
   </div>
 </template>
 <script>
 import eventBus from "../event-bus";
-import { mapGetters, mapMutations, mapActions } from "vuex";
-
+import { mapGetters, mapActions } from "vuex";
 import AboutBanner from "./main/AboutBanner";
 import ProductImages from "@/components/product/ProductImages";
+import Order, {OrderProduct, OrderProductImage, ProcessingStatus, UserInfo} from "@/entities/Order";
+import {userInfoForm} from "@/entities/forms/userInfoForm";
 export default {
   props: {
     initWaypointProp: {
@@ -93,7 +94,7 @@ export default {
   },
   components: {
     ProductImages,
-    appAboutBanner: AboutBanner,
+    AboutBanner,
   },
   data() {
     return {
@@ -115,11 +116,44 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["product"]),
+    ...mapGetters(["product", "cart", "cartId"]),
+    productCartObject() {
+      return new OrderProduct({
+        id: this.product.id,
+        title: this.product.title,
+        amount: this.quantity,
+        price: this.product.price,
+        images: this.product.images.map(
+          (image) =>
+            new OrderProductImage({
+              alt: image.alt,
+              url: image.url,
+              is_main: image.is_main,
+            })
+        ),
+      });
+    },
+    userInfoObject() {
+      return new UserInfo(userInfoForm);
+    },
+    processingStatusObject() {
+      return new ProcessingStatus({
+        processingStatus: "started",
+        content: "Init order processing",
+      });
+    },
+    cartForOrder() {
+      return this.cart.map((cartItem) => {
+        cartItem.images.forEach((image) => {
+          delete image.image;
+          return image;
+        });
+        return cartItem;
+      });
+    },
   },
   methods: {
-    ...mapActions(["fetchSingleProduct"]),
-    ...mapMutations(["ADD_TO_CARD"]),
+    ...mapActions(["fetchSingleProduct", "addToCart"]),
     addOne() {
       if (this.quantity >= 0) {
         this.quantity++;
@@ -129,15 +163,6 @@ export default {
       if (this.quantity > 1) {
         this.quantity--;
       }
-    },
-    addToCartProduct() {
-      const order = {
-        productId: this.productId,
-        quantity: this.quantity,
-      };
-      this.ADD_TO_CARD(order);
-      this.quantity = 1;
-      eventBus.$emit("cartVisibilityChange", true);
     },
     async init() {
       try {
@@ -149,6 +174,24 @@ export default {
         requestAnimationFrame(() => {
           this.initWaypointProp();
         });
+      }
+    },
+    getOrderObject(cartProduct) {
+      return new Order({
+        userInfo: this.userInfoObject,
+        products: [...this.cartForOrder, cartProduct],
+        processing: [this.processingStatusObject],
+        orderStatus: "started",
+      });
+    },
+    async addProductToCart() {
+      const orderObject = this.getOrderObject(this.productCartObject);
+      if (this.cartId) orderObject.setOrderId(this.cartId);
+      try {
+        await this.addToCart(orderObject);
+        eventBus.$emit("cartVisibilityChange", true);
+      } catch (e) {
+        console.error(e);
       }
     },
   },

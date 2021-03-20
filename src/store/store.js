@@ -21,7 +21,7 @@ export function createStore() {
       cartId: (state) => state.cartId,
       total: (state) =>
         state.cart.reduce((sum, cartItem) => {
-          sum += cartItem.price;
+          sum += cartItem.price * cartItem.amount;
           return sum;
         }, 0),
       cart: (state) => state.cart,
