@@ -52,8 +52,8 @@ export default class PublicApi {
   async getCart(cart_id) {
     try {
       const response = await axios.get(`${GET_CART}/${cart_id}`);
-      const responseOrder = new Order(response.data.data);
-      responseOrder.setOrderId(response.data.data._id);
+      const responseOrder = new Order(response.data.data[0]);
+      responseOrder.setOrderId(response.data.data[0]._id);
       return responseOrder;
     } catch (e) {
       console.error(e);

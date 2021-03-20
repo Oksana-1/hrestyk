@@ -50,6 +50,7 @@ export function createStore() {
           const response = await api.addToCart(order);
           commit("SET_CART_ID", response.id);
           commit("SET_CART", response.products);
+          localStorage.setItem("cartId", response.id);
         } catch (e) {
           throw e;
         }

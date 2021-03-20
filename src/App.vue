@@ -17,6 +17,7 @@
 <script>
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
+import {mapActions, mapMutations} from "vuex";
 export default {
   components: {
     appHeader: Header,
@@ -52,6 +53,8 @@ export default {
     },
   },
   methods: {
+    ...mapMutations(["SET_CART_ID"]),
+    ...mapActions(["getCart"]),
     initWaypoint() {
       let waypointElements = document.querySelectorAll(".waypoint");
       waypointElements.forEach(function (waypointElement) {
@@ -64,6 +67,13 @@ export default {
         });
       });
     },
+  },
+  created() {
+    const cartId = localStorage.getItem('cartId');
+    if (cartId) {
+      this.SET_CART_ID(cartId);
+      this.getCart(cartId);
+    }
   },
   mounted() {
     let mainWrap = document.querySelector(".main-wrap");
