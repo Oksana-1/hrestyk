@@ -79,6 +79,24 @@ export default {
   },
   computed: {
     ...mapGetters(["cart", "total", "isCartReady"]),
+    itemString() {
+      let getCartLengthStr = this.cart.length.toString();
+      let singleNumExeptions = ["2", "3", "4"];
+      let doubleNumExeptions = ["11", "12", "13", "14"];
+      let lastChar = getCartLengthStr.substr(-1);
+      let lastTwo = getCartLengthStr.substr(-2);
+      if (doubleNumExeptions.indexOf(lastTwo) !== -1) {
+        return "товарів";
+      } else {
+        if (lastChar === "1") {
+          return "товар";
+        } else if (singleNumExeptions.indexOf(lastChar) !== -1) {
+          return "товари";
+        } else {
+          return "товарів";
+        }
+      }
+    },
   },
   methods: {
     closeCart() {
