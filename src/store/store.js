@@ -57,7 +57,8 @@ export function createStore() {
       async getCart({ commit }, cart_id) {
         try {
           const response = await api.getCart(cart_id);
-          commit("SET_CART", response);
+          commit("SET_CART_ID", response.id);
+          commit("SET_CART", response.products);
         } catch (e) {
           throw e;
         }

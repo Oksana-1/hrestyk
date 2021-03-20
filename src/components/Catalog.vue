@@ -9,9 +9,7 @@
           >
             <ul class="catalog-category-list">
               <li :class="{ active: currentCat === 'all' }">
-                <a @click="filter('all')">
-                  Всі товари
-                </a>
+                <a @click="filter('all')"> Всі товари </a>
               </li>
               <li
                 v-for="(category, index) in categories"
@@ -36,17 +34,16 @@
             name="fade"
             mode="out-in"
           >
-            <spinner-cube
-              v-if="busy"
-            />
+            <spinner-cube v-if="busy" />
             <div
               v-else
               class="catalog-products-container"
             >
-              <app-product-card
-                v-for="(product) in filteredProducts"
+              <product-card
+                v-for="product in filteredProducts"
                 :key="product.id"
                 :product="product"
+                @addProductToCart="addProductToCart($event)"
               />
             </div>
           </transition>
@@ -56,14 +53,17 @@
   </div>
 </template>
 <script>
-import productCard from "./catalog/productCart";
+import ProductCard from "./catalog/ProductCart";
 import SpinnerCube from "@/components/ui/SpinnerCube";
-import {mapActions, mapGetters} from "vuex";
+import { mapActions, mapGetters } from "vuex";
+import eventBus from "@/event-bus";
+import { userInfoForm } from "@/entities/forms/userInfoForm";
+import Order, { ProcessingStatus, UserInfo } from "@/entities/Order";
 
 export default {
   components: {
     SpinnerCube,
-    appProductCard: productCard,
+    ProductCard,
   },
   data() {
     return {
@@ -73,15 +73,35 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["products", "categories"]),
+    ...mapGetters(["products", "categories", "cart", "cartId"]),
     filteredProducts() {
-      return this.currentCat === 'all'
-      ? this.products
-      : this.products.filter(product => product.category === this.currentCat)
-    }
+      return this.currentCat === "all"
+        ? this.products
+        : this.products.filter(
+            (product) => product.category === this.currentCat
+          );
+    },
+    userInfoObject() {
+      return new UserInfo(userInfoForm);
+    },
+    processingStatusObject() {
+      return new ProcessingStatus({
+        processingStatus: "started",
+        content: "Init order processing",
+      });
+    },
+    cartForOrder() {
+      return this.cart.map((cartItem) => {
+        cartItem.images.forEach((image) => {
+          delete image.image;
+          return image;
+        });
+        return cartItem;
+      });
+    },
   },
   methods: {
-    ...mapActions(['fetchProducts']),
+    ...mapActions(["fetchProducts", "addToCart"]),
     async init() {
       this.busy = true;
       await this.fetchProducts();
@@ -91,10 +111,28 @@ export default {
       this.busy = true;
       this.currentCat = category;
       this.busy = false;
-    }
+    },
+    getOrderObject(cartProduct) {
+      return new Order({
+        userInfo: this.userInfoObject,
+        products: [...this.cartForOrder, cartProduct],
+        processing: [this.processingStatusObject],
+        orderStatus: "started",
+      });
+    },
+    async addProductToCart(product) {
+      const orderObject = this.getOrderObject(product);
+      if (this.cartId) orderObject.setOrderId(this.cartId);
+      try {
+        await this.addToCart(orderObject);
+        eventBus.$emit("cartVisibilityChange", true);
+      } catch (e) {
+        console.error(e);
+      }
+    },
   },
   created() {
     this.init();
-  }
+  },
 };
 </script>

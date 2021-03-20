@@ -1,7 +1,9 @@
 export default class Order {
   constructor(order) {
     this.userInfo = new UserInfo(order.userInfo);
-    this.products = order.products.map((product) => new OrderProduct(product));
+    this.products = order.products.map((product) => {
+      return new OrderProduct(product);
+    });
     this.processing = order.processing.map(
       (item) => new ProcessingStatus(item)
     );
@@ -20,12 +22,17 @@ export class UserInfo {
 }
 export class OrderProduct {
   constructor(orderProduct) {
+    this.id = orderProduct.id || orderProduct._id;
     this.title = orderProduct.title;
     this.amount = orderProduct.amount;
     this.price = orderProduct.price;
-    this.images = orderProduct.images.map(
-      (image) => new OrderProductImage(image)
-    );
+    this.images = orderProduct.images.map((imageItem) => {
+      const image = new OrderProductImage(imageItem);
+      if (imageItem.image) {
+        image._setImage(imageItem.image);
+      }
+      return image;
+    });
   }
 }
 export class OrderProductImage {
@@ -33,6 +40,9 @@ export class OrderProductImage {
     this.alt = orderProductImage.alt;
     this.url = orderProductImage.url;
     this.is_main = orderProductImage.is_main;
+  }
+  _setImage(image) {
+    this.image = image;
   }
 }
 

@@ -61,7 +61,7 @@ export default {
     mainImageUrl() {
       if (this.product.images.length === 0) return "";
       const mainImage = this.product.images.find((image) => image.is_main);
-      return mainImage ? mainImage.url : this.product.images[0].url;
+      return mainImage ? mainImage.image : this.product.images[0].image;
     },
   },
   methods: {
@@ -80,16 +80,6 @@ export default {
         amount: this.amount
       });
     },
-    decodeBase64Image(dataString) {
-    const matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
-      response = {};
-    if (matches.length !== 3) {
-      return new Error('Invalid input string');
-    }
-    response.type = matches[1];
-    response.data = new Buffer(matches[2], 'base64');
-      return response;
-    }
   },
   created() {
     this.amount = this.product.amount;

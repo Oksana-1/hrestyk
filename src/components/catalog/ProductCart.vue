@@ -41,32 +41,23 @@
   </div>
 </template>
 <script>
-import { mapActions, mapGetters } from "vuex";
-import eventBus from "../../event-bus";
 import Product from "@/entities/Product";
 import IconBase from "@/components/IconBase";
 import IconNoImage from "@/components/icons/IconNoImage";
-import Order, {
+import {
   OrderProduct,
   OrderProductImage,
-  ProcessingStatus,
-  UserInfo,
 } from "@/entities/Order";
-import { userInfoForm } from "@/entities/forms/userInfoForm";
 
 export default {
   props: {
-    product: {
-      type: Product,
-      default: {},
-    },
+    product:  Product,
   },
   components: {
     IconBase,
     IconNoImage,
   },
   computed: {
-    ...mapGetters(["cartId", "cart"]),
     mainImageUrl() {
       if (this.product.images.length === 0) return "";
       const mainImage = this.product.images.find((image) => image.is_main);
@@ -74,6 +65,7 @@ export default {
     },
     productCartObject() {
       return new OrderProduct({
+        id: this.product.id,
         title: this.product.title,
         amount: 1,
         price: this.product.price,
@@ -87,35 +79,11 @@ export default {
         ),
       });
     },
-    userInfoObject() {
-      return new UserInfo(userInfoForm);
-    },
-    processingStatusObject() {
-      return new ProcessingStatus({
-        processingStatus: "started",
-        content: "Init order processing",
-      });
-    },
-    orderObject() {
-      return new Order({
-        userInfo: this.userInfoObject,
-        products: [...this.cart, this.productCartObject],
-        processing: [this.processingStatusObject],
-        orderStatus: "started",
-      });
-    },
   },
   methods: {
-    ...mapActions(["addToCart"]),
-    async addProductToCart() {
-      try {
-        if (this.cartId) this.orderObject.setOrderId(this.cartId);
-        await this.addToCart(this.orderObject);
-        eventBus.$emit("cartVisibilityChange", true);
-      } catch (e) {
-        console.error(e);
-      }
-    },
-  },
+    addProductToCart() {
+      this.$emit('addProductToCart', this.productCartObject);
+    }
+  }
 };
 </script>
