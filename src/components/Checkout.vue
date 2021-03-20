@@ -3,7 +3,9 @@
     <div class="catalog-category-section">
       <div class="c-box-1100">
         <div class="catalog-category-container">
-          <h1 class="common-title">Оформлення замовлення</h1>
+          <h1 class="common-title">
+            Оформлення замовлення
+          </h1>
         </div>
       </div>
     </div>
@@ -17,13 +19,18 @@
                 найближчого часу.
               </div>
               <form :class="{ 'form-disabled': cart.length < 1 }">
-                <div class="input-row" :class="{ invalid: $v.name.$error }">
-                  <input
-                    type="text"
-                    placeholder="Ваше ім'я"
-                    @blur="$v.name.$touch()"
-                    v-model="name"
-                  />
+                <div
+                  class="input-row"
+                  :class="{ invalid: $v.name.$error }"
+                >
+                  <label>
+                    <input
+                      v-model="name"
+                      type="text"
+                      placeholder="Ваше ім'я"
+                      @blur="$v.name.$touch()"
+                    >
+                  </label>
                   <p
                     v-if="!$v.name.required && $v.name.$dirty"
                     class="invalid-message"
@@ -31,14 +38,22 @@
                     {{ formErrors.empty }}
                   </p>
                 </div>
-                <div class="input-row" :class="{ invalid: $v.email.$error }">
-                  <input
-                    type="text"
-                    placeholder="Ваш email"
-                    @blur="$v.email.$touch()"
-                    v-model="email"
-                  />
-                  <p v-if="!$v.email.email" class="invalid-message">
+                <div
+                  class="input-row"
+                  :class="{ invalid: $v.email.$error }"
+                >
+                  <label>
+                    <input
+                      v-model="email"
+                      type="text"
+                      placeholder="Ваш email"
+                      @blur="$v.email.$touch()"
+                    >
+                  </label>
+                  <p
+                    v-if="!$v.email.email"
+                    class="invalid-message"
+                  >
                     {{ formErrors.invalidEmail }}
                   </p>
                   <p
@@ -48,13 +63,18 @@
                     {{ formErrors.empty }}
                   </p>
                 </div>
-                <div class="input-row" :class="{ invalid: $v.phone.$error }">
-                  <input
-                    type="text"
-                    placeholder="Ваш телефон"
-                    @blur="$v.phone.$touch()"
-                    v-model="phone"
-                  />
+                <div
+                  class="input-row"
+                  :class="{ invalid: $v.phone.$error }"
+                >
+                  <label>
+                    <input
+                      v-model="phone"
+                      type="text"
+                      placeholder="Ваш телефон"
+                      @blur="$v.phone.$touch()"
+                    >
+                  </label>
                   <p
                     v-if="!$v.phone.numeric || !$v.phone.minLength"
                     class="invalid-message"
@@ -69,16 +89,18 @@
                   </p>
                 </div>
                 <div class="input-row">
-                  <textarea
-                    placeholder="Ваші коментарі"
-                    v-model="message"
-                  ></textarea>
+                  <label>
+                    <textarea
+                      v-model="message"
+                      placeholder="Ваші коментарі"
+                    />
+                  </label>
                 </div>
                 <div class="input-row">
                   <button
                     type="submit"
                     :disabled="cart.length < 1"
-                    @click.prevent="sendOrder(), $v.$touch()"
+                    @click.prevent="$v.$touch()"
                   >
                     Відправити
                   </button>
@@ -86,120 +108,26 @@
               </form>
             </div>
             <div class="checkout-links-wrap">
-              <router-link to="/delivery">Умови оплати і доставки</router-link>
+              <router-link to="/delivery">
+                Умови оплати і доставки
+              </router-link>
             </div>
           </div>
-          <div class="col-50 col-cart">
-            <h2 class="small-title">Кошик</h2>
-            <div class="checkout-cart" v-if="cart.length > 0">
-              <div class="cart-note-wrap">
-                <div class="cart-note">
-                  У Вашому кошику
-                  <span class="cart-qnt">{{ cart.length }}</span>
-                  {{ itemString }}
-                </div>
-                <router-link to="/catalog" class="hrestyk-btn-bordered-white">
-                  <div class="link-abs" @click="closeCart"></div>
-                  <span>Продовжити покупки</span>
-                </router-link>
-              </div>
-              <div class="checkout-cart-cont">
-                <div
-                  class="cart-item"
-                  v-for="(cartItem, i) in cart"
-                  :key="i"
-                >
-                  <div class="cart-item-img-fix">
-                    <router-link
-                      :to="'/catalog/' + cartItem.productId"
-                      class="link-abs"
-                    ></router-link>
-                    <div
-                      class="cart-item-img"
-                      v-bind:style="{
-                        backgroundImage: 'url(' + cartItem.mainImage + ')',
-                      }"
-                    ></div>
-                  </div>
-                  <div class="cart-item-info">
-                    <router-link
-                      :to="'/catalog/' + cartItem.productId"
-                      class="cart-item-name"
-                    >
-                      {{ cartItem.productName }}
-                    </router-link>
-                    <div class="cart-price-row">
-                      <div class="input-qnt">
-                        <input
-                          v-model.number="cartItem.quantity"
-                          @keyup="
-                            changeQnt(cartItem.productId, cartItem.quantity)
-                          "
-                        />
-                        <div class="input-qnt-ctrl">
-                          <div
-                            class="input-qnt-up"
-                            @click="
-                              changeQnt(
-                                cartItem.productId,
-                                cartItem.quantity + 1
-                              )
-                            "
-                          ></div>
-                          <div
-                            class="input-qnt-down"
-                            @click="
-                              changeQnt(
-                                cartItem.productId,
-                                cartItem.quantity - 1
-                              )
-                            "
-                          ></div>
-                        </div>
-                      </div>
-                      <div class="product-price">
-                        {{ cartItem.productPrice }} грн
-                      </div>
-                      <div class="item-summ">
-                        {{ cartItem.productPrice * cartItem.quantity }} грн
-                      </div>
-                      <div
-                        class="cart-item-del"
-                        @click="DELETE_ITEM(cartItem.productId)"
-                      >
-                        +
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card-total-row">
-                <div class="total-sum">
-                  Загальна cума:
-                  <span class="total-num">{{ total }} грн</span>
-                </div>
-              </div>
-            </div>
-            <div class="checkout-cart-empty" v-else>
-              <div class="cart-note-wrap">
-                <div class="cart-note">У Вашому кошику немає товарів</div>
-                <router-link to="/catalog" class="hrestyk-btn-bordered-white">
-                  <div class="link-abs" @click="closeCart"></div>
-                  <span>Повернутися в магазин</span>
-                </router-link>
-              </div>
-            </div>
-          </div>
+          <checkout-cart />
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import eventBus from "../event-bus";
-import { mapGetters, mapMutations } from "vuex";
 import { required, email, numeric, minLength } from "vuelidate/lib/validators";
+import CheckoutCart from "@/components/checkout/CheckoutCart";
+import {mapGetters} from "vuex";
+
 export default {
+  components: {
+    CheckoutCart,
+  },
   data() {
     return {
       name: "",
@@ -228,49 +156,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["cart", "total"]),
-    itemString() {
-      let cartLengthStr = this.cart.length.toString();
-      let singleNumExeptions = ["2", "3", "4"];
-      let doubleNumExeptions = ["11", "12", "13", "14"];
-      let lastChar = cartLengthStr.substr(-1);
-      let lastTwo = cartLengthStr.substr(-2);
-      if (doubleNumExeptions.indexOf(lastTwo) != -1) {
-        return "товарів";
-      } else {
-        if (lastChar === "1") {
-          return "товар";
-        } else if (singleNumExeptions.indexOf(lastChar) != -1) {
-          return "товари";
-        } else {
-          return "товарів";
-        }
-      }
-    },
-  },
-  methods: {
-    ...mapMutations(["DELETE_ITEM", "CHANGE_QNT", "SEND_ORDER"]),
-    changeQnt(id, qnt) {
-      const itemToChange = {
-        itemId: id,
-        itemQnt: qnt,
-      };
-      this.CHANGE_QNT(itemToChange);
-    },
-    closeCart() {
-      eventBus.$emit("cartVisibilityChange", false);
-    },
-    sendOrder() {
-      const checkoutFormData = {
-        name: this.name,
-        email: this.email,
-        phone: this.phone,
-        message: this.message,
-      };
-      if (!this.$v.$invalid) {
-        this.SEND_ORDER(checkoutFormData);
-      }
-    },
-  },
+    ...mapGetters(['cart']),
+  }
 };
 </script>
