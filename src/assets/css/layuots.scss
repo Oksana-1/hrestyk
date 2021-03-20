@@ -705,6 +705,7 @@
 }
 .hr-cart-content {
   position: absolute;
+  min-width: 300px;
   bottom: -30px;
   right: -40px;
   @include transform(translateY(100%));

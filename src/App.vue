@@ -53,7 +53,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["SET_CART_ID"]),
+    ...mapMutations(["SET_CART_ID", "DISABLE_CART", "ENABLE_CART"]),
     ...mapActions(["getCart"]),
     initWaypoint() {
       let waypointElements = document.querySelectorAll(".waypoint");
@@ -67,13 +67,23 @@ export default {
         });
       });
     },
+    async init() {
+      const cartId = localStorage.getItem('cartId');
+      if (cartId) {
+        this.SET_CART_ID(cartId);
+        this.DISABLE_CART();
+        try {
+          await this.getCart(cartId);
+        } catch (e) {
+          console.error(e)
+        } finally {
+          this.ENABLE_CART();
+        }
+      }
+    }
   },
   created() {
-    const cartId = localStorage.getItem('cartId');
-    if (cartId) {
-      this.SET_CART_ID(cartId);
-      this.getCart(cartId);
-    }
+    this.init();
   },
   mounted() {
     let mainWrap = document.querySelector(".main-wrap");

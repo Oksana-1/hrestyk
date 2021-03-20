@@ -13,6 +13,7 @@ export function createStore() {
       product: {},
       cart: [],
       cartId: null,
+      isCartReady: false,
     },
     getters: {
       products: (state) => state.products,
@@ -25,6 +26,7 @@ export function createStore() {
           return sum;
         }, 0),
       cart: (state) => state.cart,
+      isCartReady: (state) => state.isCartReady,
     },
     actions: {
       async fetchProducts({ commit }) {
@@ -80,6 +82,12 @@ export function createStore() {
       },
       SET_CART: (state, data) => {
         state.cart = data;
+      },
+      DISABLE_CART: (state) => {
+        state.isCartReady = false;
+      },
+      ENABLE_CART: (state) => {
+        state.isCartReady = true;
       },
     },
   });

@@ -1,6 +1,6 @@
 <template>
   <div class="col-50 col-cart">
-    <spinner-cube v-if="busy" />
+    <spinner-cube v-if="!isCartReady" />
     <template v-else>
       <h2 class="small-title">
         Кошик
@@ -66,7 +66,7 @@
 
 <script>
 import SpinnerCube from "@/components/ui/SpinnerCube";
-import {mapActions, mapGetters} from "vuex";
+import {mapGetters} from "vuex";
 import eventBus from "@/event-bus";
 import CheckoutItem from "@/components/checkout/CheckoutItem";
 export default {
@@ -78,25 +78,13 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["cart", "total"]),
+    ...mapGetters(["cart", "total", "isCartReady"]),
   },
   methods: {
-    ...mapActions(['getCart']),
-    async init() {
-      this.busy = true;
-      try {
-        await this.getCart();
-      } catch (e) {
-        console.error(e);
-      }
-    },
     closeCart() {
       eventBus.$emit("cartVisibilityChange", false);
     },
   },
-  created() {
-    this.init();
-  }
 };
 </script>
 
