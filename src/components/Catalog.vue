@@ -114,9 +114,10 @@ export default {
       this.busy = false;
     },
     getOrderObject(cartProduct) {
+      const onlyOldCartProducts = this.cartForOrder.filter(cartItem => cartItem.id !== cartProduct.id);
       return new Order({
         userInfo: this.userInfoObject,
-        products: [...this.cartForOrder, cartProduct],
+        products: [...onlyOldCartProducts, cartProduct],
         processing: [this.processingStatusObject],
         orderStatus: "started",
       });

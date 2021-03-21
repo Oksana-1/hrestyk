@@ -12,9 +12,8 @@
       </div>
       <div class="cart-price-row">
         <div class="input-qnt">
-          <label for="amount">
+          <label>
             <input
-              id="amount"
               v-model.number="amount"
               @keyup="$emit('changeAmount', {itemKey: $vnode.key, amount})"
             >

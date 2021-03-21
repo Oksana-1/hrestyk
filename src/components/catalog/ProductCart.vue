@@ -68,7 +68,7 @@ export default {
     },
     productCartObject() {
       return new OrderProduct({
-        id: this.product.id,
+        _id: this.product.id,
         title: this.product.title,
         amount: 1,
         price: this.product.price,

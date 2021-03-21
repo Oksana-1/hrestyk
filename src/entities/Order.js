@@ -22,7 +22,7 @@ export class UserInfo {
 }
 export class OrderProduct {
   constructor(orderProduct) {
-    this.id = orderProduct.id || orderProduct._id;
+    this._id = orderProduct._id;
     this.title = orderProduct.title;
     this.amount = orderProduct.amount;
     this.price = orderProduct.price;
@@ -33,6 +33,10 @@ export class OrderProduct {
       }
       return image;
     });
+  }
+
+  get id() {
+    return this._id;
   }
 }
 export class OrderProductImage {

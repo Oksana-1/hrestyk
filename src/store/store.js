@@ -13,7 +13,7 @@ export function createStore() {
       product: {},
       cart: [],
       cartId: null,
-      isCartReady: false,
+      isCartReady: true,
     },
     getters: {
       products: (state) => state.products,
