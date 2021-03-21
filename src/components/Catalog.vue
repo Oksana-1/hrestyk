@@ -55,7 +55,7 @@
 <script>
 import ProductCard from "./catalog/ProductCart";
 import SpinnerCube from "@/components/ui/SpinnerCube";
-import { mapActions, mapGetters } from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 import eventBus from "@/event-bus";
 import { userInfoForm } from "@/entities/forms/userInfoForm";
 import Order, { ProcessingStatus, UserInfo } from "@/entities/Order";
@@ -102,6 +102,7 @@ export default {
   },
   methods: {
     ...mapActions(["fetchProducts", "addToCart"]),
+    ...mapMutations(["DISABLE_CART", "ENABLE_CART"]),
     async init() {
       this.busy = true;
       await this.fetchProducts();
@@ -123,11 +124,14 @@ export default {
     async addProductToCart(product) {
       const orderObject = this.getOrderObject(product);
       if (this.cartId) orderObject.setOrderId(this.cartId);
+      this.DISABLE_CART()
       try {
         await this.addToCart(orderObject);
         eventBus.$emit("cartVisibilityChange", true);
       } catch (e) {
         console.error(e);
+      } finally {
+        this.ENABLE_CART();
       }
     },
   },

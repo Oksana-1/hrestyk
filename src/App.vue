@@ -75,7 +75,7 @@ export default {
         try {
           await this.getCart(cartId);
         } catch (e) {
-          console.error(e)
+          console.error(e);
         } finally {
           this.ENABLE_CART();
         }

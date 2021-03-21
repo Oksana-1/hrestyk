@@ -45,7 +45,7 @@
                       </div>
                       <button
                         class="hrestyk-btn-dark buyBtn"
-                        :disabled="quantity <= 0 || !Number.isInteger(quantity)"
+                        :disabled="quantity <= 0 || !Number.isInteger(quantity) || !isCartReady"
                         @click="addProductToCart"
                       >
                         <span>Купити</span>
@@ -116,7 +116,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["product", "cart", "cartId"]),
+    ...mapGetters(["product", "cart", "cartId", "isCartReady"]),
     productCartObject() {
       return new OrderProduct({
         id: this.product.id,

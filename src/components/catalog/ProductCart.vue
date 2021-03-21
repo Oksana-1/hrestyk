@@ -31,6 +31,7 @@
           </div>
           <button
             class="hrestyk-btn-dark buyBtn"
+            :disabled="!isCartReady"
             @click="addProductToCart()"
           >
             <span>Купити</span>
@@ -48,6 +49,7 @@ import {
   OrderProduct,
   OrderProductImage,
 } from "@/entities/Order";
+import {mapGetters} from "vuex";
 
 export default {
   props: {
@@ -58,6 +60,7 @@ export default {
     IconNoImage,
   },
   computed: {
+    ...mapGetters(['isCartReady']),
     mainImageUrl() {
       if (this.product.images.length === 0) return "";
       const mainImage = this.product.images.find((image) => image.is_main);
