@@ -912,7 +912,7 @@
     padding: 0 50px;
   }
 }
-@media only screen and (max-width: 12500px) {
+@media only screen and (max-width: 1250px) {
   .pc-header::before {
     right: 0;
   }
@@ -1002,6 +1002,9 @@
     .product-img-fix {
       padding-top: 50%;
     }
+  }
+  .product-card-wrap {
+    width: 50%;
   }
 }
 @media only screen and (max-width: 767px) {
