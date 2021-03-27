@@ -912,6 +912,14 @@
     padding: 0 50px;
   }
 }
+@media only screen and (max-width: 12500px) {
+  .pc-header::before {
+    right: 0;
+  }
+  .hr-cart-wrap {
+    margin-right: 30px;
+  }
+}
 @media only screen and (max-width: 1024px) and (orientation: portrait) {
   .main-slider-section .slide-fix {
     height: 50vh;
@@ -921,9 +929,6 @@
   }
 }
 @media only screen and (max-width: 1024px) {
-  .pc-header::before {
-    right: 0;
-  }
   .about-top-text::before {
     left: 0;
   }
