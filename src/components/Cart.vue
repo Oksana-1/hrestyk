@@ -35,9 +35,7 @@
           <div class="card-total-row">
             <div class="total-sum">
               Загальна cума:
-              <span class="total-num">
-                {{ total }} грн
-              </span>
+              <span class="total-num"> {{ total }} грн </span>
             </div>
             <router-link
               to="/checkout"
@@ -58,32 +56,76 @@
 
 <script>
 import eventBus from "../event-bus";
-import { mapGetters } from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 import CartItem from "@/components/cart/CartItem";
 import SpinnerCube from "@/components/ui/SpinnerCube";
+import Order, { ProcessingStatus, UserInfo } from "@/entities/Order";
+import { userInfoForm } from "@/entities/forms/userInfoForm";
+import { cloneObj } from "@/utils/helpers";
 export default {
-  components: {SpinnerCube, CartItem},
+  components: { SpinnerCube, CartItem },
   data() {
     return {
-      prefix: 'cart-product-'
-    }
+      prefix: "cart-product-",
+    };
   },
   computed: {
-    ...mapGetters(["cart", "total", "isCartReady"]),
+    ...mapGetters(["cart", "cartId", "total", "isCartReady"]),
+    cartForOrder() {
+      return this.cart.map((cartItem) => {
+        cartItem.images.forEach((image) => {
+          delete image.image;
+          return image;
+        });
+        return cartItem;
+      });
+    },
+    userInfoObject() {
+      return new UserInfo(userInfoForm);
+    },
+    processingStatusObject() {
+      return new ProcessingStatus({
+        processingStatus: "started",
+        content: "Init order processing",
+      });
+    },
   },
   methods: {
+    ...mapMutations(["DISABLE_CART", "ENABLE_CART"]),
+    ...mapActions(["addToCart"]),
     closeCart() {
       eventBus.$emit("cartVisibilityChange", false);
     },
     deleteItem(itemKey) {
-      const index = itemKey.replace(this.prefix, '');
+      const index = itemKey.replace(this.prefix, "");
       console.log(index);
     },
-    changeAmount({itemKey, amount}) {
-      const index = itemKey.replace(this.prefix, '');
-      console.log(`index: ${index}`);
-      console.log(`amount: ${amount}`);
-    }
+    changeAmount({ itemKey, amount }) {
+      const cartClone = cloneObj(this.cartForOrder);
+      const index = itemKey.replace(this.prefix, "");
+      cartClone[index].amount = amount;
+      this.changeProductInCart(this.getOrderObject(cartClone));
+    },
+    getOrderObject(newCart) {
+      return new Order({
+        userInfo: this.userInfoObject,
+        products: newCart,
+        processing: [this.processingStatusObject],
+        orderStatus: "started",
+      });
+    },
+    async changeProductInCart(orderObject) {
+      if (this.cartId) orderObject.setOrderId(this.cartId);
+      this.DISABLE_CART();
+      try {
+        await this.addToCart(orderObject);
+        eventBus.$emit("cartVisibilityChange", true);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        this.ENABLE_CART();
+      }
+    },
   },
 };
 </script>

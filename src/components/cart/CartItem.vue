@@ -15,16 +15,19 @@
           <label>
             <input
               v-model.number="amount"
+              :disabled="!isCartReady"
               @keyup="$emit('changeAmount', {itemKey: $vnode.key, amount})"
             >
           </label>
           <div class="input-qnt-ctrl">
-            <div
+            <button
               class="input-qnt-up"
+              :disabled="!isCartReady"
               @click="increase"
             />
-            <div
+            <button
               class="input-qnt-down"
+              :disabled="!isCartReady"
               @click="decrease"
             />
           </div>
@@ -45,6 +48,7 @@
 
 <script>
 import {OrderProduct} from "@/entities/Order";
+import {mapGetters} from "vuex";
 
 export default {
   name: "CartItem",
@@ -57,6 +61,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(["isCartReady"]),
     mainImageBase64() {
       if (this.product.images.length === 0) return "";
       const mainImage = this.product.images.find((image) => image.is_main);

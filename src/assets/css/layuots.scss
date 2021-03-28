@@ -638,6 +638,7 @@
     cursor: pointer;
     position: relative;
     color: $grey;
+    background-color: transparent;
     &::before {
       @include pseudo();
       top: 50%;
