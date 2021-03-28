@@ -34,7 +34,8 @@
             :disabled="!isCartReady"
             @click="addProductToCart()"
           >
-            <span>Купити</span>
+            <span v-if="!isInCart">{{ btnText.buy }}</span>
+            <span v-else>{{ btnText.alreadyInCart }}</span>
           </button>
         </div>
       </div>
@@ -50,6 +51,8 @@ import {
   OrderProductImage,
 } from "@/entities/Order";
 import {mapGetters} from "vuex";
+import eventBus from "@/event-bus";
+import {btnText} from "@/entities/data/btnTexts";
 
 export default {
   props: {
@@ -59,12 +62,20 @@ export default {
     IconBase,
     IconNoImage,
   },
+  data() {
+    return {
+      btnText,
+    }
+  },
   computed: {
-    ...mapGetters(['isCartReady']),
+    ...mapGetters(['isCartReady', 'cart']),
     mainImageUrl() {
       if (this.product.images.length === 0) return "";
       const mainImage = this.product.images.find((image) => image.is_main);
       return mainImage ? mainImage.url : this.product.images[0].url;
+    },
+    isInCart() {
+      return Boolean(this.cart.find(item => item.id === this.product.id));
     },
     productCartObject() {
       return new OrderProduct({
@@ -85,8 +96,10 @@ export default {
   },
   methods: {
     addProductToCart() {
-      this.$emit('addProductToCart', this.productCartObject);
+      this.isInCart
+      ? eventBus.$emit("cartVisibilityChange", true)
+      : this.$emit('addProductToCart', this.productCartObject);
     }
-  }
+  },
 };
 </script>
