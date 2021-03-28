@@ -48,7 +48,8 @@
                         :disabled="quantity <= 0 || !Number.isInteger(quantity) || !isCartReady"
                         @click="addProductToCart"
                       >
-                        <span>Купити</span>
+                        <span v-if="!isInCart">{{ btnText.buy }}</span>
+                        <span v-else>{{ btnText.alreadyInCart }}</span>
                       </button>
                     </div>
                   </div>
@@ -83,8 +84,10 @@ import eventBus from "../event-bus";
 import { mapGetters, mapActions } from "vuex";
 import AboutBanner from "./main/AboutBanner";
 import ProductImages from "@/components/product/ProductImages";
-import Order, {OrderProduct, OrderProductImage, ProcessingStatus, UserInfo} from "@/entities/Order";
-import {userInfoForm} from "@/entities/forms/userInfoForm";
+import Order, { OrderProduct, OrderProductImage, ProcessingStatus, UserInfo } from "@/entities/Order";
+import { userInfoForm } from "@/entities/forms/userInfoForm";
+import { btnText } from "@/entities/data/btnTexts";
+
 export default {
   props: {
     initWaypointProp: {
@@ -108,6 +111,7 @@ export default {
       },
       quantity: 1,
       busy: true,
+      btnText,
     };
   },
   watch: {
@@ -151,6 +155,9 @@ export default {
         return cartItem;
       });
     },
+    isInCart() {
+      return Boolean(this.cart.find(item => item.id === this.productId));
+    },
   },
   methods: {
     ...mapActions(["fetchSingleProduct", "addToCart"]),
@@ -184,7 +191,12 @@ export default {
         orderStatus: "started",
       });
     },
-    async addProductToCart() {
+    addProductToCart() {
+      this.isInCart
+      ? eventBus.$emit("cartVisibilityChange", true)
+      : this.doAddToCart();
+    },
+    async doAddToCart() {
       const orderObject = this.getOrderObject(this.productCartObject);
       if (this.cartId) orderObject.setOrderId(this.cartId);
       try {
@@ -193,7 +205,7 @@ export default {
       } catch (e) {
         console.error(e);
       }
-    },
+    }
   },
   mounted() {
     this.init();
