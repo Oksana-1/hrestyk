@@ -19,21 +19,22 @@
       </router-link>
       <div class="cart-price-row">
         <div class="input-qnt">
-          <label for="quantity">
+          <label>
             <input
-              id="quantity"
-              v-model.number="quantity"
-              @keyup="changeAmount"
+              v-model.number="amount"
+              @keyup="$emit('changeAmount', {itemKey: $vnode.key, amount})"
             >
           </label>
           <div class="input-qnt-ctrl">
-            <div
+            <button
               class="input-qnt-up"
-              @click="changeAmount"
+              :disabled="!isCartReady"
+              @click="increase"
             />
-            <div
+            <button
               class="input-qnt-down"
-              @click="changeAmount"
+              :disabled="!isCartReady"
+              @click="decrease"
             />
           </div>
         </div>
@@ -56,6 +57,7 @@
 
 <script>
 import {OrderProduct} from "@/entities/Order";
+import {mapGetters} from "vuex";
 
 export default {
   name: "CheckoutItem",
@@ -64,26 +66,39 @@ export default {
   },
   data() {
     return {
-      quantity: null
+      amount: null
     }
   },
   computed: {
+    ...mapGetters(["isCartReady"]),
     mainImageBase64() {
       if (this.cartItem.images.length === 0) return "";
       const mainImage = this.cartItem.images.find((image) => image.is_main);
-      return mainImage ? mainImage.image : this.product.images[0].image;
+      return mainImage ? mainImage.image : this.cartItem.images[0].image;
     },
   },
   methods: {
-    changeAmount() {
-      console.log('working hard...');
+    increase() {
+      this.amount += 1;
+      this.$emit('changeAmount', {
+        itemKey: this.$vnode.key,
+        amount: this.amount
+      });
+    },
+    decrease() {
+      if (this.amount <= 1) return;
+      this.amount -= 1;
+      this.$emit('changeAmount', {
+        itemKey: this.$vnode.key,
+        amount: this.amount
+      });
     },
     deleteProduct() {
       console.log('working so hard...');
     }
   },
   created() {
-    this.quantity = this.cartItem.amount;
+    this.amount = this.cartItem.amount;
   }
 }
 </script>

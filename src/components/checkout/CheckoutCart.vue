@@ -28,9 +28,10 @@
         </div>
         <div class="checkout-cart-cont">
           <checkout-item
-            v-for="(cartItem, i) in cart"
-            :key="`cartItem-${i}`"
+            v-for="(cartItem, index) in cart"
+            :key="prefix + index"
             :cart-item="cartItem"
+            @changeAmount="changeAmount($event)"
           />
         </div>
         <div class="card-total-row">
@@ -66,15 +67,19 @@
 
 <script>
 import SpinnerCube from "@/components/ui/SpinnerCube";
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 import eventBus from "@/event-bus";
 import CheckoutItem from "@/components/checkout/CheckoutItem";
+import {cloneObj} from "@/utils/helpers";
+import Order, {ProcessingStatus, UserInfo} from "@/entities/Order";
+import {userInfoForm} from "@/entities/forms/userInfoForm";
 export default {
   name: "OrderCart",
   components: {CheckoutItem, SpinnerCube },
   data() {
     return {
       busy: false,
+      prefix: 'checkout-product-'
     };
   },
   computed: {
@@ -97,10 +102,55 @@ export default {
         }
       }
     },
+    cartForOrder() {
+      return this.cart.map((cartItem) => {
+        cartItem.images.forEach((image) => {
+          delete image.image;
+          return image;
+        });
+        return cartItem;
+      });
+    },
+    userInfoObject() {
+      return new UserInfo(userInfoForm);
+    },
+    processingStatusObject() {
+      return new ProcessingStatus({
+        processingStatus: "started",
+        content: "Init order processing",
+      });
+    },
   },
   methods: {
+    ...mapMutations(["DISABLE_CART", "ENABLE_CART"]),
+    ...mapActions(["addToCart"]),
     closeCart() {
       eventBus.$emit("cartVisibilityChange", false);
+    },
+    changeAmount({ itemKey, amount }) {
+      const cartClone = cloneObj(this.cartForOrder);
+      const index = itemKey.replace(this.prefix, "");
+      cartClone[index].amount = amount;
+      this.changeProductInCart(this.getOrderObject(cartClone));
+    },
+    getOrderObject(newCart) {
+      return new Order({
+        userInfo: this.userInfoObject,
+        products: newCart,
+        processing: [this.processingStatusObject],
+        orderStatus: "started",
+      });
+    },
+    async changeProductInCart(orderObject) {
+      if (this.cartId) orderObject.setOrderId(this.cartId);
+      this.DISABLE_CART();
+      try {
+        await this.addToCart(orderObject);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        this.ENABLE_CART();
+      }
     },
   },
 };
