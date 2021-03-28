@@ -46,7 +46,7 @@
         </div>
         <div
           class="cart-item-del"
-          @click="deleteProduct"
+          @click="$emit('deleteItem', $vnode.key)"
         >
           +
         </div>
@@ -93,9 +93,6 @@ export default {
         amount: this.amount
       });
     },
-    deleteProduct() {
-      console.log('working so hard...');
-    }
   },
   created() {
     this.amount = this.cartItem.amount;
