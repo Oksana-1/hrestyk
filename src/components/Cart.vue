@@ -98,7 +98,9 @@ export default {
     },
     deleteItem(itemKey) {
       const index = itemKey.replace(this.prefix, "");
-      console.log(index);
+      const cartClone = cloneObj(this.cartForOrder);
+      cartClone.splice(index, 1);
+      this.changeProductInCart(this.getOrderObject(cartClone));
     },
     changeAmount({ itemKey, amount }) {
       const cartClone = cloneObj(this.cartForOrder);
