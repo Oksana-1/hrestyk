@@ -44,6 +44,7 @@ export function createStore() {
           commit("SET_PRODUCT", response.product);
           commit("SET_CATEGORIES", response.categories);
         } catch (e) {
+          console.log("vuex here");
           throw e;
         }
       },

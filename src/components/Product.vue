@@ -1,6 +1,7 @@
 <template>
   <div class="product-content hr-content">
-    <template v-if="!busy">
+    <spinner-cube v-if="busy" />
+    <template v-else>
       <div class="catalog-category-section">
         <div class="c-box-1100">
           <div class="catalog-category-container">
@@ -84,6 +85,7 @@ import eventBus from "../event-bus";
 import { mapGetters, mapActions } from "vuex";
 import AboutBanner from "./main/AboutBanner";
 import ProductImages from "@/components/product/ProductImages";
+import SpinnerCube from "@/components/ui/SpinnerCube";
 import Order, { OrderProduct, OrderProductImage, ProcessingStatus, UserInfo } from "@/entities/Order";
 import { userInfoForm } from "@/entities/forms/userInfoForm";
 import { btnText } from "@/entities/data/btnTexts";
@@ -98,6 +100,7 @@ export default {
   components: {
     ProductImages,
     AboutBanner,
+    SpinnerCube,
   },
   data() {
     return {
@@ -110,7 +113,7 @@ export default {
         slidesPerView: 3,
       },
       quantity: 1,
-      busy: true,
+      busy: false,
       btnText,
     };
   },
@@ -172,6 +175,7 @@ export default {
       }
     },
     async init() {
+      this.busy = true;
       try {
         await this.fetchSingleProduct(this.productId);
       } catch (e) {
