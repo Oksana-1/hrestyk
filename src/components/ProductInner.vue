@@ -91,6 +91,7 @@ import { userInfoForm } from "@/entities/forms/userInfoForm";
 import { btnText } from "@/entities/data/btnTexts";
 
 export default {
+  name: "ProductInner",
   props: {
     initWaypointProp: {
       "type": Function,

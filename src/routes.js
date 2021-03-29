@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 import Main from "./components/Main.vue";
 import Catalog from "./components/Catalog.vue";
-import Product from "./components/Product.vue";
+import ProductInner from "./components/ProductInner";
 import Delivery from "./components/Delivery.vue";
 import About from "./components/About.vue";
 import Checkout from "./components/Checkout.vue";
@@ -13,7 +13,7 @@ export function createRouter() {
     routes: [
       { path: "", component: Main },
       { path: "/catalog", component: Catalog },
-      { path: "/catalog/:id", component: Product },
+      { path: "/catalog/:id", component: ProductInner },
       { path: "/delivery", component: Delivery },
       { path: "/about", component: About },
       { path: "/checkout", component: Checkout },
