@@ -105,8 +105,13 @@ export default {
     ...mapMutations(["DISABLE_CART", "ENABLE_CART"]),
     async init() {
       this.busy = true;
-      await this.fetchProducts();
-      this.busy = false;
+      try {
+        await this.fetchProducts();
+      } catch (e) {
+        console.error(e);
+      } finally {
+        this.busy = false;
+      }
     },
     filter(category) {
       this.busy = true;
