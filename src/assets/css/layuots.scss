@@ -780,6 +780,9 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    &.no-image {
+      opacity: 0.3;
+    }
   }
 }
 .cart-item-info {

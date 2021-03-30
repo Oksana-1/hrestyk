@@ -2,9 +2,19 @@
   <div class="cart-item">
     <div class="cart-item-img-fix">
       <div
+        v-if="mainImageBase64"
         class="cart-item-img"
         :style="{ backgroundImage: 'url(data:image/jpg;base64,' + mainImageBase64 + ')' }"
       />
+      <icon-base
+        v-else
+        class="cart-item-img no-image"
+        height="100"
+        width="100"
+        view-box="41.64 164.945 512 512"
+      >
+        <icon-no-image />
+      </icon-base>
     </div>
     <div class="cart-item-info">
       <div class="cart-item-name">
@@ -49,11 +59,17 @@
 <script>
 import {OrderProduct} from "@/entities/Order";
 import {mapGetters} from "vuex";
+import IconBase from "@/components/IconBase";
+import IconNoImage from "@/components/icons/IconNoImage";
 
 export default {
   name: "CartItem",
   props: {
     product: OrderProduct
+  },
+  components: {
+    IconBase,
+    IconNoImage
   },
   data() {
     return {

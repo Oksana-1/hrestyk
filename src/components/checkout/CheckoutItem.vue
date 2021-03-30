@@ -6,9 +6,19 @@
         class="link-abs"
       />
       <div
+        v-if="mainImageBase64"
         class="cart-item-img"
         :style="{ backgroundImage: 'url(data:image/jpg;base64,' + mainImageBase64 + ')' }"
       />
+      <icon-base
+        v-else
+        class="cart-item-img no-image"
+        height="100"
+        width="100"
+        view-box="41.64 164.945 512 512"
+      >
+        <icon-no-image />
+      </icon-base>
     </div>
     <div class="cart-item-info">
       <router-link
@@ -58,11 +68,17 @@
 <script>
 import {OrderProduct} from "@/entities/Order";
 import {mapGetters} from "vuex";
+import IconBase from "@/components/IconBase";
+import IconNoImage from "@/components/icons/IconNoImage";
 
 export default {
   name: "CheckoutItem",
   props: {
     cartItem: OrderProduct
+  },
+  components: {
+    IconBase,
+    IconNoImage,
   },
   data() {
     return {
