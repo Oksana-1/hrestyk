@@ -228,6 +228,7 @@
 /*Catalog*/
 .catalog-category-section {
   background-color: $bkgnd;
+  padding-top: 140px;
 }
 .header-fixed .catalog-category-section {
   padding-top: 100px;
@@ -463,7 +464,6 @@
 }
 /*Product page*/
 .product-content {
-  padding-top: 140px;
   .catalog-category-section {
     .common-title {
       margin-bottom: 0;

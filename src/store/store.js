@@ -10,7 +10,7 @@ export function createStore() {
     state: {
       products: [],
       categories: [],
-      product: {},
+      product: null,
       cart: [],
       cartId: null,
       isCartReady: true,

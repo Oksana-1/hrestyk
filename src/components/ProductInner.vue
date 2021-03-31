@@ -2,7 +2,10 @@
   <div class="product-content hr-content">
     <spinner-cube v-if="busy" />
     <template v-else>
-      <div class="catalog-category-section">
+      <div
+        v-if="product"
+        class="catalog-category-section"
+      >
         <div class="c-box-1100">
           <div class="catalog-category-container">
             <h1 class="common-title">
@@ -22,7 +25,7 @@
                 <div class="product-body">
                   <div
                     class="editor-content`"
-                    v-html="product.description"
+                    :v-html="product.description"
                   />
                   <div class="product-info col-product-info">
                     <div class="buy-qnt-row">
@@ -214,6 +217,7 @@ export default {
   },
   mounted() {
     this.init();
+    console.log(this.product)
   },
 };
 </script>
