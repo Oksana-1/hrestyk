@@ -32,9 +32,11 @@ img.fits{
 	-webkit-flex-wrap: wrap;
 	flex-wrap: wrap;
 }
-.col-50{
+.col-50 {
 	-webkit-flex: 0 0 50%;
 	flex: 0 0 50%;
+	width: 50%;
+	max-width: 50%;
 }
 .common-title{
 	font-family: $primary;
@@ -598,5 +600,8 @@ img.fits{
 	}
 	.hr-cart-wrap{
 		margin-right: 0;
+	}
+	.styled-form-400 {
+		width: 100%;
 	}
 }
