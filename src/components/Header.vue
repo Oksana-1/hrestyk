@@ -6,32 +6,68 @@
     <div class="pc-header">
       <div class="c-box-1100 hr-header-wrap">
         <div class="nav-cont">
-          <div class="logo-fix" @click="navigateToHome()">
-            <img class="fits" src="../assets/images/logo.png" alt="Logo" />
+          <div
+            class="logo-fix"
+            @click="navigateToHome()"
+          >
+            <img
+              class="fits"
+              src="../assets/images/logo.png"
+              alt="Logo"
+            >
           </div>
           <nav class="pc-nav">
             <ul>
-              <router-link to="/" tag="li" active-class="active" exact>
+              <router-link
+                to="/"
+                tag="li"
+                active-class="active"
+                exact
+              >
                 <a>Головна</a>
               </router-link>
-              <router-link to="/catalog" tag="li" active-class="active" exact>
+              <router-link
+                to="/catalog"
+                tag="li"
+                active-class="active"
+                exact
+              >
                 <a>Каталог</a>
               </router-link>
-              <router-link to="/about" tag="li" active-class="active" exact>
+              <router-link
+                to="/about"
+                tag="li"
+                active-class="active"
+                exact
+              >
                 <a>Про нас</a>
               </router-link>
-              <router-link to="/delivery" tag="li" active-class="active" exact>
+              <router-link
+                to="/delivery"
+                tag="li"
+                active-class="active"
+                exact
+              >
                 <a>Оплата та доставка</a>
               </router-link>
             </ul>
             <div class="social-cont social-cont-mobMenu">
-              <a href="#" class="social-link">
+              <a
+                href="#"
+                class="social-link"
+              >
                 <icon-base icon-name="fb"><icon-fb /></icon-base>
               </a>
-              <a href="#" class="social-link">
+              <a
+                href="#"
+                class="social-link"
+              >
                 <icon-base icon-name="ig"><icon-ig /></icon-base>
               </a>
-              <a href="#" class="social-link">
+              <a
+                href="#"
+                class="social-link"
+              >
                 <icon-base icon-name="ig"><icon-twitter /></icon-base>
               </a>
             </div>
@@ -51,7 +87,10 @@
             cartIsEmpty: cart.length === 0,
           }"
         >
-          <button class="hr-cart-btn" @click="cartVisibilityCtrl">
+          <button
+            class="hr-cart-btn"
+            @click="cartVisibilityCtrl"
+          >
             <icon-base
               icon-name="cart"
               view-box="0 0 459.529 459.529"

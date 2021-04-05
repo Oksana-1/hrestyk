@@ -99,8 +99,8 @@
                 <div class="input-row">
                   <button
                     type="submit"
-                    :disabled="cart.length < 1"
-                    @click.prevent="$v.$touch()"
+                    :disabled="cart.length < 1 || busy"
+                    @click.prevent="submitOrder"
                   >
                     Відправити
                   </button>
@@ -122,7 +122,8 @@
 <script>
 import { required, email, numeric, minLength } from "vuelidate/lib/validators";
 import CheckoutCart from "@/components/checkout/CheckoutCart";
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
+import Order, {ProcessingStatus, UserInfo} from "@/entities/Order";
 
 export default {
   components: {
@@ -139,6 +140,8 @@ export default {
         invalidPhonel: "Будь-ласка, введіть корректний телефон",
         empty: "Це поле обов'язкове.",
       },
+      submitStatus: null,
+      busy: false,
     };
   },
   validations: {
@@ -156,7 +159,55 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['cart']),
-  }
+    ...mapGetters(["cart"]),
+    userInfoObject() {
+      return new UserInfo({
+        name: this.name,
+        email: this.email,
+        phone: this.phone,
+      });
+    },
+    processingStatusObject() {
+      return new ProcessingStatus({
+        processingStatus: "ordered",
+        content: "Order sent by customer",
+      });
+    },
+    getOrderObject() {
+      return new Order({
+        userInfo: this.userInfoObject,
+        products: this.cartForOrder,
+        processing: [this.processingStatusObject],
+        orderStatus: "ordered",
+      });
+    },
+    cartForOrder() {
+      return this.cart.map((cartItem) => {
+        cartItem.images.forEach((image) => {
+          delete image.image;
+          return image;
+        });
+        return cartItem;
+      });
+    },
+  },
+  methods: {
+    ...mapActions(["addToCart", "setCart"]),
+    async submitOrder() {
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        this.busy = false;
+        try {
+          await this.addToCart(this.getOrderObject);
+          localStorage.removeItem("cartId");
+          this.setCart([]);
+          await this.$router.push('thankyou');
+        } catch (e) {
+          console.error(e);
+          this.busy = true;
+        }
+      }
+    },
+  },
 };
 </script>

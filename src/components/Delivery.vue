@@ -2,7 +2,9 @@
   <div class="delivery-content hr-content">
     <div class="delivery-content-block">
       <div class="c-box-1100">
-        <div class="delivery-content-title">Строки виготовлення</div>
+        <div class="delivery-content-title">
+          Строки виготовлення
+        </div>
         <div class="delivery-content-text">
           <p>
             Всі прикраси, що є в нашому каталозі - є в наявності, в кількості
@@ -22,7 +24,9 @@
     </div>
     <div class="delivery-content-block">
       <div class="c-box-1100">
-        <div class="delivery-content-title">Умови оплати</div>
+        <div class="delivery-content-title">
+          Умови оплати
+        </div>
         <div class="delivery-content-text">
           <p>На сьогодні ми працюємо тільки по передплаті.</p>
           <p>
@@ -38,7 +42,9 @@
     </div>
     <div class="delivery-content-block">
       <div class="c-box-1100">
-        <div class="delivery-content-title">Способи доставки</div>
+        <div class="delivery-content-title">
+          Способи доставки
+        </div>
         <div class="delivery-content-text">
           <p>Фізично всі вишиті прикраси знаходяться в Києві.</p>
           <p>

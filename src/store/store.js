@@ -66,6 +66,9 @@ export function createStore() {
           throw e;
         }
       },
+      setCart({ commit }, cart) {
+        commit("SET_CART", cart);
+      },
     },
     mutations: {
       SET_PRODUCTS: (state, data) => {

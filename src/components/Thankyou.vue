@@ -3,14 +3,20 @@
     <div class="catalog-category-section">
       <div class="c-box-1100">
         <div class="catalog-category-container">
-          <h1 class="common-title">Дякуємо за замовлення</h1>
+          <h1 class="common-title">
+            Дякуємо за замовлення
+          </h1>
         </div>
       </div>
     </div>
     <div class="thankyou-section">
       <div class="c-box-1100">
         <div class="sep-line-img">
-          <img class="fits" src="../assets/images/logo.png" alt="Logo" />
+          <img
+            class="fits"
+            src="../assets/images/logo.png"
+            alt="Logo"
+          >
         </div>
         <div class="editor-content">
           <p>Ваше замовлення було прийнято в роботу.</p>
@@ -21,8 +27,11 @@
           <p><a href="tel:+380504438488">050-443-84-88</a></p>
         </div>
         <div class="hrestyk-btn-wrap">
-          <router-link to="/" class="hrestyk-btn-bordered-white">
-            <div class="link-abs"></div>
+          <router-link
+            to="/"
+            class="hrestyk-btn-bordered-white"
+          >
+            <div class="link-abs" />
             <span>Повернутися на головну</span>
           </router-link>
         </div>
