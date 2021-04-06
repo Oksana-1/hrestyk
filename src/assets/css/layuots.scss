@@ -784,6 +784,9 @@
       opacity: 0.3;
     }
   }
+  &.busy {
+    opacity: 0.5;
+  }
 }
 .cart-item-info {
   @include flexbox();

@@ -1,5 +1,8 @@
 <template>
-  <div class="cart-item">
+  <div
+    class="cart-item"
+    :class="{busy}"
+  >
     <div class="cart-item-img-fix">
       <router-link
         :to="'/catalog/' + cartItem.id"
@@ -32,18 +35,19 @@
           <label>
             <input
               v-model.number="amount"
+              :disabled="busy"
               @keyup="$emit('changeAmount', {itemKey: $vnode.key, amount})"
             >
           </label>
           <div class="input-qnt-ctrl">
             <button
               class="input-qnt-up"
-              :disabled="!isCartReady"
+              :disabled="busy"
               @click="increase"
             />
             <button
               class="input-qnt-down"
-              :disabled="!isCartReady"
+              :disabled="busy"
               @click="decrease"
             />
           </div>
@@ -67,14 +71,14 @@
 
 <script>
 import {OrderProduct} from "@/entities/Order";
-import {mapGetters} from "vuex";
 import IconBase from "@/components/IconBase";
 import IconNoImage from "@/components/icons/IconNoImage";
 
 export default {
   name: "CheckoutItem",
   props: {
-    cartItem: OrderProduct
+    cartItem: OrderProduct,
+    busy: Boolean,
   },
   components: {
     IconBase,
@@ -86,7 +90,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["isCartReady"]),
     mainImageBase64() {
       if (this.cartItem.images.length === 0) return "";
       const mainImage = this.cartItem.images.find((image) => image.is_main);

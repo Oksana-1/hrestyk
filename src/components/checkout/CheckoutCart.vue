@@ -31,6 +31,7 @@
             v-for="(cartItem, index) in cart"
             :key="prefix + index"
             :cart-item="cartItem"
+            :busy="busy"
             @changeAmount="changeAmount($event)"
             @deleteItem="deleteItem"
           />
@@ -150,13 +151,13 @@ export default {
     },
     async changeProductInCart(orderObject) {
       if (this.cartId) orderObject.setOrderId(this.cartId);
-      this.DISABLE_CART();
+      this.busy = true;
       try {
         await this.addToCart(orderObject);
       } catch (e) {
         console.error(e);
       } finally {
-        this.ENABLE_CART();
+        this.busy = false;
       }
     },
   },
