@@ -1,5 +1,8 @@
 <template>
-  <div class="cart-item">
+  <div
+    class="cart-item"
+    :class="{busy }"
+  >
     <div class="cart-item-img-fix">
       <div
         v-if="mainImageBase64"
@@ -25,19 +28,19 @@
           <label>
             <input
               v-model.number="amount"
-              :disabled="!isCartReady"
+              :disabled="busy"
               @keyup="$emit('changeAmount', {itemKey: $vnode.key, amount})"
             >
           </label>
           <div class="input-qnt-ctrl">
             <button
               class="input-qnt-up"
-              :disabled="!isCartReady"
+              :disabled="busy"
               @click="increase"
             />
             <button
               class="input-qnt-down"
-              :disabled="!isCartReady"
+              :disabled="busy"
               @click="decrease"
             />
           </div>
@@ -65,7 +68,8 @@ import IconNoImage from "@/components/icons/IconNoImage";
 export default {
   name: "CartItem",
   props: {
-    product: OrderProduct
+    product: OrderProduct,
+    busy: Boolean,
   },
   components: {
     IconBase,
