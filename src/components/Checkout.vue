@@ -122,8 +122,9 @@
 <script>
 import { required, email, numeric, minLength } from "vuelidate/lib/validators";
 import CheckoutCart from "@/components/checkout/CheckoutCart";
-import {mapActions, mapGetters} from "vuex";
-import Order, {ProcessingStatus, UserInfo} from "@/entities/Order";
+import { mapActions, mapGetters } from "vuex";
+import Order, { ProcessingStatus, UserInfo } from "@/entities/Order";
+import { cloneObj } from "@/utils/helpers";
 
 export default {
   components: {
@@ -182,7 +183,8 @@ export default {
       });
     },
     cartForOrder() {
-      return this.cart.map((cartItem) => {
+      const cartClone = cloneObj(this.cart);
+      return cartClone.map((cartItem) => {
         cartItem.images.forEach((image) => {
           delete image.image;
           return image;
@@ -201,7 +203,7 @@ export default {
           await this.addToCart(this.getOrderObject);
           localStorage.removeItem("cartId");
           this.setCart([]);
-          await this.$router.push('thankyou');
+          await this.$router.push("thankyou");
         } catch (e) {
           console.error(e);
           this.busy = true;

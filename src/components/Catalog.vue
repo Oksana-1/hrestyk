@@ -55,10 +55,11 @@
 <script>
 import ProductCard from "./catalog/ProductCart";
 import SpinnerCube from "@/components/ui/SpinnerCube";
-import {mapActions, mapGetters, mapMutations} from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import eventBus from "@/event-bus";
 import { userInfoForm } from "@/entities/forms/userInfoForm";
 import Order, { ProcessingStatus, UserInfo } from "@/entities/Order";
+import { cloneObj } from "@/utils/helpers";
 
 export default {
   components: {
@@ -91,7 +92,8 @@ export default {
       });
     },
     cartForOrder() {
-      return this.cart.map((cartItem) => {
+      const cartClone = cloneObj(this.cart);
+      return cartClone.map((cartItem) => {
         cartItem.images.forEach((image) => {
           delete image.image;
           return image;
@@ -119,7 +121,9 @@ export default {
       this.busy = false;
     },
     getOrderObject(cartProduct) {
-      const onlyOldCartProducts = this.cartForOrder.filter(cartItem => cartItem.id !== cartProduct.id);
+      const onlyOldCartProducts = this.cartForOrder.filter(
+        (cartItem) => cartItem.id !== cartProduct.id
+      );
       return new Order({
         userInfo: this.userInfoObject,
         products: [...onlyOldCartProducts, cartProduct],
@@ -130,7 +134,7 @@ export default {
     async addProductToCart(product) {
       const orderObject = this.getOrderObject(product);
       if (this.cartId) orderObject.setOrderId(this.cartId);
-      this.DISABLE_CART()
+      this.DISABLE_CART();
       try {
         await this.addToCart(orderObject);
         eventBus.$emit("cartVisibilityChange", true);

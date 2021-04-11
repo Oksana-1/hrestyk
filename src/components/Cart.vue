@@ -57,7 +57,7 @@
 
 <script>
 import eventBus from "../event-bus";
-import {mapActions, mapGetters, mapMutations} from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import CartItem from "@/components/cart/CartItem";
 import SpinnerCube from "@/components/ui/SpinnerCube";
 import Order, { ProcessingStatus, UserInfo } from "@/entities/Order";
@@ -74,7 +74,8 @@ export default {
   computed: {
     ...mapGetters(["cart", "cartId", "total", "isCartReady"]),
     cartForOrder() {
-      return this.cart.map((cartItem) => {
+      const cartClone = cloneObj(this.cart);
+      return cartClone.map((cartItem) => {
         cartItem.images.forEach((image) => {
           delete image.image;
           return image;

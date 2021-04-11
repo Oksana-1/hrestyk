@@ -105,7 +105,8 @@ export default {
       }
     },
     cartForOrder() {
-      return this.cart.map((cartItem) => {
+      const cartClone = cloneObj(this.cart);
+      return cartClone.map((cartItem) => {
         cartItem.images.forEach((image) => {
           delete image.image;
           return image;
