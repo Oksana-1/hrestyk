@@ -1,3 +1,5 @@
+import { ObjectCreationValidator } from "@/entities/ObjectCreationValidator";
+
 export default class Order {
   constructor(order) {
     this.userInfo = new UserInfo(order.userInfo);
@@ -8,6 +10,8 @@ export default class Order {
       (item) => new ProcessingStatus(item)
     );
     this.orderStatus = order.orderStatus;
+
+    ObjectCreationValidator.validate(this);
   }
   setOrderId(orderId) {
     this.id = orderId;
@@ -18,6 +22,8 @@ export class UserInfo {
     this.name = userInfo.name;
     this.email = userInfo.email;
     this.phone = userInfo.phone;
+
+    ObjectCreationValidator.validate(this);
   }
 }
 export class OrderProduct {
@@ -33,6 +39,8 @@ export class OrderProduct {
       }
       return image;
     });
+
+    ObjectCreationValidator.validate(this);
   }
 
   get id() {
