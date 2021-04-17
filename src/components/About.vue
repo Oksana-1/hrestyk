@@ -3,7 +3,9 @@
     <div class="about-top-img-fix">
       <div
         class="about-top-img"
-        :style="{ backgroundImage: `url('${require('../assets/images/about-img.jpg')}')`}"
+        :style="{
+          backgroundImage: `url('${require('../assets/images/about-img.jpg')}')`,
+        }"
       />
       <div class="about-top-text">
         <div class="about-top-text-inner">
@@ -29,10 +31,10 @@
         </div>
       </div>
     </div>
-    <div class="about-section">
+    <div class="about-section waypoint">
       <div class="c-box-1100">
         <div class="c-cont">
-          <div class="col-50">
+          <div class="col-50 animate opacity from-left">
             <div class="traditional-img-fix">
               <img
                 :src="require('../assets/images/traditional.jpg')"
@@ -41,7 +43,7 @@
               >
             </div>
           </div>
-          <div class="col-50 traditional-text">
+          <div class="col-50 traditional-text animate opacity">
             <h2 class="common-title">
               Традиції і сучасність
             </h2>
@@ -69,10 +71,10 @@
         </div>
       </div>
     </div>
-    <div class="goods-section">
+    <div class="goods-section waypoint">
       <div class="c-box-1100">
         <div class="c-cont">
-          <div class="col-50 goods-text-col">
+          <div class="col-50 goods-text-col animate opacity">
             <h2 class="common-title">
               Майстерність у деталях
             </h2>
@@ -91,12 +93,35 @@
           </div>
         </div>
       </div>
-      <div class="goods-img-fix">
+      <div class="goods-img-fix animate opacity from-right">
         <div
           class="goods-img"
-          :style="{backgroundImage: `url('${require('../assets/images/product.jpg')}')`}"
+          :style="{
+            backgroundImage: `url('${require('../assets/images/product.jpg')}')`,
+          }"
         />
       </div>
     </div>
   </div>
 </template>
+<script>
+export default {
+  methods: {
+    initWaypoint() {
+      const waypointElements = document.querySelectorAll(".waypoint");
+      waypointElements.forEach((waypointElement) => {
+        new Waypoint({
+          element: waypointElement,
+          handler: function () {
+            waypointElement.classList.add("waypoint-done");
+          },
+          offset: "80%",
+        });
+      });
+    },
+  },
+  mounted() {
+    this.initWaypoint();
+  }
+};
+</script>

@@ -155,6 +155,12 @@ img.fits{
 		&.from-down{
 			@include translate(0, 50px);
 		}
+		&.from-left {
+			@include translate(-100%, 0);
+		}
+		&.from-right {
+			@include translate(100%, 0);
+		}
 	}
 	&.waypoint-done{
 		.animate{
@@ -165,6 +171,12 @@ img.fits{
 				height: auto;
 			}
 			&.from-down{
+				@include translate(0, 0);
+			}
+			&.from-left {
+				@include translate(0, 0);
+			}
+			&.from-right {
 				@include translate(0, 0);
 			}
 		}
