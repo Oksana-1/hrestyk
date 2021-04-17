@@ -56,8 +56,8 @@ export default {
     ...mapMutations(["SET_CART_ID", "DISABLE_CART", "ENABLE_CART"]),
     ...mapActions(["getCart"]),
     initWaypoint() {
-      let waypointElements = document.querySelectorAll(".waypoint");
-      waypointElements.forEach(function (waypointElement) {
+      const waypointElements = document.querySelectorAll(".waypoint");
+      waypointElements.forEach( (waypointElement) => {
         new Waypoint({
           element: waypointElement,
           handler: function () {

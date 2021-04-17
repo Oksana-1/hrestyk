@@ -49,7 +49,6 @@ export default {
     }
   },
   mounted() {
-    this.initWaypointProp();
     this.init();
   },
 };
