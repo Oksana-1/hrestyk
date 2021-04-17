@@ -13,15 +13,9 @@ import ProductSlider from "./main/ProductSlider.vue";
 import TopSlider from "./main/TopSlider.vue";
 import AboutBanner from "./main/AboutBanner";
 import SeoText from "./main/SeoText";
-import {mapActions} from "vuex";
+import { mapActions } from "vuex";
 
 export default {
-  props: {
-    initWaypointProp: {
-      type: Function,
-      default: () => {}
-    },
-  },
   components: {
     appProductSlider: ProductSlider,
     appTopSlider: TopSlider,
@@ -31,22 +25,34 @@ export default {
   data() {
     return {
       busy: true,
-    }
+    };
   },
   methods: {
-    ...mapActions(['fetchProducts']),
+    ...mapActions(["fetchProducts"]),
     async init() {
       try {
         await this.fetchProducts();
-      } catch(e) {
+      } catch (e) {
         console.error(e);
       } finally {
         this.busy = false;
         requestAnimationFrame(() => {
-          this.initWaypointProp();
+          this.initWaypoint();
         });
       }
-    }
+    },
+    initWaypoint() {
+      const waypointElements = document.querySelectorAll(".waypoint");
+      waypointElements.forEach((waypointElement) => {
+        new Waypoint({
+          element: waypointElement,
+          handler: function () {
+            waypointElement.classList.add("waypoint-done");
+          },
+          offset: "80%",
+        });
+      });
+    },
   },
   mounted() {
     this.init();

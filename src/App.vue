@@ -8,7 +8,7 @@
       name="fade" 
       mode="out-in" 
     >
-      <router-view :init-waypoint-prop="initWaypoint" />
+      <router-view />
     </transition>
     <app-footer />
   </div>
@@ -55,18 +55,6 @@ export default {
   methods: {
     ...mapMutations(["SET_CART_ID", "DISABLE_CART", "ENABLE_CART"]),
     ...mapActions(["getCart"]),
-    initWaypoint() {
-      const waypointElements = document.querySelectorAll(".waypoint");
-      waypointElements.forEach( (waypointElement) => {
-        new Waypoint({
-          element: waypointElement,
-          handler: function () {
-            waypointElement.classList.add("waypoint-done");
-          },
-          offset: "80%",
-        });
-      });
-    },
     async init() {
       const cartId = localStorage.getItem('cartId');
       if (cartId) {

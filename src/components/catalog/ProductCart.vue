@@ -1,10 +1,10 @@
 <template>
-  <div class="product-card-wrap">
+  <div class="product-card-wrap waypoint">
     <router-link
       :to="'/catalog/' + product.id"
       class="link-abs"
     />
-    <div class="product-card-inner">
+    <div class="product-card-inner animate opacity from-down">
       <div class="product-img-fix">
         <div
           v-if="mainImageUrl"
@@ -99,7 +99,22 @@ export default {
       this.isInCart
       ? eventBus.$emit("cartVisibilityChange", true)
       : this.$emit('addProductToCart', this.productCartObject);
-    }
+    },
+    initWaypoint() {
+      const waypointElements = document.querySelectorAll(".waypoint");
+      waypointElements.forEach((waypointElement) => {
+        new Waypoint({
+          element: waypointElement,
+          handler: function () {
+            waypointElement.classList.add("waypoint-done");
+          },
+          offset: "80%",
+        });
+      });
+    },
   },
+  mounted() {
+    this.initWaypoint();
+  }
 };
 </script>
