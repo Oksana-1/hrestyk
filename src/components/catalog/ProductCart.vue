@@ -4,7 +4,7 @@
       :to="'/catalog/' + product.id"
       class="link-abs"
     />
-    <div class="product-card-inner animate opacity from-down">
+    <div class="product-card-inner animate opacity">
       <div class="product-img-fix">
         <div
           v-if="mainImageUrl"
