@@ -95,12 +95,6 @@ import { btnText } from "@/entities/data/btnTexts";
 
 export default {
   name: "ProductInner",
-  props: {
-    initWaypointProp: {
-      "type": Function,
-      "default": {},
-    },
-  },
   components: {
     ProductImages,
     AboutBanner,
@@ -187,7 +181,7 @@ export default {
       } finally {
         this.busy = false;
         requestAnimationFrame(() => {
-          this.initWaypointProp();
+          this.initWaypoint();
         });
       }
     },
@@ -213,11 +207,22 @@ export default {
       } catch (e) {
         console.error(e);
       }
-    }
+    },
+    initWaypoint() {
+      const waypointElements = document.querySelectorAll(".waypoint");
+      waypointElements.forEach((waypointElement) => {
+        new Waypoint({
+          element: waypointElement,
+          handler: function () {
+            waypointElement.classList.add("waypoint-done");
+          },
+          offset: "80%",
+        });
+      });
+    },
   },
   mounted() {
     this.init();
-    console.log(this.product)
   },
 };
 </script>
