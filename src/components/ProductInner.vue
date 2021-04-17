@@ -124,7 +124,7 @@ export default {
     ...mapGetters(["product", "cart", "cartId", "isCartReady"]),
     productCartObject() {
       return new OrderProduct({
-        id: this.product.id,
+        _id: this.product.id,
         title: this.product.title,
         amount: this.quantity,
         price: this.product.price,
