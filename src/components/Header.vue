@@ -19,36 +19,61 @@
           <nav class="pc-nav">
             <ul>
               <router-link
+                v-slot="{ href, navigate, isActive, isExactActive }"
                 to="/"
-                tag="li"
-                active-class="active"
                 exact
+                custom
               >
-                <a>Головна</a>
+                <li :class="{active: isActive}">
+                  <a
+                    :href="href"
+                    @click="navigate"
+                  >
+                    Головна
+                  </a>
+                </li>
               </router-link>
               <router-link
+                v-slot="{ href, navigate, isActive, isExactActive }"
                 to="/catalog"
-                tag="li"
-                active-class="active"
-                exact
+                custom
               >
-                <a>Каталог</a>
+                <li :class="{active: isActive}">
+                  <a
+                    :href="href"
+                    @click="navigate"
+                  >
+                    Каталог
+                  </a>
+                </li>
               </router-link>
               <router-link
+                v-slot="{ href, navigate, isActive, isExactActive }"
                 to="/about"
-                tag="li"
-                active-class="active"
-                exact
+                custom
               >
-                <a>Про нас</a>
+                <li :class="{active: isActive}">
+                  <a
+                    :href="href"
+                    @click="navigate"
+                  >
+                    Про нас
+                  </a>
+                </li>
               </router-link>
               <router-link
+                v-slot="{ href, navigate, isActive, isExactActive }"
                 to="/delivery"
-                tag="li"
-                active-class="active"
-                exact
+                custom
               >
-                <a>Оплата та доставка</a>
+                <li :class="{active: isActive}">
+                  <a
+                    :href="href"
+                    @click="navigate"
+                  >
+                    Оплата та доставка
+                  </a>
+                </li>
               </router-link>
             </ul>
             <div class="social-cont social-cont-mobMenu">
@@ -84,7 +109,7 @@
           class="hr-cart-wrap cartContainer"
           :class="{
             hiddenCart: !cartIsShown,
-            cartIsEmpty: cart.length === 0,
+            cartIsEmpty: cart.length === 0
           }"
         >
           <button
