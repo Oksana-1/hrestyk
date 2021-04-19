@@ -14,9 +14,22 @@
           :to="'/about'"
           class="hrestyk-btn-light hrestyk-btn-200"
         >
-          <span>Докладніше</span>
+          <span>
+            {{ btnText.more }}
+          </span>
         </router-link>
       </div>
     </div>
   </div>
 </template>
+<script>
+  import { btnText } from "@/entities/data/btnTexts";
+
+  export default {
+    data() {
+      return {
+        btnText
+      }
+    }
+  }
+</script>

@@ -52,7 +52,7 @@
         class="hrestyk-btn-dark hrestyk-btn-200 animate opacity"
       >
         <span>
-          Всі товари
+          {{ btnText.allGoods }}
         </span>
       </router-link>
     </div>
@@ -61,10 +61,17 @@
 <script>
 import { mapGetters } from "vuex";
 import { Carousel, Slide } from "vue-carousel";
+import { btnText } from "@/entities/data/btnTexts";
+
 export default {
   components: {
     Carousel,
     Slide,
+  },
+  data() {
+    return {
+      btnText
+    }
   },
   computed: {
     ...mapGetters(["products"]),

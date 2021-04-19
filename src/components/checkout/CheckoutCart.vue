@@ -59,7 +59,7 @@
               class="link-abs"
               @click="closeCart"
             />
-            <span>Повернутися в магазин</span>
+            <span>{{ btnText.continueShopping }}</span>
           </router-link>
         </div>
       </div>
@@ -75,13 +75,16 @@ import CheckoutItem from "@/components/checkout/CheckoutItem";
 import {cloneObj} from "@/utils/helpers";
 import Order, {ProcessingStatus, UserInfo} from "@/entities/Order";
 import {userInfoForm} from "@/entities/forms/userInfoForm";
+import { btnText } from "@/entities/data/btnTexts";
+
 export default {
   name: "OrderCart",
   components: {CheckoutItem, SpinnerCube },
   data() {
     return {
       busy: false,
-      prefix: 'checkout-product-'
+      prefix: 'checkout-product-',
+      btnText,
     };
   },
   computed: {

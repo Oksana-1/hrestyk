@@ -102,7 +102,7 @@
                     :disabled="cart.length < 1 || busy"
                     @click.prevent="submitOrder"
                   >
-                    Відправити
+                    {{ btnText.send }}
                   </button>
                 </div>
               </form>
@@ -125,6 +125,7 @@ import CheckoutCart from "@/components/checkout/CheckoutCart";
 import { mapActions, mapGetters } from "vuex";
 import Order, { ProcessingStatus, UserInfo } from "@/entities/Order";
 import { cloneObj } from "@/utils/helpers";
+import { btnText } from "@/entities/data/btnTexts";
 
 export default {
   components: {
@@ -143,6 +144,7 @@ export default {
       },
       submitStatus: null,
       busy: false,
+      btnText,
     };
   },
   validations: {

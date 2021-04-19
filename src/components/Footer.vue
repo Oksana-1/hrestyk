@@ -35,9 +35,9 @@
             <div class="input-row">
               <button
                 type="submit"
-                @click.prevent="sendForm(), $v.$touch()"
+                @click.prevent="submit"
               >
-                Відправити
+                {{ btnText.send }}
               </button>
             </div>
           </form>
@@ -139,12 +139,15 @@ import IconTwitter from "../components/icons/IconTwitter.vue";
 import IconPhone from "../components/icons/IconPhone.vue";
 import IconEmail from "../components/icons/IconEmail.vue";
 import { required, numeric, minLength } from "vuelidate/lib/validators";
+import { btnText } from "@/entities/data/btnTexts";
+
 export default {
   data() {
     return {
       name: "",
       phone: "",
       message: "",
+      btnText,
     };
   },
   components: {
@@ -178,6 +181,10 @@ export default {
       };
       this.SEND_FORM(footerFormData);
     },
+    submit() {
+      this.sendForm();
+      this.$v.$touch()
+    }
   },
 };
 </script>

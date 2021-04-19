@@ -25,7 +25,7 @@
                 :to="'/catalog/'"
                 class="hrestyk-btn-white hrestyk-btn-200"
               >
-                <span>В магазин</span>
+                <span>{{ btnText.goToShop }}</span>
               </router-link>
             </div>
           </div>
@@ -36,7 +36,8 @@
 </template>
 <script>
 import { Carousel, Slide } from "vue-carousel";
-import {mainSliderImages} from "@/entities/data/mainSliderImages";
+import { mainSliderImages } from "@/entities/data/mainSliderImages";
+import { btnText } from "@/entities/data/btnTexts";
 
 export default {
   components: {
@@ -45,7 +46,8 @@ export default {
   },
   data() {
     return {
-      mainSliderImages
+      mainSliderImages,
+      btnText
     }
   },
 };

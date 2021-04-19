@@ -18,7 +18,7 @@
               class="link-abs"
               @click="closeCart"
             />
-            <span>В магазин</span>
+            <span>{{ btnText.goToShop }}</span>
           </router-link>
         </div>
         <div
@@ -46,7 +46,7 @@
                 class="link-abs"
                 @click="closeCart"
               />
-              <span>Оформити замовлення</span>
+              <span>{{ btnText.checkout }}</span>
             </router-link>
           </div>
         </div>
@@ -63,12 +63,15 @@ import SpinnerCube from "@/components/ui/SpinnerCube";
 import Order, { ProcessingStatus, UserInfo } from "@/entities/Order";
 import { userInfoForm } from "@/entities/forms/userInfoForm";
 import { cloneObj } from "@/utils/helpers";
+import { btnText } from "@/entities/data/btnTexts";
+
 export default {
   components: { SpinnerCube, CartItem },
   data() {
     return {
       prefix: "cart-product-",
       busy: false,
+      btnText
     };
   },
   computed: {
