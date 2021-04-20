@@ -8,7 +8,7 @@
           class="cart-info"
         >
           <div class="cart-title">
-            Ваш кошик пустий
+            {{ noteTexts.emptyCart }}
           </div>
           <router-link
             to="/catalog"
@@ -35,7 +35,7 @@
           />
           <div class="card-total-row">
             <div class="total-sum">
-              Загальна cума:
+              { noteTexts.totalSum }}
               <span class="total-num"> {{ total }} грн </span>
             </div>
             <router-link
@@ -64,6 +64,7 @@ import Order, { ProcessingStatus, UserInfo } from "@/entities/Order";
 import { userInfoForm } from "@/entities/forms/userInfoForm";
 import { cloneObj } from "@/utils/helpers";
 import { btnText } from "@/entities/data/btnTexts";
+import {noteTexts} from "@/entities/data/texts";
 
 export default {
   components: { SpinnerCube, CartItem },
@@ -71,7 +72,8 @@ export default {
     return {
       prefix: "cart-product-",
       busy: false,
-      btnText
+      btnText,
+      noteTexts
     };
   },
   computed: {

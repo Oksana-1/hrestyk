@@ -8,7 +8,7 @@
       />
       <div class="about-content-cont">
         <div class="title-big">
-          Наша історія
+          {{ headerTexts.aboutUs }}
         </div>
         <router-link
           :to="'/about'"
@@ -24,11 +24,13 @@
 </template>
 <script>
   import { btnText } from "@/entities/data/btnTexts";
+  import {headerTexts} from "@/entities/data/texts";
 
   export default {
     data() {
       return {
-        btnText
+        btnText,
+        headerTexts
       }
     }
   }

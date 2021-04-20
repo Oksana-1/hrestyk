@@ -4,7 +4,7 @@
       <div class="c-box-1100">
         <div class="catalog-category-container">
           <h1 class="common-title">
-            Оформлення замовлення
+            {{ headerTexts.checkout }}
           </h1>
         </div>
       </div>
@@ -15,8 +15,7 @@
           <div class="col-50 col-form">
             <div class="styled-form white-bkgnd-form styled-form-400">
               <div class="cart-note">
-                Будь ласка, заповніть форму, і наш менеджер зконтактує з Вами
-                найближчого часу.
+                {{ noteTexts.beforeFormNote }}
               </div>
               <form :class="{ 'form-disabled': cart.length < 1 }">
                 <div
@@ -109,7 +108,7 @@
             </div>
             <div class="checkout-links-wrap">
               <router-link to="/delivery">
-                Умови оплати і доставки
+                {{ noteTexts.paymentAndDeliveryNote }}
               </router-link>
             </div>
           </div>
@@ -126,6 +125,7 @@ import { mapActions, mapGetters } from "vuex";
 import Order, { ProcessingStatus, UserInfo } from "@/entities/Order";
 import { cloneObj } from "@/utils/helpers";
 import { btnText } from "@/entities/data/btnTexts";
+import { headerTexts, noteTexts } from "@/entities/data/texts";
 
 export default {
   components: {
@@ -145,6 +145,8 @@ export default {
       submitStatus: null,
       busy: false,
       btnText,
+      headerTexts,
+      noteTexts
     };
   },
   validations: {

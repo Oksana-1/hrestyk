@@ -2,7 +2,7 @@
   <div class="product-slider-section waypoint">
     <div class="c-box-1100">
       <div class="common-title">
-        Товари
+        {{ headerTexts.mainProductSlider }}
       </div>
     </div>
     <div class="product-slider-wrap">
@@ -62,6 +62,7 @@
 import { mapGetters } from "vuex";
 import { Carousel, Slide } from "vue-carousel";
 import { btnText } from "@/entities/data/btnTexts";
+import { headerTexts } from "@/entities/data/texts";
 
 export default {
   components: {
@@ -70,7 +71,8 @@ export default {
   },
   data() {
     return {
-      btnText
+      btnText,
+      headerTexts,
     }
   },
   computed: {

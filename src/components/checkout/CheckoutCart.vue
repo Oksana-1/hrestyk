@@ -3,7 +3,7 @@
     <spinner-cube v-if="!isCartReady" />
     <template v-else>
       <h2 class="small-title">
-        Кошик
+        {{ headerTexts.cart }}
       </h2>
       <div
         v-if="cart.length > 0"
@@ -11,7 +11,7 @@
       >
         <div class="cart-note-wrap">
           <div class="cart-note">
-            У Вашому кошику
+            {{ noteTexts.inYourCartNote }}
             <span class="cart-qnt">{{ cart.length }}</span>
             {{ itemString }}
           </div>
@@ -23,7 +23,7 @@
               class="link-abs"
               @click="closeCart"
             />
-            <span>Продовжити покупки</span>
+            <span>{{ btnText.continueShopping }}</span>
           </router-link>
         </div>
         <div class="checkout-cart-cont">
@@ -38,7 +38,7 @@
         </div>
         <div class="card-total-row">
           <div class="total-sum">
-            Загальна cума:
+            {{ noteTexts.totalSum }}
             <span class="total-num">{{ total }} грн</span>
           </div>
         </div>
@@ -49,7 +49,7 @@
       >
         <div class="cart-note-wrap">
           <div class="cart-note">
-            У Вашому кошику немає товарів
+            {{ noteTexts.emptyCart }}
           </div>
           <router-link
             to="/catalog"
@@ -76,6 +76,7 @@ import {cloneObj} from "@/utils/helpers";
 import Order, {ProcessingStatus, UserInfo} from "@/entities/Order";
 import {userInfoForm} from "@/entities/forms/userInfoForm";
 import { btnText } from "@/entities/data/btnTexts";
+import {headerTexts, noteTexts} from "@/entities/data/texts";
 
 export default {
   name: "OrderCart",
@@ -85,6 +86,8 @@ export default {
       busy: false,
       prefix: 'checkout-product-',
       btnText,
+      headerTexts,
+      noteTexts
     };
   },
   computed: {
