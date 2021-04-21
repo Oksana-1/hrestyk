@@ -10,24 +10,12 @@
       <div class="about-top-text">
         <div class="about-top-text-inner">
           <h1 class="about-title">
-            Магазин "Хрестик"
+            {{ aboutUsTitles.zero }}
           </h1>
-          <div class="editor-content">
-            <p>
-              Наша історія бере початок у 2015 році. Саме тоді було виготовлена
-              перша пара вишитих сережок в етно-стилі.
-            </p>
-            <p>
-              З того часу ми створили і відправили до майбутніх власниць сотні
-              замовлень в різні країни світу. Високу якість і ексклюзивний
-              дизайн наших виробів оцінили люди в Україні, Німеччині, Канаді,
-              Сполучених Штатах і навіть в Австралії.
-            </p>
-            <p>
-              Ми дуже пишаємося такою географією, і будемо робити все можливе,
-              щоб її розширити.
-            </p>
-          </div>
+          <div
+            class="editor-content"
+            v-html="aboutUsTexts.zero"
+          />
         </div>
       </div>
     </div>
@@ -45,28 +33,12 @@
           </div>
           <div class="col-50 traditional-text animate opacity">
             <h2 class="common-title">
-              Традиції і сучасність
+              {{ aboutUsTitles.first }}
             </h2>
-            <div class="editor-content">
-              <p>
-                Головне джерело натхнення для нас - це традиційна українська
-                вишивка з ії неймовірним символізмом і гармонією кольорів.
-              </p>
-              <p>
-                Ми намагаємося долучити багатовікові українські візерунки й
-                орнаменти до сьогодення. Більшість мотивів в наших роботах
-                подаровані матінкою-природою (це сонце, квіти, вода, земля).
-              </p>
-              <p>
-                Як і прадавні майстирині ми створюємо речі тільки вручну і
-                тільки із натуральних матеріалів.
-              </p>
-              <p>
-                Магазин "Хрестик" ніколи не був і, схоже, не буде комерційним
-                проектом. Для нас важлива перш за все ідея, якість і
-                неповторність наших робіт.
-              </p>
-            </div>
+            <div
+              class="editor-content"
+              v-html="aboutUsTexts.first"
+            />
           </div>
         </div>
       </div>
@@ -76,20 +48,12 @@
         <div class="c-cont">
           <div class="col-50 goods-text-col animate opacity">
             <h2 class="common-title">
-              Майстерність у деталях
+              {{ aboutUsTitles.second }}
             </h2>
-            <div class="editor-content">
-              <p>Ми приділяємо особливу увагу деталям.</p>
-              <p>
-                Так, наприклад, всі наші сережки мають спеціальні стопери, аби
-                не губилися.<br>
-                А ланцюжки - зручні защіпки-ґудзики, що зберігають Ваш манікюр.
-              </p>
-              <p>
-                Наша закоханість у свою роботу не знає меж. Сподіваємося
-                передати Вам краплинку цієї любові.
-              </p>
-            </div>
+            <div
+              class="editor-content"
+              v-html="aboutUsTexts.second"
+            />
           </div>
         </div>
       </div>
@@ -105,7 +69,15 @@
   </div>
 </template>
 <script>
+import {aboutUsTitles, aboutUsTexts} from "@/entities/data/aboutUsTexts";
+
 export default {
+  data() {
+    return {
+      aboutUsTitles,
+      aboutUsTexts
+    }
+  },
   methods: {
     initWaypoint() {
       const waypointElements = document.querySelectorAll(".waypoint");
