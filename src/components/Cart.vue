@@ -35,7 +35,7 @@
           />
           <div class="card-total-row">
             <div class="total-sum">
-              { noteTexts.totalSum }}
+              {{ noteTexts.totalSum }}
               <span class="total-num"> {{ total }} грн </span>
             </div>
             <router-link

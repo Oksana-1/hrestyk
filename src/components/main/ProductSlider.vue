@@ -34,7 +34,7 @@
                 :to="'/catalog/' + product.id"
                 class="product-more"
               >
-                Детальніше
+                {{ btnText.detailed }}
               </router-link>
             </div>
           </div>
