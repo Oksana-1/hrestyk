@@ -3,68 +3,46 @@
     <div class="delivery-content-block">
       <div class="c-box-1100">
         <div class="delivery-content-title">
-          Строки виготовлення
+          {{ deliveryTexts.termTitle }}
         </div>
-        <div class="delivery-content-text">
-          <p>
-            Всі прикраси, що є в нашому каталозі - є в наявності, в кількості
-            1-2 шт.
-          </p>
-          <p>
-            При замовленні з наявності і передоплаті - відправлення замовлення
-            відбувається протягом 1-2 днів, зазвичай наступного дня.
-          </p>
-          <p>
-            Якщо ж Ви замовляєте більшу кількість виробів, ніж є на стоці, або
-            нестандартний колір - строк збільшується на термін, необхідний для
-            виготовлення Вашого замовлення.
-          </p>
-        </div>
+        <div
+          class="delivery-content-text"
+          v-html="deliveryTexts.termText"
+        />
       </div>
     </div>
     <div class="delivery-content-block">
       <div class="c-box-1100">
         <div class="delivery-content-title">
-          Умови оплати
+          {{ deliveryTexts.paymentTitle }}
         </div>
-        <div class="delivery-content-text">
-          <p>На сьогодні ми працюємо тільки по передплаті.</p>
-          <p>
-            Ви можете розрахуватись особисто при одержанні замовлення, якщо Ви
-            знаходитесь в м. Київ і замовляєте вироби з наявності.
-          </p>
-          <p>
-            В іншому випадку вартість Вашого замовлення Ви сплачуєте на картку
-            Приватбанку після узгодження ціни і строків виконання.
-          </p>
-        </div>
+        <div
+          class="delivery-content-text"
+          v-html="deliveryTexts.paymentText"
+        />
       </div>
     </div>
     <div class="delivery-content-block">
       <div class="c-box-1100">
         <div class="delivery-content-title">
-          Способи доставки
+          {{ deliveryTexts.deliveryTitle }}
         </div>
-        <div class="delivery-content-text">
-          <p>Фізично всі вишиті прикраси знаходяться в Києві.</p>
-          <p>
-            Але ми робимо доставку в будь-який куточок України, де є Укрпошта.
-            Вартість пересилки Укрпоштою ми беремо на себе.
-          </p>
-          <p>
-            Якщо Ви знаходитесь в Києві - Ви можете забрати своє замовлення біля
-            метро Іподром або Теремки (за домовленістю).
-          </p>
-          <p>
-            Є можливість доставки до Вашої станції метро. Обидва варіанти -
-            безкоштовні.
-          </p>
-          <p>Ми не працюємо з Новою Поштою, взагалі ні, ніяк. Вибачте.</p>
-        </div>
+        <div
+          class="delivery-content-text"
+          v-html="deliveryTexts.deliveryText"
+        />
       </div>
     </div>
   </div>
 </template>
 <script>
-export default {};
+import { deliveryTexts } from "@/entities/data/deliveryText";
+
+export default {
+  data() {
+    return {
+      deliveryTexts,
+    };
+  },
+};
 </script>
