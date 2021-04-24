@@ -26,7 +26,7 @@
                     <input
                       v-model="name"
                       type="text"
-                      placeholder="Ваше ім'я"
+                      :placeholder="placeHolders.name"
                       @blur="$v.name.$touch()"
                     >
                   </label>
@@ -45,7 +45,7 @@
                     <input
                       v-model="email"
                       type="text"
-                      placeholder="Ваш email"
+                      :placeholder="placeHolders.email"
                       @blur="$v.email.$touch()"
                     >
                   </label>
@@ -70,7 +70,7 @@
                     <input
                       v-model="phone"
                       type="text"
-                      placeholder="Ваш телефон"
+                      :placeholder="placeHolders.phone"
                       @blur="$v.phone.$touch()"
                     >
                   </label>
@@ -91,7 +91,7 @@
                   <label>
                     <textarea
                       v-model="message"
-                      placeholder="Ваші коментарі"
+                      :placeholder="placeHolders.message"
                     />
                   </label>
                 </div>
@@ -126,6 +126,8 @@ import Order, { ProcessingStatus, UserInfo } from "@/entities/Order";
 import { cloneObj } from "@/utils/helpers";
 import { btnText } from "@/entities/data/btnTexts";
 import { headerTexts, noteTexts } from "@/entities/data/texts";
+import { placeHolders } from "@/entities/data/placeHolders";
+import { formErrors } from "@/entities/data/errorTexts";
 
 export default {
   components: {
@@ -137,16 +139,13 @@ export default {
       email: "",
       phone: "",
       message: "",
-      formErrors: {
-        invalidEmail: "Будь-ласка, введіть корректний email.",
-        invalidPhonel: "Будь-ласка, введіть корректний телефон",
-        empty: "Це поле обов'язкове.",
-      },
+      formErrors,
       submitStatus: null,
       busy: false,
       btnText,
       headerTexts,
-      noteTexts
+      noteTexts,
+      placeHolders,
     };
   },
   validations: {

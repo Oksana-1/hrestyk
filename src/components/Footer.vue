@@ -11,7 +11,7 @@
               <input
                 v-model="name"
                 type="text"
-                placeholder="Ваше ім'я"
+                :placeholder="placeHolders.name"
                 @blur="$v.name.$touch()"
               >
             </div>
@@ -22,14 +22,14 @@
               <input
                 v-model="phone"
                 type="text"
-                placeholder="Ваш телефон"
+                :placeholder="placeHolders.phone"
                 @blur="$v.phone.$touch()"
               >
             </div>
             <div class="input-row">
               <textarea
                 v-model="message"
-                placeholder="Ваше повідомлення"
+                :placeholder="placeHolders.message"
               />
             </div>
             <div class="input-row">
@@ -142,7 +142,8 @@ import { required, numeric, minLength } from "vuelidate/lib/validators";
 import { btnText } from "@/entities/data/btnTexts";
 import { menu } from "@/entities/data/navigation";
 import { social } from "@/entities/data/socialLinks";
-import {contacts} from "@/entities/data/contacts";
+import { contacts } from "@/entities/data/contacts";
+import { placeHolders } from "@/entities/data/placeHolders";
 
 export default {
   data() {
@@ -154,6 +155,7 @@ export default {
       menu,
       social,
       contacts,
+      placeHolders,
     };
   },
   components: {
