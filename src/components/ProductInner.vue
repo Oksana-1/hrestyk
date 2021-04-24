@@ -2,83 +2,81 @@
   <div class="product-content hr-content">
     <spinner-cube v-if="busy" />
     <template v-else>
-      <div
-        v-if="product"
-        class="catalog-category-section"
-      >
-        <div class="c-box-1100">
-          <div class="catalog-category-container">
-            <h1 class="common-title">
-              {{ product.title }}
-            </h1>
+      <template v-if="product">
+        <div class="catalog-category-section">
+          <div class="c-box-1100">
+            <div class="catalog-category-container">
+              <h1 class="common-title">
+                {{ product.title }}
+              </h1>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="product-section waypoint">
-        <div class="c-box-1100 animate opacity">
-          <div class="c-cont">
-            <div class="col-50">
-              <product-images />
-            </div>
-            <div class="col-50">
-              <div class="col-inner col-product-desc">
-                <div class="product-body">
-                  <div
-                    class="editor-content`"
-                    :v-html="product.description"
-                  />
-                  <div class="product-info col-product-info">
-                    <div class="buy-qnt-row">
-                      <div class="input-qnt">
-                        <label>
-                          <input v-model.number="quantity">
-                        </label>
-                        <div class="input-qnt-ctrl">
-                          <div
-                            class="input-qnt-up"
-                            @click="addOne"
-                          />
-                          <div
-                            class="input-qnt-down"
-                            @click="minusOne"
-                          />
+        <div class="product-section waypoint">
+          <div class="c-box-1100 animate opacity">
+            <div class="c-cont">
+              <div class="col-50">
+                <product-images />
+              </div>
+              <div class="col-50">
+                <div class="col-inner col-product-desc">
+                  <div class="product-body">
+                    <div
+                      class="editor-content`"
+                      :v-html="product.description"
+                    />
+                    <div class="product-info col-product-info">
+                      <div class="buy-qnt-row">
+                        <div class="input-qnt">
+                          <label>
+                            <input v-model.number="quantity">
+                          </label>
+                          <div class="input-qnt-ctrl">
+                            <div
+                              class="input-qnt-up"
+                              @click="addOne"
+                            />
+                            <div
+                              class="input-qnt-down"
+                              @click="minusOne"
+                            />
+                          </div>
                         </div>
+                        <div class="product-price">
+                          {{ product.price }} грн
+                        </div>
+                        <button
+                          class="hrestyk-btn-dark buyBtn"
+                          :disabled="
+                            quantity <= 0 ||
+                              !Number.isInteger(quantity) ||
+                              !isCartReady
+                          "
+                          @click="addProductToCart"
+                        >
+                          <span v-if="!isInCart">{{ btnText.buy }}</span>
+                          <span v-else>{{ btnText.alreadyInCart }}</span>
+                        </button>
                       </div>
-                      <div class="product-price">
-                        {{ product.price }} грн
-                      </div>
-                      <button
-                        class="hrestyk-btn-dark buyBtn"
-                        :disabled="quantity <= 0 || !Number.isInteger(quantity) || !isCartReady"
-                        @click="addProductToCart"
-                      >
-                        <span v-if="!isInCart">{{ btnText.buy }}</span>
-                        <span v-else>{{ btnText.alreadyInCart }}</span>
-                      </button>
                     </div>
-                  </div>
-                  <div class="descr-note">
-                    <p>
-                      *Ми робимо все можливе, щоб показати справжні кольори на
-                      своїх фотографіях. Але вони сильно залежать від
-                      освітлення, і звичайно кольори можуть дещо відрізнятися на
-                      різних моніторах.
-                    </p>
-                    <p>Будь ласка, майте це на увазі!</p>
-                  </div>
-                  <div class="sep-line-img">
-                    <img
-                      class="fits"
-                      src="@/assets/images/logo.png"
-                      alt="Logo"
-                    >
+                    <div
+                      class="descr-note"
+                      v-html="warnings.colorMismatch"
+                    />
+                    <div class="sep-line-img">
+                      <img
+                        class="fits"
+                        src="@/assets/images/logo.png"
+                        alt="Logo"
+                      >
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </template>
     </template>
     <about-banner />
   </div>
@@ -89,9 +87,15 @@ import { mapGetters, mapActions } from "vuex";
 import AboutBanner from "./main/AboutBanner";
 import ProductImages from "@/components/product/ProductImages";
 import SpinnerCube from "@/components/ui/SpinnerCube";
-import Order, { OrderProduct, OrderProductImage, ProcessingStatus, UserInfo } from "@/entities/Order";
+import Order, {
+  OrderProduct,
+  OrderProductImage,
+  ProcessingStatus,
+  UserInfo,
+} from "@/entities/Order";
 import { userInfoForm } from "@/entities/forms/userInfoForm";
 import { btnText } from "@/entities/data/btnTexts";
+import { warnings } from "@/entities/data/warnings";
 
 export default {
   name: "ProductInner",
@@ -113,6 +117,7 @@ export default {
       quantity: 1,
       busy: false,
       btnText,
+      warnings,
     };
   },
   watch: {
@@ -157,7 +162,7 @@ export default {
       });
     },
     isInCart() {
-      return Boolean(this.cart.find(item => item.id === this.productId));
+      return Boolean(this.cart.find((item) => item.id === this.productId));
     },
   },
   methods: {
@@ -195,8 +200,8 @@ export default {
     },
     addProductToCart() {
       this.isInCart
-      ? eventBus.$emit("cartVisibilityChange", true)
-      : this.doAddToCart();
+        ? eventBus.$emit("cartVisibilityChange", true)
+        : this.doAddToCart();
     },
     async doAddToCart() {
       const orderObject = this.getOrderObject(this.productCartObject);
