@@ -56,19 +56,19 @@
         </div>
         <div class="social-cont">
           <a
-            href="#"
+            :href="social.fb"
             class="social-link"
           >
             <icon-base icon-name="fb"><icon-fb /></icon-base>
           </a>
           <a
-            href="#"
+            :href="social.ig"
             class="social-link"
           >
             <icon-base icon-name="ig"><icon-ig /></icon-base>
           </a>
           <a
-            href="#"
+            :href="social.twitter"
             class="social-link"
           >
             <icon-base icon-name="twitter"><icon-twitter /></icon-base>
@@ -80,29 +80,29 @@
           <ul>
             <li>
               <router-link to="/">
-                Головна
+                {{ menu.main }}
               </router-link>
             </li>
             <li>
               <router-link to="/catalog">
-                Каталог
+                {{ menu.catalog }}
               </router-link>
             </li>
             <li>
               <router-link to="/about">
-                Про нас
+                {{ menu.about }}
               </router-link>
             </li>
             <li>
               <router-link to="/delivery">
-                Оплата та доставка
+                {{ menu.delivery }}
               </router-link>
             </li>
           </ul>
         </nav>
         <div class="footer-contact-container">
           <a
-            href="mailto:4438488@gmail.com"
+            :href="`mailto:${contacts.email}`"
             class="contact-link"
           >
             <icon-base
@@ -111,10 +111,10 @@
               width="15"
               height="15"
             ><icon-email /></icon-base>
-            <div class="contact-text">4438488@gmail.com</div>
+            <div class="contact-text">{{ contacts.email }}</div>
           </a>
           <a
-            href="tel:+380504438488"
+            :href="`tel:${contacts.phone}`"
             class="contact-link"
           >
             <icon-base
@@ -123,7 +123,7 @@
               width="15"
               height="15"
             ><icon-phone /></icon-base>
-            <div class="contact-text">+380 50 443 84 88</div>
+            <div class="contact-text">{{ contacts.phoneDisplay }}</div>
           </a>
         </div>
       </div>
@@ -140,6 +140,9 @@ import IconPhone from "../components/icons/IconPhone.vue";
 import IconEmail from "../components/icons/IconEmail.vue";
 import { required, numeric, minLength } from "vuelidate/lib/validators";
 import { btnText } from "@/entities/data/btnTexts";
+import { menu } from "@/entities/data/navigation";
+import { social } from "@/entities/data/socialLinks";
+import {contacts} from "@/entities/data/contacts";
 
 export default {
   data() {
@@ -148,6 +151,9 @@ export default {
       phone: "",
       message: "",
       btnText,
+      menu,
+      social,
+      contacts,
     };
   },
   components: {

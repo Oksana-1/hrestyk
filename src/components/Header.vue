@@ -24,12 +24,12 @@
                 exact
                 custom
               >
-                <li :class="{active: isActive}">
+                <li :class="{ active: isActive }">
                   <a
                     :href="href"
                     @click="navigate"
                   >
-                    Головна
+                    {{ menu.main }}
                   </a>
                 </li>
               </router-link>
@@ -38,12 +38,12 @@
                 to="/catalog"
                 custom
               >
-                <li :class="{active: isActive}">
+                <li :class="{ active: isActive }">
                   <a
                     :href="href"
                     @click="navigate"
                   >
-                    Каталог
+                    {{ menu.catalog }}
                   </a>
                 </li>
               </router-link>
@@ -52,12 +52,12 @@
                 to="/about"
                 custom
               >
-                <li :class="{active: isActive}">
+                <li :class="{ active: isActive }">
                   <a
                     :href="href"
                     @click="navigate"
                   >
-                    Про нас
+                    {{ menu.about }}
                   </a>
                 </li>
               </router-link>
@@ -66,31 +66,31 @@
                 to="/delivery"
                 custom
               >
-                <li :class="{active: isActive}">
+                <li :class="{ active: isActive }">
                   <a
                     :href="href"
                     @click="navigate"
                   >
-                    Оплата та доставка
+                    {{ menu.delivery }}
                   </a>
                 </li>
               </router-link>
             </ul>
             <div class="social-cont social-cont-mobMenu">
               <a
-                href="#"
+                :href="social.fb"
                 class="social-link"
               >
                 <icon-base icon-name="fb"><icon-fb /></icon-base>
               </a>
               <a
-                href="#"
+                :href="social.ig"
                 class="social-link"
               >
                 <icon-base icon-name="ig"><icon-ig /></icon-base>
               </a>
               <a
-                href="#"
+                :href="social.twitter"
                 class="social-link"
               >
                 <icon-base icon-name="ig"><icon-twitter /></icon-base>
@@ -109,7 +109,7 @@
           class="hr-cart-wrap cartContainer"
           :class="{
             hiddenCart: !cartIsShown,
-            cartIsEmpty: cart.length === 0
+            cartIsEmpty: cart.length === 0,
           }"
         >
           <button
@@ -141,6 +141,9 @@ import IconFb from "../components/icons/IconFb.vue";
 import IconIg from "../components/icons/IconIg.vue";
 import IconTwitter from "../components/icons/IconTwitter.vue";
 import { mapGetters } from "vuex";
+import { menu } from "@/entities/data/navigation";
+import { social } from "@/entities/data/socialLinks";
+
 export default {
   components: {
     IconBase,
@@ -175,6 +178,8 @@ export default {
     return {
       cartIsShown: false,
       mobMenuIsOpened: false,
+      menu,
+      social,
     };
   },
   computed: {
