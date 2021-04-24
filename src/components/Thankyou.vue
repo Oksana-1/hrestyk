@@ -19,7 +19,7 @@
           >
         </div>
         <div class="editor-content">
-          {{ thankYouText.orderedText }}
+          <div v-html="thankYouText.orderedText" />
           <p>
             <a :href="`tel:${contacts.phone}`">{{ contacts.phoneDisplay }}</a>
           </p>

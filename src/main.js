@@ -11,9 +11,6 @@ router.beforeEach((to, from, next) => {
 import { createStore } from "./store/store";
 const store = createStore();
 
-import VueResource from "vue-resource";
-Vue.use(VueResource);
-
 import Waypoint from "waypoints/lib/noframework.waypoints";
 Object.defineProperty(Vue.prototype, "$waypoint", { value: Waypoint });
 
