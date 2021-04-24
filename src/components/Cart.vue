@@ -36,7 +36,7 @@
           <div class="card-total-row">
             <div class="total-sum">
               {{ noteTexts.totalSum }}
-              <span class="total-num"> {{ total }} грн </span>
+              <span class="total-num"> {{ `${total} ${currency.UAH}` }} </span>
             </div>
             <router-link
               to="/checkout"
@@ -64,7 +64,8 @@ import Order, { ProcessingStatus, UserInfo } from "@/entities/Order";
 import { userInfoForm } from "@/entities/forms/userInfoForm";
 import { cloneObj } from "@/utils/helpers";
 import { btnText } from "@/entities/data/btnTexts";
-import {noteTexts} from "@/entities/data/texts";
+import { noteTexts } from "@/entities/data/texts";
+import { currency } from "@/entities/data/currency";
 
 export default {
   components: { SpinnerCube, CartItem },
@@ -73,7 +74,8 @@ export default {
       prefix: "cart-product-",
       busy: false,
       btnText,
-      noteTexts
+      noteTexts,
+      currency,
     };
   },
   computed: {

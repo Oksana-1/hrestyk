@@ -53,10 +53,10 @@
           </div>
         </div>
         <div class="product-price">
-          {{ cartItem.price }} грн
+          {{ `${cartItem.price} ${currency.UAH}` }}
         </div>
         <div class="item-summ">
-          {{ cartItem.price * cartItem.amount }} грн
+          {{ `${cartItem.price * cartItem.amount} ${currency.UAH}` }}
         </div>
         <div
           class="cart-item-del"
@@ -73,6 +73,7 @@
 import {OrderProduct} from "@/entities/Order";
 import IconBase from "@/components/IconBase";
 import IconNoImage from "@/components/icons/IconNoImage";
+import { currency } from "@/entities/data/currency";
 
 export default {
   name: "CheckoutItem",
@@ -86,7 +87,8 @@ export default {
   },
   data() {
     return {
-      amount: null
+      amount: null,
+      currency
     }
   },
   computed: {

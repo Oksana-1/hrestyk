@@ -39,7 +39,7 @@
         <div class="card-total-row">
           <div class="total-sum">
             {{ noteTexts.totalSum }}
-            <span class="total-num">{{ total }} грн</span>
+            <span class="total-num">{{ `${total} ${currency.UAH}` }}</span>
           </div>
         </div>
       </div>
@@ -76,7 +76,8 @@ import {cloneObj} from "@/utils/helpers";
 import Order, {ProcessingStatus, UserInfo} from "@/entities/Order";
 import {userInfoForm} from "@/entities/forms/userInfoForm";
 import { btnText } from "@/entities/data/btnTexts";
-import {headerTexts, noteTexts} from "@/entities/data/texts";
+import { headerTexts, noteTexts } from "@/entities/data/texts";
+import { currency } from "@/entities/data/currency";
 
 export default {
   name: "OrderCart",
@@ -87,7 +88,8 @@ export default {
       prefix: 'checkout-product-',
       btnText,
       headerTexts,
-      noteTexts
+      noteTexts,
+      currency
     };
   },
   computed: {

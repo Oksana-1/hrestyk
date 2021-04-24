@@ -27,7 +27,7 @@
         </div>
         <div class="buy-btn-row">
           <div class="product-price">
-            {{ product.price }} грн
+            {{ `${product.price} ${currency.UAH}` }}
           </div>
           <button
             class="hrestyk-btn-dark buyBtn"
@@ -50,9 +50,10 @@ import {
   OrderProduct,
   OrderProductImage,
 } from "@/entities/Order";
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 import eventBus from "@/event-bus";
-import {btnText} from "@/entities/data/btnTexts";
+import { btnText } from "@/entities/data/btnTexts";
+import { currency } from "@/entities/data/currency";
 
 export default {
   props: {
@@ -65,6 +66,7 @@ export default {
   data() {
     return {
       btnText,
+      currency
     }
   },
   computed: {

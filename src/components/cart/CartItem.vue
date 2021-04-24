@@ -46,7 +46,7 @@
           </div>
         </div>
         <div class="product-price">
-          {{ product.price }} грн
+          {{ `${product.price} ${currency.UAH}` }}
         </div>
         <div
           class="cart-item-del"
@@ -64,6 +64,7 @@ import {OrderProduct} from "@/entities/Order";
 import {mapGetters} from "vuex";
 import IconBase from "@/components/IconBase";
 import IconNoImage from "@/components/icons/IconNoImage";
+import { currency } from "@/entities/data/currency";
 
 export default {
   name: "CartItem",
@@ -77,7 +78,8 @@ export default {
   },
   data() {
     return {
-      amount: null
+      amount: null,
+      currency
     }
   },
   computed: {
