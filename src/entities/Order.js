@@ -62,5 +62,7 @@ export class ProcessingStatus {
   constructor(processing) {
     this.processingStatus = processing.processingStatus;
     this.content = processing.content;
+    this.createdAt = processing.createdAt;
+    this._id = processing._id;
   }
 }
