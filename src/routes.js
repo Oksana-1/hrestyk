@@ -20,7 +20,7 @@ export function createRouter() {
       { path: "/thankyou", component: Thankyou },
       { path: "*", redirect: "/" },
     ],
-    mode: "history",
+    mode: "hash",
     scrollBehavior(to, from, savedPosition) {
       if (savedPosition) {
         return savedPosition;
