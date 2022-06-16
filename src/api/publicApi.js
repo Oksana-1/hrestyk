@@ -2,15 +2,19 @@ import axios from "axios";
 import Product from "@/entities/Product";
 import Order from "@/entities/Order";
 
-export const BASE_HOST = "http://95.179.185.226:8085/";
+export const BASE_URL_HOST = process.env.VUE_APP_BASE_URL_HOST;
+export const BASE_URL_PORT = process.env.VUE_APP_BASE_URL_PORT;
 const API_VERSION = "api/v1/";
+const BASE_URL = `${BASE_URL_HOST}${
+  BASE_URL_PORT ? ":" + BASE_URL_PORT : ""
+}/${API_VERSION}`;
 
 const PRODUCTS_URL = "product/all";
 const SINGLE_PRODUCT_URL = "product/single/";
 const ADD_TO_CART = "/cart/add-product";
 const GET_CART = "/cart/show";
 
-axios.defaults.baseURL = BASE_HOST + API_VERSION;
+axios.defaults.baseURL = BASE_URL;
 
 export default class PublicApi {
   async getProducts() {
