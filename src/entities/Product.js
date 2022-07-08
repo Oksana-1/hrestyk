@@ -1,4 +1,4 @@
-import { BASE_HOST } from "@//api/publicApi";
+import { ROOT_URL } from "@/api/publicApi";
 import { ObjectCreationValidator } from "@/entities/ObjectCreationValidator";
 
 export default class Product {
@@ -22,7 +22,7 @@ class Image {
   constructor(image) {
     this.alt = image.alt;
     this.is_main = image.is_main;
-    this.url = /^http/.test(image.url) ? image.url : BASE_HOST + image.url;
+    this.url = /^http/.test(image.url) ? image.url : ROOT_URL + image.url;
     this.id = image._id;
 
     ObjectCreationValidator.validate(this);
