@@ -1,7 +1,7 @@
 <template>
   <div
     class="cart-item"
-    :class="{busy}"
+    :class="{ busy }"
   >
     <div class="cart-item-img-fix">
       <router-link
@@ -9,9 +9,9 @@
         class="link-abs"
       />
       <div
-        v-if="mainImageBase64"
+        v-if="mainUrl"
         class="cart-item-img"
-        :style="{ backgroundImage: 'url(data:image/jpg;base64,' + mainImageBase64 + ')' }"
+        :style="{ backgroundImage: `url(${mainUrl})` }"
       />
       <icon-base
         v-else
@@ -36,7 +36,7 @@
             <input
               v-model.number="amount"
               :disabled="busy"
-              @keyup="$emit('changeAmount', {itemKey: $vnode.key, amount})"
+              @keyup="$emit('changeAmount', { itemKey: $vnode.key, amount })"
             >
           </label>
           <div class="input-qnt-ctrl">
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import {OrderProduct} from "@/entities/Order";
+import { OrderProduct } from "@/entities/Order";
 import IconBase from "@/components/IconBase";
 import IconNoImage from "@/components/icons/IconNoImage";
 import { currency } from "@/entities/data/currency";
@@ -88,39 +88,37 @@ export default {
   data() {
     return {
       amount: null,
-      currency
-    }
+      currency,
+    };
   },
   computed: {
-    mainImageBase64() {
+    mainUrl() {
       if (this.cartItem.images.length === 0) return "";
       const mainImage = this.cartItem.images.find((image) => image.is_main);
-      return mainImage ? mainImage.image : this.cartItem.images[0].image;
+      return mainImage ? mainImage.url : this.cartItem.images[0].url;
     },
   },
   methods: {
     increase() {
       this.amount += 1;
-      this.$emit('changeAmount', {
+      this.$emit("changeAmount", {
         itemKey: this.$vnode.key,
-        amount: this.amount
+        amount: this.amount,
       });
     },
     decrease() {
       if (this.amount <= 1) return;
       this.amount -= 1;
-      this.$emit('changeAmount', {
+      this.$emit("changeAmount", {
         itemKey: this.$vnode.key,
-        amount: this.amount
+        amount: this.amount,
       });
     },
   },
   created() {
     this.amount = this.cartItem.amount;
-  }
-}
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,65 +1,61 @@
 <template>
   <div class="hr-cart-content">
     <div class="hr-cart-content-inner">
-      <spinner-cube v-if="!isCartReady" />
-      <template v-else>
-        <div
-          v-if="cart.length === 0"
-          class="cart-info"
+      <div
+        v-if="!localCart || localCart.products.length === 0"
+        class="cart-info"
+      >
+        <div class="cart-title">
+          {{ noteTexts.emptyCart }}
+        </div>
+        <router-link
+          to="/catalog"
+          class="hrestyk-btn-dark"
         >
-          <div class="cart-title">
-            {{ noteTexts.emptyCart }}
+          <div
+            class="link-abs"
+            @click="closeCart"
+          />
+          <span>{{ btnText.goToShop }}</span>
+        </router-link>
+      </div>
+      <div
+        v-else
+        class="cart-product"
+      >
+        <cart-item
+          v-for="(cartItem, index) in localCart.products"
+          :key="prefix + index"
+          :product="cartItem"
+          :busy="busy"
+          @deleteItem="deleteItem"
+          @changeAmount="changeAmount($event)"
+        />
+        <div class="card-total-row">
+          <div class="total-sum">
+            {{ noteTexts.totalSum }}
+            <span class="total-num"> {{ `${total} ${currency.UAH}` }} </span>
           </div>
           <router-link
-            to="/catalog"
+            to="/checkout"
             class="hrestyk-btn-dark"
           >
             <div
               class="link-abs"
               @click="closeCart"
             />
-            <span>{{ btnText.goToShop }}</span>
+            <span>{{ btnText.checkout }}</span>
           </router-link>
         </div>
-        <div
-          v-else
-          class="cart-product"
-        >
-          <cart-item
-            v-for="(cartItem, index) in cart"
-            :key="prefix + index"
-            :product="cartItem"
-            :busy="busy"
-            @deleteItem="deleteItem"
-            @changeAmount="changeAmount($event)"
-          />
-          <div class="card-total-row">
-            <div class="total-sum">
-              {{ noteTexts.totalSum }}
-              <span class="total-num"> {{ `${total} ${currency.UAH}` }} </span>
-            </div>
-            <router-link
-              to="/checkout"
-              class="hrestyk-btn-dark"
-            >
-              <div
-                class="link-abs"
-                @click="closeCart"
-              />
-              <span>{{ btnText.checkout }}</span>
-            </router-link>
-          </div>
-        </div>
-      </template>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import eventBus from "../event-bus";
-import { mapActions, mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import CartItem from "@/components/cart/CartItem";
-import SpinnerCube from "@/components/ui/SpinnerCube";
 import Order, { ProcessingStatus, UserInfo } from "@/entities/Order";
 import { userInfoForm } from "@/entities/forms/userInfoForm";
 import { cloneObj } from "@/utils/helpers";
@@ -68,7 +64,7 @@ import { noteTexts } from "@/entities/data/texts";
 import { currency } from "@/entities/data/currency";
 
 export default {
-  components: { SpinnerCube, CartItem },
+  components: { CartItem },
   data() {
     return {
       prefix: "cart-product-",
@@ -79,7 +75,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["cart", "cartId", "total", "isCartReady"]),
+    ...mapGetters(["localCart", "total"]),
     cartForOrder() {
       const cartClone = cloneObj(this.cart);
       return cartClone.map((cartItem) => {
@@ -101,8 +97,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["DISABLE_CART", "ENABLE_CART"]),
-    ...mapActions(["addToCart"]),
+    ...mapActions(["addToLocalCart"]),
     closeCart() {
       eventBus.$emit("cartVisibilityChange", false);
     },
@@ -127,16 +122,8 @@ export default {
       });
     },
     async changeProductInCart(orderObject) {
-      if (this.cartId) orderObject.setOrderId(this.cartId);
-      this.busy = true;
-      try {
-        await this.addToCart(orderObject);
-        eventBus.$emit("cartVisibilityChange", true);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.busy = false;
-      }
+      await this.addToLocalCart(orderObject);
+      eventBus.$emit("cartVisibilityChange", true);
     },
   },
 };

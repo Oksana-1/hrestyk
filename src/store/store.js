@@ -1,7 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import PublicApi from "@/api/publicApi";
+import Order from "@/entities/Order";
 const api = new PublicApi();
+import {
+  getLocalStorageItem,
+  setLocalStorageItem,
+  removeLocalStorageItem,
+} from "@/utils/helpers";
 
 Vue.use(Vuex);
 
@@ -11,22 +17,20 @@ export function createStore() {
       products: [],
       categories: [],
       product: null,
-      cart: [],
-      cartId: null,
-      isCartReady: true,
+      localCart: null,
     },
     getters: {
       products: (state) => state.products,
       categories: (state) => state.categories,
       product: (state) => state.product,
-      cartId: (state) => state.cartId,
+      localCart: (state) => state.localCart,
       total: (state) =>
-        state.cart.reduce((sum, cartItem) => {
-          sum += cartItem.price * cartItem.amount;
-          return sum;
-        }, 0),
-      cart: (state) => state.cart,
-      isCartReady: (state) => state.isCartReady,
+        state.localCart
+          ? state.localCart.products.reduce((sum, cartItem) => {
+              sum += cartItem.price * cartItem.amount;
+              return sum;
+            }, 0)
+          : 0,
     },
     actions: {
       async fetchProducts({ commit }) {
@@ -47,27 +51,28 @@ export function createStore() {
           throw e;
         }
       },
-      async addToCart({ commit }, order) {
+      getCartFromLocalStorage({ commit }) {
+        const localStorageItem = getLocalStorageItem("hrestykCart");
+        if (localStorageItem) {
+          console.log(JSON.parse(localStorageItem));
+          commit("SET_LOCAL_CART", new Order(JSON.parse(localStorageItem)));
+        }
+      },
+      setCartToLocalStorage({ dispatch }, cart) {
+        if (!cart) {
+          removeLocalStorageItem("hrestykCart");
+        } else {
+          setLocalStorageItem("hrestykCart", JSON.stringify(cart));
+        }
+        dispatch("getCartFromLocalStorage");
+      },
+      async addToCart({ dispatch }, order) {
         try {
-          const response = await api.addToCart(order);
-          commit("SET_CART_ID", response.id);
-          commit("SET_CART", response.products);
-          localStorage.setItem("cartId", response.id);
+          await api.addToCart(order);
+          dispatch("getCartFromLocalStorage");
         } catch (e) {
           throw e;
         }
-      },
-      async getCart({ commit }, cart_id) {
-        try {
-          const response = await api.getCart(cart_id);
-          commit("SET_CART_ID", response.id);
-          commit("SET_CART", response.products);
-        } catch (e) {
-          throw e;
-        }
-      },
-      setCart({ commit }, cart) {
-        commit("SET_CART", cart);
       },
     },
     mutations: {
@@ -80,17 +85,8 @@ export function createStore() {
       SET_PRODUCT: (state, data) => {
         state.product = data;
       },
-      SET_CART_ID: (state, data) => {
-        state.cartId = data;
-      },
-      SET_CART: (state, data) => {
-        state.cart = data;
-      },
-      DISABLE_CART: (state) => {
-        state.isCartReady = false;
-      },
-      ENABLE_CART: (state) => {
-        state.isCartReady = true;
+      SET_LOCAL_CART: (state, data) => {
+        state.localCart = data;
       },
     },
   });

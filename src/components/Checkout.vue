@@ -17,7 +17,7 @@
               <div class="cart-note">
                 {{ noteTexts.beforeFormNote }}
               </div>
-              <form :class="{ 'form-disabled': cart.length < 1 }">
+              <form :class="{ 'form-disabled': localCart && localCart.products.length < 1 }">
                 <div
                   class="input-row"
                   :class="{ invalid: $v.name.$error }"
@@ -98,7 +98,7 @@
                 <div class="input-row">
                   <button
                     type="submit"
-                    :disabled="cart.length < 1 || busy"
+                    :disabled="localCart && localCart.products.length < 1 || busy"
                     @click.prevent="submitOrder"
                   >
                     {{ btnText.send }}
@@ -163,7 +163,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["cart"]),
+    ...mapGetters(["localCart"]),
     userInfoObject() {
       return new UserInfo({
         name: this.name,
@@ -186,7 +186,7 @@ export default {
       });
     },
     cartForOrder() {
-      const cartClone = cloneObj(this.cart);
+      const cartClone = cloneObj(this.localCart);
       return cartClone.map((cartItem) => {
         cartItem.images.forEach((image) => {
           delete image.image;
@@ -197,15 +197,14 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["addToCart", "setCart"]),
+    ...mapActions(["setCartToLocalStorage"]),
     async submitOrder() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         this.busy = false;
         try {
           await this.addToCart(this.getOrderObject);
-          localStorage.removeItem("cartId");
-          this.setCart([]);
+          this.setCartToLocalStorage([]);
           await this.$router.push("thankyou");
         } catch (e) {
           console.error(e);

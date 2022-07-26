@@ -48,9 +48,7 @@
                         <button
                           class="hrestyk-btn-dark buyBtn"
                           :disabled="
-                            quantity <= 0 ||
-                              !Number.isInteger(quantity) ||
-                              !isCartReady
+                            quantity <= 0 || !Number.isInteger(quantity)
                           "
                           @click="addProductToCart"
                         >
@@ -126,7 +124,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["product", "cart", "cartId", "isCartReady"]),
+    ...mapGetters(["product", "localCart"]),
     productCartObject() {
       return new OrderProduct({
         _id: this.product.id,
@@ -152,21 +150,27 @@ export default {
         content: "Init order processing",
       });
     },
-    cartForOrder() {
-      return this.cart.map((cartItem) => {
-        cartItem.images.forEach((image) => {
-          delete image.image;
-          return image;
-        });
-        return cartItem;
-      });
+    cartProductsForOrder() {
+      return this.localCart && this.localCart.products.length > 0
+        ? this.localCart.products.map((cartItem) => {
+            cartItem.images.forEach((image) => {
+              delete image.image;
+              return image;
+            });
+            return cartItem;
+          })
+        : [];
     },
     isInCart() {
-      return Boolean(this.cart.find((item) => item.id === this.productId));
+      return this.localCart
+        ? Boolean(
+            this.localCart.products.find((item) => item.id === this.productId)
+          )
+        : false;
     },
   },
   methods: {
-    ...mapActions(["fetchSingleProduct", "addToCart"]),
+    ...mapActions(["fetchSingleProduct", "setCartToLocalStorage"]),
     addOne() {
       if (this.quantity >= 0) {
         this.quantity++;
@@ -193,25 +197,17 @@ export default {
     getOrderObject(cartProduct) {
       return new Order({
         userInfo: this.userInfoObject,
-        products: [...this.cartForOrder, cartProduct],
+        products: [...this.cartProductsForOrder, cartProduct],
         processing: [this.processingStatusObject],
         orderStatus: "started",
       });
     },
     addProductToCart() {
-      this.isInCart
-        ? eventBus.$emit("cartVisibilityChange", true)
-        : this.doAddToCart();
-    },
-    async doAddToCart() {
-      const orderObject = this.getOrderObject(this.productCartObject);
-      if (this.cartId) orderObject.setOrderId(this.cartId);
-      try {
-        await this.addToCart(orderObject);
-        eventBus.$emit("cartVisibilityChange", true);
-      } catch (e) {
-        console.error(e);
+      if (!this.isInCart) {
+        const orderObject = this.getOrderObject(this.productCartObject);
+        this.setCartToLocalStorage(orderObject);
       }
+      eventBus.$emit("cartVisibilityChange", true);
     },
     initWaypoint() {
       const waypointElements = document.querySelectorAll(".waypoint");

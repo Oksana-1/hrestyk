@@ -43,7 +43,7 @@
                 v-for="product in filteredProducts"
                 :key="product.id"
                 :product="product"
-                @addProductToCart="addProductToCart($event)"
+                @addProductToCart="addProductToLocalCart($event)"
               />
             </div>
           </transition>
@@ -55,11 +55,10 @@
 <script>
 import ProductCard from "./catalog/ProductCart";
 import SpinnerCube from "@/components/ui/SpinnerCube";
-import { mapActions, mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import eventBus from "@/event-bus";
 import { userInfoForm } from "@/entities/forms/userInfoForm";
 import Order, { ProcessingStatus, UserInfo } from "@/entities/Order";
-import { cloneObj } from "@/utils/helpers";
 
 export default {
   components: {
@@ -74,7 +73,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["products", "categories", "cart", "cartId"]),
+    ...mapGetters(["products", "categories", "localCart"]),
     filteredProducts() {
       return this.currentCat === "all"
         ? this.products
@@ -91,20 +90,13 @@ export default {
         content: "Init order processing",
       });
     },
-    cartForOrder() {
-      const cartClone = cloneObj(this.cart);
-      return cartClone.map((cartItem) => {
-        cartItem.images.forEach((image) => {
-          delete image.image;
-          return image;
-        });
-        return cartItem;
-      });
-    },
   },
   methods: {
-    ...mapActions(["fetchProducts", "addToCart"]),
-    ...mapMutations(["DISABLE_CART", "ENABLE_CART"]),
+    ...mapActions([
+      "fetchProducts",
+      "setCartToLocalStorage",
+      "getCartFromLocalStorage",
+    ]),
     async init() {
       this.busy = true;
       try {
@@ -121,28 +113,18 @@ export default {
       this.busy = false;
     },
     getOrderObject(cartProduct) {
-      const onlyOldCartProducts = this.cartForOrder.filter(
-        (cartItem) => cartItem.id !== cartProduct.id
-      );
+      const alreadyInCartProducts = this.localCart.products;
       return new Order({
         userInfo: this.userInfoObject,
-        products: [...onlyOldCartProducts, cartProduct],
+        products: [...alreadyInCartProducts, cartProduct],
         processing: [this.processingStatusObject],
         orderStatus: "started",
       });
     },
-    async addProductToCart(product) {
+    addProductToLocalCart(product) {
       const orderObject = this.getOrderObject(product);
-      if (this.cartId) orderObject.setOrderId(this.cartId);
-      this.DISABLE_CART();
-      try {
-        await this.addToCart(orderObject);
-        eventBus.$emit("cartVisibilityChange", true);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.ENABLE_CART();
-      }
+      this.setCartToLocalStorage(orderObject);
+      eventBus.$emit("cartVisibilityChange", true);
     },
   },
   created() {

@@ -5,9 +5,9 @@
   >
     <div class="cart-item-img-fix">
       <div
-        v-if="mainImageBase64"
+        v-if="mainImageUrl"
         class="cart-item-img"
-        :style="{ backgroundImage: 'url(data:image/jpg;base64,' + mainImageBase64 + ')' }"
+        :style="{ backgroundImage: `url(${mainImageUrl})` }"
       />
       <icon-base
         v-else
@@ -61,7 +61,6 @@
 
 <script>
 import {OrderProduct} from "@/entities/Order";
-import {mapGetters} from "vuex";
 import IconBase from "@/components/IconBase";
 import IconNoImage from "@/components/icons/IconNoImage";
 import { currency } from "@/entities/data/currency";
@@ -83,11 +82,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["isCartReady"]),
-    mainImageBase64() {
+    mainImageUrl() {
       if (this.product.images.length === 0) return "";
       const mainImage = this.product.images.find((image) => image.is_main);
-      return mainImage ? mainImage.image : this.product.images[0].image;
+      return mainImage ? mainImage.url : this.product.images[0].url;
     },
   },
   methods: {

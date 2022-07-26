@@ -31,7 +31,6 @@
           </div>
           <button
             class="hrestyk-btn-dark buyBtn"
-            :disabled="!isCartReady"
             @click="addProductToCart()"
           >
             <span v-if="!isInCart">{{ btnText.buy }}</span>
@@ -46,10 +45,7 @@
 import Product from "@/entities/Product";
 import IconBase from "@/components/IconBase";
 import IconNoImage from "@/components/icons/IconNoImage";
-import {
-  OrderProduct,
-  OrderProductImage,
-} from "@/entities/Order";
+import { OrderProduct, OrderProductImage } from "@/entities/Order";
 import { mapGetters } from "vuex";
 import eventBus from "@/event-bus";
 import { btnText } from "@/entities/data/btnTexts";
@@ -57,7 +53,7 @@ import { currency } from "@/entities/data/currency";
 
 export default {
   props: {
-    product:  Product,
+    product: Product,
   },
   components: {
     IconBase,
@@ -66,18 +62,22 @@ export default {
   data() {
     return {
       btnText,
-      currency
-    }
+      currency,
+    };
   },
   computed: {
-    ...mapGetters(['isCartReady', 'cart']),
+    ...mapGetters(["localCart"]),
     mainImageUrl() {
       if (this.product.images.length === 0) return "";
       const mainImage = this.product.images.find((image) => image.is_main);
       return mainImage ? mainImage.url : this.product.images[0].url;
     },
     isInCart() {
-      return Boolean(this.cart.find(item => item.id === this.product.id));
+      return this.localCart
+        ? Boolean(
+            this.localCart.products.find((item) => item.id === this.product.id)
+          )
+        : false;
     },
     productCartObject() {
       return new OrderProduct({
@@ -99,8 +99,8 @@ export default {
   methods: {
     addProductToCart() {
       this.isInCart
-      ? eventBus.$emit("cartVisibilityChange", true)
-      : this.$emit('addProductToCart', this.productCartObject);
+        ? eventBus.$emit("cartVisibilityChange", true)
+        : this.$emit("addProductToCart", this.productCartObject);
     },
     initWaypoint() {
       const waypointElements = document.querySelectorAll(".waypoint");
@@ -117,6 +117,6 @@ export default {
   },
   mounted() {
     this.initWaypoint();
-  }
+  },
 };
 </script>
