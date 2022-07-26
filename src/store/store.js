@@ -54,7 +54,6 @@ export function createStore() {
       getCartFromLocalStorage({ commit }) {
         const localStorageItem = getLocalStorageItem("hrestykCart");
         if (localStorageItem) {
-          console.log(JSON.parse(localStorageItem));
           commit("SET_LOCAL_CART", new Order(JSON.parse(localStorageItem)));
         }
       },

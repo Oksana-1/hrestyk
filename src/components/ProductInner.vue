@@ -174,11 +174,17 @@ export default {
     addOne() {
       if (this.quantity >= 0) {
         this.quantity++;
+        const orderObject = this.getOrderObject(this.productCartObject);
+        this.setCartToLocalStorage(orderObject);
+        eventBus.$emit("cartVisibilityChange", true);
       }
     },
     minusOne() {
       if (this.quantity > 1) {
         this.quantity--;
+        const orderObject = this.getOrderObject(this.productCartObject);
+        this.setCartToLocalStorage(orderObject);
+        eventBus.$emit("cartVisibilityChange", true);
       }
     },
     async init() {

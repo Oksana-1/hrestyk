@@ -113,7 +113,7 @@ export default {
       this.busy = false;
     },
     getOrderObject(cartProduct) {
-      const alreadyInCartProducts = this.localCart.products;
+      const alreadyInCartProducts = this.localCart ? this.localCart.products :  [];
       return new Order({
         userInfo: this.userInfoObject,
         products: [...alreadyInCartProducts, cartProduct],
