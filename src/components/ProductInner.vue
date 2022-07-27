@@ -115,6 +115,9 @@ export default {
     $route(to) {
       this.productId = to.params.id;
     },
+    cartProduct() {
+      this.setProductAmount();
+    }
   },
   computed: {
     ...mapGetters(["product", "cartProducts"]),
@@ -137,15 +140,18 @@ export default {
         this.quantity--;
       }
     },
+    setProductAmount() {
+      this.quantity = this.cartProduct ? this.cartProduct.amount : 1;
+    },
     async init() {
       this.busy = true;
       try {
         await this.fetchSingleProduct(this.productId);
+        this.setProductAmount();
       } catch (e) {
         console.error(e);
       } finally {
         this.busy = false;
-        this.quantity = this.cartProduct ? this.cartProduct.amount : 1;
         requestAnimationFrame(() => {
           this.initWaypoint();
         });
