@@ -107,13 +107,12 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["addItemToCartProducts"]),
+    ...mapActions(["addItemToCartProducts", "deleteItemFromCartProducts"]),
     closeCart() {
       eventBus.$emit("cartVisibilityChange", false);
     },
     deleteItem(productId) {
-      console.log("There must be `deleteItem` fn");
-      console.log("productId", productId);
+      this.deleteItemFromCartProducts(productId);
     },
     changeAmount({ productId, amount }) {
       this.addItemToCartProducts({productId, amount})

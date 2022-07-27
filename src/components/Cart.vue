@@ -75,17 +75,12 @@ export default {
     ...mapGetters(["cartProducts", "total"]),
   },
   methods: {
-    ...mapActions(["addItemToCartProducts"]),
+    ...mapActions(["addItemToCartProducts", "deleteItemFromCartProducts"]),
     closeCart() {
       eventBus.$emit("cartVisibilityChange", false);
     },
-    deleteItem(itemKey) {
-      console.log("There must be `deleteItem fn`");
-      console.log("itemKey:", itemKey);
-      /*const index = itemKey.replace(this.prefix, "");
-      const cartClone = cloneObj(this.cartForOrder);
-      cartClone.splice(index, 1);
-      this.changeProductInCart(this.getOrderObject(cartClone));*/
+    deleteItem(productId) {
+      this.deleteItemFromCartProducts(productId);
     },
     async changeProductInCart({ productId, amount }) {
       this.addItemToCartProducts({productId, amount});

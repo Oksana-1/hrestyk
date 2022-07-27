@@ -9,6 +9,7 @@ import {
   removeLocalStorageItem,
   mergeArrayWithItemById,
   cloneObj,
+  deleteItemFromArrayById,
 } from "@/utils/helpers";
 
 Vue.use(Vuex);
@@ -82,6 +83,14 @@ export function createStore() {
         } else {
           throw new Error(`Product with id ${productId} not found!`);
         }
+      },
+      deleteItemFromCartProducts({ state, dispatch }, productId) {
+        const newCartProducts = deleteItemFromArrayById(
+          state.cartProducts,
+          productId
+        );
+        dispatch("setCartToLocalStorage", newCartProducts);
+        dispatch("getCartFromLocalStorage");
       },
       setCartToLocalStorage({ dispatch }, cartProducts) {
         if (!cartProducts) {

@@ -60,7 +60,7 @@
         </div>
         <div
           class="cart-item-del"
-          @click="$emit('deleteItem', $vnode.key)"
+          @click="$emit('deleteItem', cartItem._id)"
         >
           +
         </div>

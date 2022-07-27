@@ -24,7 +24,7 @@
           <div class="product-price">
             {{ `${product.price} ${currency.UAH}` }}
           </div>
-          <button class="hrestyk-btn-dark buyBtn" @click="addProductToCart()">
+          <button class="hrestyk-btn-dark buyBtn" @click="addProductToCart">
             <span v-if="!isInCart">{{ btnText.buy }}</span>
             <span v-else>{{ btnText.alreadyInCart }}</span>
           </button>
@@ -65,15 +65,16 @@ export default {
     },
     isInCart() {
       return Boolean(
-        this.cartProducts.find((item) => item.id === this.product.id)
+        this.cartProducts.find((item) => item._id === this.product.id)
       );
     },
   },
   methods: {
     addProductToCart() {
-      this.isInCart
-        ? eventBus.$emit("cartVisibilityChange", true)
-        : this.$emit("addProductToCart", this.product.id);
+      if (!this.isInCart) {
+        this.$emit("addProductToCart", this.product.id);
+      }
+      eventBus.$emit("cartVisibilityChange", true);
     },
     initWaypoint() {
       const waypointElements = document.querySelectorAll(".waypoint");
