@@ -123,7 +123,6 @@ import { required, email, numeric, minLength } from "vuelidate/lib/validators";
 import CheckoutCart from "@/components/checkout/CheckoutCart";
 import { mapActions, mapGetters } from "vuex";
 import Order, { ProcessingStatus, UserInfo } from "@/entities/Order";
-import { cloneObj } from "@/utils/helpers";
 import { btnText } from "@/entities/data/btnTexts";
 import { headerTexts, noteTexts } from "@/entities/data/texts";
 import { placeHolders } from "@/entities/data/placeHolders";
@@ -180,32 +179,21 @@ export default {
     getOrderObject() {
       return new Order({
         userInfo: this.userInfoObject,
-        products: this.cartForOrder,
+        products: this.cartProducts,
         processing: [this.processingStatusObject],
         orderStatus: "ordered",
       });
     },
-    cartForOrder() {
-      const cartClone = cloneObj(this.cartProducts);
-      return cartClone.map((cartItem) => {
-        cartItem.images.forEach((image) => {
-          delete image.image;
-          return image;
-        });
-        return cartItem;
-      });
-    },
   },
   methods: {
-    ...mapActions(["setCartToLocalStorage"]),
+    ...mapActions(["setCartToLocalStorage", "addToCart"]),
     async submitOrder() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         this.busy = false;
         try {
-          console.log("There must be `submitOrder` fn");
-          console.log(this.cartForOrder);
-          this.setCartToLocalStorage(null);
+          await this.addToCart(this.getOrderObject)
+          this.setCartToLocalStorage([]);
           await this.$router.push("thankyou");
         } catch (e) {
           console.error(e);
