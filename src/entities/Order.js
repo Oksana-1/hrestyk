@@ -22,6 +22,7 @@ export class UserInfo {
     this.name = userInfo.name;
     this.email = userInfo.email;
     this.phone = userInfo.phone;
+    this.comments = userInfo.comments;
 
     ObjectCreationValidator.validate(this);
   }
