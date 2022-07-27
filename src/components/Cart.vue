@@ -87,11 +87,9 @@ export default {
       cartClone.splice(index, 1);
       this.changeProductInCart(this.getOrderObject(cartClone));*/
     },
-    async changeProductInCart({ itemKey, amount }) {
-      console.log("There must be `changeProductInCart fn`");
-      console.log("orderObject:", itemKey)
-      console.log("orderObject:", amount)
-      //eventBus.$emit("cartVisibilityChange", true);
+    async changeProductInCart({ productId, amount }) {
+      this.addItemToCartProducts({productId, amount});
+      eventBus.$emit("cartVisibilityChange", true);
     },
   },
 };

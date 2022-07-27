@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="cart-item"
-    :class="{busy }"
-  >
+  <div class="cart-item" :class="{ busy }">
     <div class="cart-item-img-fix">
       <div
         v-if="mainImageUrl"
@@ -29,29 +26,18 @@
             <input
               v-model.number="amount"
               :disabled="busy"
-              @keyup="$emit('changeAmount', {itemKey: $vnode.key, amount})"
-            >
+              @keyup="changeAmount"
+            />
           </label>
           <div class="input-qnt-ctrl">
-            <button
-              class="input-qnt-up"
-              :disabled="busy"
-              @click="increase"
-            />
-            <button
-              class="input-qnt-down"
-              :disabled="busy"
-              @click="decrease"
-            />
+            <button class="input-qnt-up" :disabled="busy" @click="increase" />
+            <button class="input-qnt-down" :disabled="busy" @click="decrease" />
           </div>
         </div>
         <div class="product-price">
           {{ `${product.price} ${currency.UAH}` }}
         </div>
-        <div
-          class="cart-item-del"
-          @click="$emit('deleteItem', $vnode.key)"
-        >
+        <div class="cart-item-del" @click="$emit('deleteItem', product.id)">
           +
         </div>
       </div>
@@ -60,7 +46,7 @@
 </template>
 
 <script>
-import {OrderProduct} from "@/entities/Order";
+import { OrderProduct } from "@/entities/Order";
 import IconBase from "@/components/IconBase";
 import IconNoImage from "@/components/icons/IconNoImage";
 import { currency } from "@/entities/data/currency";
@@ -73,13 +59,13 @@ export default {
   },
   components: {
     IconBase,
-    IconNoImage
+    IconNoImage,
   },
   data() {
     return {
       amount: null,
-      currency
-    }
+      currency,
+    };
   },
   computed: {
     mainImageUrl() {
@@ -90,27 +76,35 @@ export default {
   },
   methods: {
     increase() {
-      this.amount += 1;
-      this.$emit('changeAmount', {
-        itemKey: this.$vnode.key,
-        amount: this.amount
+      this.amount++;
+      this.$emit("changeAmount", {
+        productId: this.product.id,
+        amount: this.amount,
       });
     },
     decrease() {
       if (this.amount <= 1) return;
       this.amount -= 1;
-      this.$emit('changeAmount', {
-        itemKey: this.$vnode.key,
-        amount: this.amount
+      this.$emit("changeAmount", {
+        productId: this.product.id,
+        amount: this.amount,
+      });
+    },
+    changeAmount() {
+      if (!Number.isInteger(this.amount)) return;
+      if (this.amount <= 1) {
+        this.amount = 1;
+      }
+      this.$emit("changeAmount", {
+        productId: this.product.id,
+        amount: this.amount,
       });
     },
   },
   created() {
     this.amount = this.product.amount;
-  }
-}
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
