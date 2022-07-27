@@ -30,20 +30,14 @@
       </div>
       <div class="catalog-products-section">
         <div class="c-box-1100">
-          <transition
-            name="fade"
-            mode="out-in"
-          >
+          <transition name="fade" mode="out-in">
             <spinner-cube v-if="busy" />
-            <div
-              v-else
-              class="catalog-products-container"
-            >
+            <div v-else class="catalog-products-container">
               <product-card
                 v-for="product in filteredProducts"
                 :key="product.id"
                 :product="product"
-                @addProductToCart="addProductToLocalCart($event)"
+                @addProductToCart="addProductToCart($event)"
               />
             </div>
           </transition>
@@ -56,9 +50,6 @@
 import ProductCard from "./catalog/ProductCart";
 import SpinnerCube from "@/components/ui/SpinnerCube";
 import { mapActions, mapGetters } from "vuex";
-import eventBus from "@/event-bus";
-import { userInfoForm } from "@/entities/forms/userInfoForm";
-import Order, { ProcessingStatus, UserInfo } from "@/entities/Order";
 
 export default {
   components: {
@@ -73,7 +64,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["products", "categories", "localCart"]),
+    ...mapGetters(["products", "categories"]),
     filteredProducts() {
       return this.currentCat === "all"
         ? this.products
@@ -81,22 +72,9 @@ export default {
             (product) => product.category === this.currentCat
           );
     },
-    userInfoObject() {
-      return new UserInfo(userInfoForm);
-    },
-    processingStatusObject() {
-      return new ProcessingStatus({
-        processingStatus: "started",
-        content: "Init order processing",
-      });
-    },
   },
   methods: {
-    ...mapActions([
-      "fetchProducts",
-      "setCartToLocalStorage",
-      "getCartFromLocalStorage",
-    ]),
+    ...mapActions(["fetchProducts", "addItemToCartProducts"]),
     async init() {
       this.busy = true;
       try {
@@ -112,19 +90,8 @@ export default {
       this.currentCat = category;
       this.busy = false;
     },
-    getOrderObject(cartProduct) {
-      const alreadyInCartProducts = this.localCart ? this.localCart.products :  [];
-      return new Order({
-        userInfo: this.userInfoObject,
-        products: [...alreadyInCartProducts, cartProduct],
-        processing: [this.processingStatusObject],
-        orderStatus: "started",
-      });
-    },
-    addProductToLocalCart(product) {
-      const orderObject = this.getOrderObject(product);
-      this.setCartToLocalStorage(orderObject);
-      eventBus.$emit("cartVisibilityChange", true);
+    addProductToCart(id) {
+      this.addItemToCartProducts({ productId: id, amount: 1 });
     },
   },
   created() {

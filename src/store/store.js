@@ -1,12 +1,14 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import PublicApi from "@/api/publicApi";
-import Order from "@/entities/Order";
+import { OrderProduct } from "@/entities/Order";
 const api = new PublicApi();
 import {
   getLocalStorageItem,
   setLocalStorageItem,
   removeLocalStorageItem,
+  mergeArrayWithItemById,
+  cloneObj,
 } from "@/utils/helpers";
 
 Vue.use(Vuex);
@@ -17,20 +19,18 @@ export function createStore() {
       products: [],
       categories: [],
       product: null,
-      localCart: null,
+      cartProducts: [],
     },
     getters: {
       products: (state) => state.products,
       categories: (state) => state.categories,
       product: (state) => state.product,
-      localCart: (state) => state.localCart,
+      cartProducts: (state) => state.cartProducts,
       total: (state) =>
-        state.localCart
-          ? state.localCart.products.reduce((sum, cartItem) => {
-              sum += cartItem.price * cartItem.amount;
-              return sum;
-            }, 0)
-          : 0,
+        state.cartProducts.reduce((sum, cartItem) => {
+          sum += cartItem.price * cartItem.amount;
+          return sum;
+        }, 0),
     },
     actions: {
       async fetchProducts({ commit }) {
@@ -54,14 +54,40 @@ export function createStore() {
       getCartFromLocalStorage({ commit }) {
         const localStorageItem = getLocalStorageItem("hrestykCart");
         if (localStorageItem) {
-          commit("SET_LOCAL_CART", new Order(JSON.parse(localStorageItem)));
+          const cartProducts = JSON.parse(localStorageItem).map(
+            (item) => new OrderProduct(item)
+          );
+          commit("SET_CART_PRODUCTS", cartProducts);
         }
       },
-      setCartToLocalStorage({ dispatch }, cart) {
-        if (!cart) {
+      addItemToCartProducts({ state, dispatch }, { productId, amount }) {
+        const cartProduct = state.cartProducts.find(
+          (item) => item.id === productId
+        );
+        const product =
+          state.products.find((item) => item.id === productId) || state.product;
+        const clonedProduct = cartProduct
+          ? cloneObj(cartProduct)
+          : product
+          ? cloneObj(product)
+          : null;
+        clonedProduct.amount = amount;
+        if (clonedProduct) {
+          const newCartProducts = mergeArrayWithItemById(
+            state.cartProducts,
+            new OrderProduct(clonedProduct)
+          );
+          dispatch("setCartToLocalStorage", newCartProducts);
+          dispatch("getCartFromLocalStorage");
+        } else {
+          throw new Error(`Product with id ${productId} not found!`);
+        }
+      },
+      setCartToLocalStorage({ dispatch }, cartProducts) {
+        if (!cartProducts) {
           removeLocalStorageItem("hrestykCart");
         } else {
-          setLocalStorageItem("hrestykCart", JSON.stringify(cart));
+          setLocalStorageItem("hrestykCart", JSON.stringify(cartProducts));
         }
         dispatch("getCartFromLocalStorage");
       },
@@ -84,8 +110,8 @@ export function createStore() {
       SET_PRODUCT: (state, data) => {
         state.product = data;
       },
-      SET_LOCAL_CART: (state, data) => {
-        state.localCart = data;
+      SET_CART_PRODUCTS: (state, data) => {
+        state.cartProducts = data;
       },
     },
   });

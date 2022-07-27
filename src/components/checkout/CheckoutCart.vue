@@ -4,13 +4,13 @@
       {{ headerTexts.cart }}
     </h2>
     <div
-      v-if="localCart && localCart.products.length > 0"
+      v-if="cartProducts.length > 0"
       class="checkout-cart"
     >
       <div class="cart-note-wrap">
         <div class="cart-note">
           {{ noteTexts.inYourCartNote }}
-          <span class="cart-qnt">{{ localCart.products.length }}</span>
+          <span class="cart-qnt">{{ cartProducts.length }}</span>
           {{ itemString }}
         </div>
         <router-link
@@ -26,7 +26,7 @@
       </div>
       <div class="checkout-cart-cont">
         <checkout-item
-          v-for="(cartItem, index) in localCart.products"
+          v-for="(cartItem, index) in cartProducts"
           :key="prefix + index"
           :cart-item="cartItem"
           :busy="busy"
@@ -68,9 +68,6 @@
 import { mapActions, mapGetters } from "vuex";
 import eventBus from "@/event-bus";
 import CheckoutItem from "@/components/checkout/CheckoutItem";
-import { cloneObj } from "@/utils/helpers";
-import Order, { ProcessingStatus, UserInfo } from "@/entities/Order";
-import { userInfoForm } from "@/entities/forms/userInfoForm";
 import { btnText } from "@/entities/data/btnTexts";
 import { headerTexts, noteTexts } from "@/entities/data/texts";
 import { currency } from "@/entities/data/currency";
@@ -89,10 +86,9 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["localCart", "total"]),
+    ...mapGetters(["cartProducts", "total"]),
     itemString() {
-      if (!this.localCart) return "";
-      let getCartLengthStr = this.localCart.products.length.toString();
+      let getCartLengthStr = this.cartProducts.length.toString();
       let singleNumExeptions = ["2", "3", "4"];
       let doubleNumExeptions = ["11", "12", "13", "14"];
       let lastChar = getCartLengthStr.substr(-1);
@@ -109,25 +105,6 @@ export default {
         }
       }
     },
-    cartForOrder() {
-      const cartClone = cloneObj(this.localCart);
-      return cartClone.map((cartItem) => {
-        cartItem.images.forEach((image) => {
-          delete image.image;
-          return image;
-        });
-        return cartItem;
-      });
-    },
-    userInfoObject() {
-      return new UserInfo(userInfoForm);
-    },
-    processingStatusObject() {
-      return new ProcessingStatus({
-        processingStatus: "started",
-        content: "Init order processing",
-      });
-    },
   },
   methods: {
     ...mapActions(["addToCart"]),
@@ -135,34 +112,21 @@ export default {
       eventBus.$emit("cartVisibilityChange", false);
     },
     deleteItem(itemKey) {
-      const index = itemKey.replace(this.prefix, "");
+      console.log("There must be `deleteItem` fn");
+      console.log("itemKey", itemKey);
+     /* const index = itemKey.replace(this.prefix, "");
       const cartClone = cloneObj(this.cartForOrder);
       cartClone.splice(index, 1);
-      this.changeProductInCart(this.getOrderObject(cartClone));
+      this.changeProductInCart(this.getOrderObject(cartClone));*/
     },
     changeAmount({ itemKey, amount }) {
-      const cartClone = cloneObj(this.cartForOrder);
+      console.log("There must be `changeAmount` fn");
+      console.log("itemKey", itemKey);
+      console.log("amount", amount);
+     /* const cartClone = cloneObj(this.cartForOrder);
       const index = itemKey.replace(this.prefix, "");
       cartClone[index].amount = amount;
-      this.changeProductInCart(this.getOrderObject(cartClone));
-    },
-    getOrderObject(newCart) {
-      return new Order({
-        userInfo: this.userInfoObject,
-        products: newCart,
-        processing: [this.processingStatusObject],
-        orderStatus: "started",
-      });
-    },
-    async changeProductInCart(orderObject) {
-      this.busy = true;
-      try {
-        await this.addToCart(orderObject);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.busy = false;
-      }
+      this.changeProductInCart(this.getOrderObject(cartClone));*/
     },
   },
 };

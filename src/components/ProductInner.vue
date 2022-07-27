@@ -29,22 +29,25 @@
                       <div class="buy-qnt-row">
                         <div class="input-qnt">
                           <label>
-                            <input v-model.number="quantity">
+                            <input
+                              v-model.number="quantity"
+                              :disabled="isInCart"
+                            />
                           </label>
                           <div class="input-qnt-ctrl">
-                            <div
+                            <button
                               class="input-qnt-up"
+                              :disabled="isInCart"
                               @click="addOne"
                             />
-                            <div
+                            <button
                               class="input-qnt-down"
+                              :disabled="isInCart"
                               @click="minusOne"
                             />
                           </div>
                         </div>
-                        <div class="product-price">
-                          {{ product.price }} грн
-                        </div>
+                        <div class="product-price">{{ product.price }} грн</div>
                         <button
                           class="hrestyk-btn-dark buyBtn"
                           :disabled="
@@ -57,16 +60,13 @@
                         </button>
                       </div>
                     </div>
-                    <div
-                      class="descr-note"
-                      v-html="warnings.colorMismatch"
-                    />
+                    <div class="descr-note" v-html="warnings.colorMismatch" />
                     <div class="sep-line-img">
                       <img
                         class="fits"
                         src="@/assets/images/logo.png"
                         alt="Logo"
-                      >
+                      />
                     </div>
                   </div>
                 </div>
@@ -85,13 +85,6 @@ import { mapGetters, mapActions } from "vuex";
 import AboutBanner from "./main/AboutBanner";
 import ProductImages from "@/components/product/ProductImages";
 import SpinnerCube from "@/components/ui/SpinnerCube";
-import Order, {
-  OrderProduct,
-  OrderProductImage,
-  ProcessingStatus,
-  UserInfo,
-} from "@/entities/Order";
-import { userInfoForm } from "@/entities/forms/userInfoForm";
 import { btnText } from "@/entities/data/btnTexts";
 import { warnings } from "@/entities/data/warnings";
 
@@ -124,67 +117,24 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["product", "localCart"]),
-    productCartObject() {
-      return new OrderProduct({
-        _id: this.product.id,
-        title: this.product.title,
-        amount: this.quantity,
-        price: this.product.price,
-        images: this.product.images.map(
-          (image) =>
-            new OrderProductImage({
-              alt: image.alt,
-              url: image.url,
-              is_main: image.is_main,
-            })
-        ),
-      });
-    },
-    userInfoObject() {
-      return new UserInfo(userInfoForm);
-    },
-    processingStatusObject() {
-      return new ProcessingStatus({
-        processingStatus: "started",
-        content: "Init order processing",
-      });
-    },
-    cartProductsForOrder() {
-      return this.localCart && this.localCart.products.length > 0
-        ? this.localCart.products.map((cartItem) => {
-            cartItem.images.forEach((image) => {
-              delete image.image;
-              return image;
-            });
-            return cartItem;
-          })
-        : [];
+    ...mapGetters(["product", "cartProducts"]),
+    cartProduct() {
+      return this.cartProducts.find((item) => item.id === this.productId);
     },
     isInCart() {
-      return this.localCart
-        ? Boolean(
-            this.localCart.products.find((item) => item.id === this.productId)
-          )
-        : false;
+      return Boolean(this.cartProduct);
     },
   },
   methods: {
-    ...mapActions(["fetchSingleProduct", "setCartToLocalStorage"]),
+    ...mapActions(["fetchSingleProduct", "addItemToCartProducts"]),
     addOne() {
       if (this.quantity >= 0) {
         this.quantity++;
-        const orderObject = this.getOrderObject(this.productCartObject);
-        this.setCartToLocalStorage(orderObject);
-        eventBus.$emit("cartVisibilityChange", true);
       }
     },
     minusOne() {
       if (this.quantity > 1) {
         this.quantity--;
-        const orderObject = this.getOrderObject(this.productCartObject);
-        this.setCartToLocalStorage(orderObject);
-        eventBus.$emit("cartVisibilityChange", true);
       }
     },
     async init() {
@@ -195,23 +145,18 @@ export default {
         console.error(e);
       } finally {
         this.busy = false;
+        this.quantity = this.cartProduct ? this.cartProduct.amount : 1;
         requestAnimationFrame(() => {
           this.initWaypoint();
         });
       }
     },
-    getOrderObject(cartProduct) {
-      return new Order({
-        userInfo: this.userInfoObject,
-        products: [...this.cartProductsForOrder, cartProduct],
-        processing: [this.processingStatusObject],
-        orderStatus: "started",
-      });
-    },
     addProductToCart() {
       if (!this.isInCart) {
-        const orderObject = this.getOrderObject(this.productCartObject);
-        this.setCartToLocalStorage(orderObject);
+        this.addItemToCartProducts({
+          productId: this.productId,
+          amount: this.quantity,
+        });
       }
       eventBus.$emit("cartVisibilityChange", true);
     },

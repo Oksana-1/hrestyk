@@ -28,7 +28,7 @@ export class UserInfo {
 }
 export class OrderProduct {
   constructor(orderProduct) {
-    this._id = orderProduct._id;
+    this._id = orderProduct._id || orderProduct.id;
     this.title = orderProduct.title;
     this.amount = orderProduct.amount;
     this.price = orderProduct.price;
