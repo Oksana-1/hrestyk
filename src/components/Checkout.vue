@@ -90,8 +90,8 @@
                 <div class="input-row">
                   <label>
                     <textarea
-                      v-model="message"
-                      :placeholder="placeHolders.message"
+                      v-model="comments"
+                      :placeholder="placeHolders.comments"
                     />
                   </label>
                 </div>
@@ -137,7 +137,7 @@ export default {
       name: "",
       email: "",
       phone: "",
-      message: "",
+      comments: "",
       formErrors,
       submitStatus: null,
       busy: false,
@@ -168,6 +168,7 @@ export default {
         name: this.name,
         email: this.email,
         phone: this.phone,
+        comments: this.comments,
       });
     },
     processingStatusObject() {
