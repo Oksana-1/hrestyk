@@ -107,26 +107,16 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["addToCart"]),
+    ...mapActions(["addItemToCartProducts"]),
     closeCart() {
       eventBus.$emit("cartVisibilityChange", false);
     },
-    deleteItem(itemKey) {
+    deleteItem(productId) {
       console.log("There must be `deleteItem` fn");
-      console.log("itemKey", itemKey);
-     /* const index = itemKey.replace(this.prefix, "");
-      const cartClone = cloneObj(this.cartForOrder);
-      cartClone.splice(index, 1);
-      this.changeProductInCart(this.getOrderObject(cartClone));*/
+      console.log("productId", productId);
     },
-    changeAmount({ itemKey, amount }) {
-      console.log("There must be `changeAmount` fn");
-      console.log("itemKey", itemKey);
-      console.log("amount", amount);
-     /* const cartClone = cloneObj(this.cartForOrder);
-      const index = itemKey.replace(this.prefix, "");
-      cartClone[index].amount = amount;
-      this.changeProductInCart(this.getOrderObject(cartClone));*/
+    changeAmount({ productId, amount }) {
+      this.addItemToCartProducts({productId, amount})
     },
   },
 };

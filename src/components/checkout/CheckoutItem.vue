@@ -5,7 +5,7 @@
   >
     <div class="cart-item-img-fix">
       <router-link
-        :to="'/catalog/' + cartItem.id"
+        :to="'/catalog/' + cartItem._id"
         class="link-abs"
       />
       <div
@@ -25,7 +25,7 @@
     </div>
     <div class="cart-item-info">
       <router-link
-        :to="'/catalog/' + cartItem.id"
+        :to="'/catalog/' + cartItem._id"
         class="cart-item-name"
       >
         {{ cartItem.title }}
@@ -36,7 +36,7 @@
             <input
               v-model.number="amount"
               :disabled="busy"
-              @keyup="$emit('changeAmount', { itemKey: $vnode.key, amount })"
+              @keyup="changeAmount"
             >
           </label>
           <div class="input-qnt-ctrl">
@@ -102,7 +102,7 @@ export default {
     increase() {
       this.amount += 1;
       this.$emit("changeAmount", {
-        itemKey: this.$vnode.key,
+        productId: this.cartItem._id,
         amount: this.amount,
       });
     },
@@ -110,7 +110,17 @@ export default {
       if (this.amount <= 1) return;
       this.amount -= 1;
       this.$emit("changeAmount", {
-        itemKey: this.$vnode.key,
+        productId: this.cartItem._id,
+        amount: this.amount,
+      });
+    },
+    changeAmount() {
+      if (!Number.isInteger(this.amount)) return;
+      if (this.amount <= 1) {
+        this.amount = 1;
+      }
+      this.$emit("changeAmount", {
+        productId: this.cartItem._id,
         amount: this.amount,
       });
     },
