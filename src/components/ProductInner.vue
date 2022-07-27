@@ -29,28 +29,29 @@
                       <div class="buy-qnt-row">
                         <div class="input-qnt">
                           <label>
-                            <input v-model.number="quantity">
+                            <input
+                              v-model.number="quantity"
+                              :disabled="isInCart"
+                            />
                           </label>
                           <div class="input-qnt-ctrl">
-                            <div
+                            <button
                               class="input-qnt-up"
+                              :disabled="isInCart"
                               @click="addOne"
                             />
-                            <div
+                            <button
                               class="input-qnt-down"
+                              :disabled="isInCart"
                               @click="minusOne"
                             />
                           </div>
                         </div>
-                        <div class="product-price">
-                          {{ product.price }} грн
-                        </div>
+                        <div class="product-price">{{ product.price }} грн</div>
                         <button
                           class="hrestyk-btn-dark buyBtn"
                           :disabled="
-                            quantity <= 0 ||
-                              !Number.isInteger(quantity) ||
-                              !isCartReady
+                            quantity <= 0 || !Number.isInteger(quantity)
                           "
                           @click="addProductToCart"
                         >
@@ -59,16 +60,13 @@
                         </button>
                       </div>
                     </div>
-                    <div
-                      class="descr-note"
-                      v-html="warnings.colorMismatch"
-                    />
+                    <div class="descr-note" v-html="warnings.colorMismatch" />
                     <div class="sep-line-img">
                       <img
                         class="fits"
                         src="@/assets/images/logo.png"
                         alt="Logo"
-                      >
+                      />
                     </div>
                   </div>
                 </div>
@@ -87,13 +85,6 @@ import { mapGetters, mapActions } from "vuex";
 import AboutBanner from "./main/AboutBanner";
 import ProductImages from "@/components/product/ProductImages";
 import SpinnerCube from "@/components/ui/SpinnerCube";
-import Order, {
-  OrderProduct,
-  OrderProductImage,
-  ProcessingStatus,
-  UserInfo,
-} from "@/entities/Order";
-import { userInfoForm } from "@/entities/forms/userInfoForm";
 import { btnText } from "@/entities/data/btnTexts";
 import { warnings } from "@/entities/data/warnings";
 
@@ -124,49 +115,21 @@ export default {
     $route(to) {
       this.productId = to.params.id;
     },
+    cartProduct() {
+      this.setProductAmount();
+    }
   },
   computed: {
-    ...mapGetters(["product", "cart", "cartId", "isCartReady"]),
-    productCartObject() {
-      return new OrderProduct({
-        _id: this.product.id,
-        title: this.product.title,
-        amount: this.quantity,
-        price: this.product.price,
-        images: this.product.images.map(
-          (image) =>
-            new OrderProductImage({
-              alt: image.alt,
-              url: image.url,
-              is_main: image.is_main,
-            })
-        ),
-      });
-    },
-    userInfoObject() {
-      return new UserInfo(userInfoForm);
-    },
-    processingStatusObject() {
-      return new ProcessingStatus({
-        processingStatus: "started",
-        content: "Init order processing",
-      });
-    },
-    cartForOrder() {
-      return this.cart.map((cartItem) => {
-        cartItem.images.forEach((image) => {
-          delete image.image;
-          return image;
-        });
-        return cartItem;
-      });
+    ...mapGetters(["product", "cartProducts"]),
+    cartProduct() {
+      return this.cartProducts.find((item) => item.id === this.productId);
     },
     isInCart() {
-      return Boolean(this.cart.find((item) => item.id === this.productId));
+      return Boolean(this.cartProduct);
     },
   },
   methods: {
-    ...mapActions(["fetchSingleProduct", "addToCart"]),
+    ...mapActions(["fetchSingleProduct", "addItemToCartProducts"]),
     addOne() {
       if (this.quantity >= 0) {
         this.quantity++;
@@ -177,10 +140,14 @@ export default {
         this.quantity--;
       }
     },
+    setProductAmount() {
+      this.quantity = this.cartProduct ? this.cartProduct.amount : 1;
+    },
     async init() {
       this.busy = true;
       try {
         await this.fetchSingleProduct(this.productId);
+        this.setProductAmount();
       } catch (e) {
         console.error(e);
       } finally {
@@ -190,28 +157,14 @@ export default {
         });
       }
     },
-    getOrderObject(cartProduct) {
-      return new Order({
-        userInfo: this.userInfoObject,
-        products: [...this.cartForOrder, cartProduct],
-        processing: [this.processingStatusObject],
-        orderStatus: "started",
-      });
-    },
     addProductToCart() {
-      this.isInCart
-        ? eventBus.$emit("cartVisibilityChange", true)
-        : this.doAddToCart();
-    },
-    async doAddToCart() {
-      const orderObject = this.getOrderObject(this.productCartObject);
-      if (this.cartId) orderObject.setOrderId(this.cartId);
-      try {
-        await this.addToCart(orderObject);
-        eventBus.$emit("cartVisibilityChange", true);
-      } catch (e) {
-        console.error(e);
+      if (!this.isInCart) {
+        this.addItemToCartProducts({
+          productId: this.productId,
+          amount: this.quantity,
+        });
       }
+      eventBus.$emit("cartVisibilityChange", true);
     },
     initWaypoint() {
       const waypointElements = document.querySelectorAll(".waypoint");

@@ -1,7 +1,16 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import PublicApi from "@/api/publicApi";
+import { OrderProduct } from "@/entities/Order";
 const api = new PublicApi();
+import {
+  getLocalStorageItem,
+  setLocalStorageItem,
+  removeLocalStorageItem,
+  mergeArrayWithItemById,
+  cloneObj,
+  deleteItemFromArrayById,
+} from "@/utils/helpers";
 
 Vue.use(Vuex);
 
@@ -11,22 +20,18 @@ export function createStore() {
       products: [],
       categories: [],
       product: null,
-      cart: [],
-      cartId: null,
-      isCartReady: true,
+      cartProducts: [],
     },
     getters: {
       products: (state) => state.products,
       categories: (state) => state.categories,
       product: (state) => state.product,
-      cartId: (state) => state.cartId,
+      cartProducts: (state) => state.cartProducts,
       total: (state) =>
-        state.cart.reduce((sum, cartItem) => {
+        state.cartProducts.reduce((sum, cartItem) => {
           sum += cartItem.price * cartItem.amount;
           return sum;
         }, 0),
-      cart: (state) => state.cart,
-      isCartReady: (state) => state.isCartReady,
     },
     actions: {
       async fetchProducts({ commit }) {
@@ -47,27 +52,61 @@ export function createStore() {
           throw e;
         }
       },
-      async addToCart({ commit }, order) {
+      getCartFromLocalStorage({ commit }) {
+        const localStorageItem = getLocalStorageItem("hrestykCart");
+        if (localStorageItem) {
+          const cartProducts = JSON.parse(localStorageItem).map(
+            (item) => new OrderProduct(item)
+          );
+          commit("SET_CART_PRODUCTS", cartProducts);
+        }
+      },
+      addItemToCartProducts({ state, dispatch }, { productId, amount }) {
+        const cartProduct = state.cartProducts.find(
+          (item) => item.id === productId
+        );
+        const product =
+          state.products.find((item) => item.id === productId) || state.product;
+        const clonedProduct = cartProduct
+          ? cloneObj(cartProduct)
+          : product
+          ? cloneObj(product)
+          : null;
+        clonedProduct.amount = amount;
+        if (clonedProduct) {
+          const newCartProducts = mergeArrayWithItemById(
+            state.cartProducts,
+            new OrderProduct(clonedProduct)
+          );
+          dispatch("setCartToLocalStorage", newCartProducts);
+          dispatch("getCartFromLocalStorage");
+        } else {
+          throw new Error(`Product with id ${productId} not found!`);
+        }
+      },
+      deleteItemFromCartProducts({ state, dispatch }, productId) {
+        const newCartProducts = deleteItemFromArrayById(
+          state.cartProducts,
+          productId
+        );
+        dispatch("setCartToLocalStorage", newCartProducts);
+        dispatch("getCartFromLocalStorage");
+      },
+      setCartToLocalStorage({ dispatch }, cartProducts) {
+        if (!cartProducts) {
+          removeLocalStorageItem("hrestykCart");
+        } else {
+          setLocalStorageItem("hrestykCart", JSON.stringify(cartProducts));
+        }
+        dispatch("getCartFromLocalStorage");
+      },
+      async addToCart({ dispatch }, order) {
         try {
-          const response = await api.addToCart(order);
-          commit("SET_CART_ID", response.id);
-          commit("SET_CART", response.products);
-          localStorage.setItem("cartId", response.id);
+          await api.addToCart(order);
+          dispatch("getCartFromLocalStorage");
         } catch (e) {
           throw e;
         }
-      },
-      async getCart({ commit }, cart_id) {
-        try {
-          const response = await api.getCart(cart_id);
-          commit("SET_CART_ID", response.id);
-          commit("SET_CART", response.products);
-        } catch (e) {
-          throw e;
-        }
-      },
-      setCart({ commit }, cart) {
-        commit("SET_CART", cart);
       },
     },
     mutations: {
@@ -80,17 +119,8 @@ export function createStore() {
       SET_PRODUCT: (state, data) => {
         state.product = data;
       },
-      SET_CART_ID: (state, data) => {
-        state.cartId = data;
-      },
-      SET_CART: (state, data) => {
-        state.cart = data;
-      },
-      DISABLE_CART: (state) => {
-        state.isCartReady = false;
-      },
-      ENABLE_CART: (state) => {
-        state.isCartReady = true;
+      SET_CART_PRODUCTS: (state, data) => {
+        state.cartProducts = data;
       },
     },
   });

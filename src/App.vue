@@ -1,12 +1,12 @@
 <template>
-  <div 
-    class="main-wrap" 
+  <div
+    class="main-wrap"
     :class="contentClass"
   >
     <app-header />
-    <transition 
-      name="fade" 
-      mode="out-in" 
+    <transition
+      name="fade"
+      mode="out-in"
     >
       <router-view />
     </transition>
@@ -17,7 +17,7 @@
 <script>
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
-import {mapActions, mapMutations} from "vuex";
+import { mapActions } from "vuex";
 export default {
   components: {
     appHeader: Header,
@@ -53,25 +53,13 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["SET_CART_ID", "DISABLE_CART", "ENABLE_CART"]),
-    ...mapActions(["getCart"]),
-    async init() {
-      const cartId = localStorage.getItem('cartId');
-      if (cartId) {
-        this.SET_CART_ID(cartId);
-        this.DISABLE_CART();
-        try {
-          await this.getCart(cartId);
-        } catch (e) {
-          console.error(e);
-        } finally {
-          this.ENABLE_CART();
-        }
-      }
-    }
+    ...mapActions(["getCartFromLocalStorage"]),
+    initLocal() {
+      this.getCartFromLocalStorage();
+    },
   },
   created() {
-    this.init();
+    this.initLocal();
   },
   mounted() {
     let mainWrap = document.querySelector(".main-wrap");

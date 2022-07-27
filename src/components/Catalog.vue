@@ -30,15 +30,9 @@
       </div>
       <div class="catalog-products-section">
         <div class="c-box-1100">
-          <transition
-            name="fade"
-            mode="out-in"
-          >
+          <transition name="fade" mode="out-in">
             <spinner-cube v-if="busy" />
-            <div
-              v-else
-              class="catalog-products-container"
-            >
+            <div v-else class="catalog-products-container">
               <product-card
                 v-for="product in filteredProducts"
                 :key="product.id"
@@ -55,11 +49,7 @@
 <script>
 import ProductCard from "./catalog/ProductCart";
 import SpinnerCube from "@/components/ui/SpinnerCube";
-import { mapActions, mapGetters, mapMutations } from "vuex";
-import eventBus from "@/event-bus";
-import { userInfoForm } from "@/entities/forms/userInfoForm";
-import Order, { ProcessingStatus, UserInfo } from "@/entities/Order";
-import { cloneObj } from "@/utils/helpers";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
@@ -74,7 +64,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["products", "categories", "cart", "cartId"]),
+    ...mapGetters(["products", "categories"]),
     filteredProducts() {
       return this.currentCat === "all"
         ? this.products
@@ -82,29 +72,9 @@ export default {
             (product) => product.category === this.currentCat
           );
     },
-    userInfoObject() {
-      return new UserInfo(userInfoForm);
-    },
-    processingStatusObject() {
-      return new ProcessingStatus({
-        processingStatus: "started",
-        content: "Init order processing",
-      });
-    },
-    cartForOrder() {
-      const cartClone = cloneObj(this.cart);
-      return cartClone.map((cartItem) => {
-        cartItem.images.forEach((image) => {
-          delete image.image;
-          return image;
-        });
-        return cartItem;
-      });
-    },
   },
   methods: {
-    ...mapActions(["fetchProducts", "addToCart"]),
-    ...mapMutations(["DISABLE_CART", "ENABLE_CART"]),
+    ...mapActions(["fetchProducts", "addItemToCartProducts"]),
     async init() {
       this.busy = true;
       try {
@@ -120,29 +90,8 @@ export default {
       this.currentCat = category;
       this.busy = false;
     },
-    getOrderObject(cartProduct) {
-      const onlyOldCartProducts = this.cartForOrder.filter(
-        (cartItem) => cartItem.id !== cartProduct.id
-      );
-      return new Order({
-        userInfo: this.userInfoObject,
-        products: [...onlyOldCartProducts, cartProduct],
-        processing: [this.processingStatusObject],
-        orderStatus: "started",
-      });
-    },
-    async addProductToCart(product) {
-      const orderObject = this.getOrderObject(product);
-      if (this.cartId) orderObject.setOrderId(this.cartId);
-      this.DISABLE_CART();
-      try {
-        await this.addToCart(orderObject);
-        eventBus.$emit("cartVisibilityChange", true);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.ENABLE_CART();
-      }
+    addProductToCart(id) {
+      this.addItemToCartProducts({ productId: id, amount: 1 });
     },
   },
   created() {

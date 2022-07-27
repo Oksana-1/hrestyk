@@ -15,7 +15,6 @@ const BASE_URL = `${BASE_URL_HOST}${
 const PRODUCTS_URL = "product/all";
 const SINGLE_PRODUCT_URL = "product/single/";
 const ADD_TO_CART = "/cart/add-product";
-const GET_CART = "/cart/show";
 
 axios.defaults.baseURL = BASE_URL;
 
@@ -50,17 +49,6 @@ export default class PublicApi {
       const response = await axios.post(ADD_TO_CART, order);
       const responseOrder = new Order(response.data.data);
       responseOrder.setOrderId(response.data.data._id);
-      return responseOrder;
-    } catch (e) {
-      console.error(e);
-      throw e;
-    }
-  }
-  async getCart(cart_id) {
-    try {
-      const response = await axios.get(`${GET_CART}/${cart_id}`);
-      const responseOrder = new Order(response.data.data[0]);
-      responseOrder.setOrderId(response.data.data[0]._id);
       return responseOrder;
     } catch (e) {
       console.error(e);

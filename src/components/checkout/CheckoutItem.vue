@@ -1,17 +1,17 @@
 <template>
   <div
     class="cart-item"
-    :class="{busy}"
+    :class="{ busy }"
   >
     <div class="cart-item-img-fix">
       <router-link
-        :to="'/catalog/' + cartItem.id"
+        :to="'/catalog/' + cartItem._id"
         class="link-abs"
       />
       <div
-        v-if="mainImageBase64"
+        v-if="mainUrl"
         class="cart-item-img"
-        :style="{ backgroundImage: 'url(data:image/jpg;base64,' + mainImageBase64 + ')' }"
+        :style="{ backgroundImage: `url(${mainUrl})` }"
       />
       <icon-base
         v-else
@@ -25,7 +25,7 @@
     </div>
     <div class="cart-item-info">
       <router-link
-        :to="'/catalog/' + cartItem.id"
+        :to="'/catalog/' + cartItem._id"
         class="cart-item-name"
       >
         {{ cartItem.title }}
@@ -36,7 +36,7 @@
             <input
               v-model.number="amount"
               :disabled="busy"
-              @keyup="$emit('changeAmount', {itemKey: $vnode.key, amount})"
+              @keyup="changeAmount"
             >
           </label>
           <div class="input-qnt-ctrl">
@@ -60,7 +60,7 @@
         </div>
         <div
           class="cart-item-del"
-          @click="$emit('deleteItem', $vnode.key)"
+          @click="$emit('deleteItem', cartItem._id)"
         >
           +
         </div>
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import {OrderProduct} from "@/entities/Order";
+import { OrderProduct } from "@/entities/Order";
 import IconBase from "@/components/IconBase";
 import IconNoImage from "@/components/icons/IconNoImage";
 import { currency } from "@/entities/data/currency";
@@ -88,39 +88,47 @@ export default {
   data() {
     return {
       amount: null,
-      currency
-    }
+      currency,
+    };
   },
   computed: {
-    mainImageBase64() {
+    mainUrl() {
       if (this.cartItem.images.length === 0) return "";
       const mainImage = this.cartItem.images.find((image) => image.is_main);
-      return mainImage ? mainImage.image : this.cartItem.images[0].image;
+      return mainImage ? mainImage.url : this.cartItem.images[0].url;
     },
   },
   methods: {
     increase() {
       this.amount += 1;
-      this.$emit('changeAmount', {
-        itemKey: this.$vnode.key,
-        amount: this.amount
+      this.$emit("changeAmount", {
+        productId: this.cartItem._id,
+        amount: this.amount,
       });
     },
     decrease() {
       if (this.amount <= 1) return;
       this.amount -= 1;
-      this.$emit('changeAmount', {
-        itemKey: this.$vnode.key,
-        amount: this.amount
+      this.$emit("changeAmount", {
+        productId: this.cartItem._id,
+        amount: this.amount,
+      });
+    },
+    changeAmount() {
+      if (!Number.isInteger(this.amount)) return;
+      if (this.amount <= 1) {
+        this.amount = 1;
+      }
+      this.$emit("changeAmount", {
+        productId: this.cartItem._id,
+        amount: this.amount,
       });
     },
   },
   created() {
     this.amount = this.cartItem.amount;
-  }
-}
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

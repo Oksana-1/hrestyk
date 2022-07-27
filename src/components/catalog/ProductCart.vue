@@ -1,9 +1,6 @@
 <template>
   <div class="product-card-wrap waypoint">
-    <router-link
-      :to="'/catalog/' + product.id"
-      class="link-abs"
-    />
+    <router-link :to="'/catalog/' + product.id" class="link-abs" />
     <div class="product-card-inner animate opacity">
       <div class="product-img-fix">
         <div
@@ -22,18 +19,12 @@
         </icon-base>
       </div>
       <div class="product-info">
-        <div class="product-name">
-          {{ product.title }}.
-        </div>
+        <div class="product-name">{{ product.title }}.</div>
         <div class="buy-btn-row">
           <div class="product-price">
             {{ `${product.price} ${currency.UAH}` }}
           </div>
-          <button
-            class="hrestyk-btn-dark buyBtn"
-            :disabled="!isCartReady"
-            @click="addProductToCart()"
-          >
+          <button class="hrestyk-btn-dark buyBtn" @click="addProductToCart">
             <span v-if="!isInCart">{{ btnText.buy }}</span>
             <span v-else>{{ btnText.alreadyInCart }}</span>
           </button>
@@ -46,10 +37,6 @@
 import Product from "@/entities/Product";
 import IconBase from "@/components/IconBase";
 import IconNoImage from "@/components/icons/IconNoImage";
-import {
-  OrderProduct,
-  OrderProductImage,
-} from "@/entities/Order";
 import { mapGetters } from "vuex";
 import eventBus from "@/event-bus";
 import { btnText } from "@/entities/data/btnTexts";
@@ -57,7 +44,7 @@ import { currency } from "@/entities/data/currency";
 
 export default {
   props: {
-    product:  Product,
+    product: Product,
   },
   components: {
     IconBase,
@@ -66,41 +53,28 @@ export default {
   data() {
     return {
       btnText,
-      currency
-    }
+      currency,
+    };
   },
   computed: {
-    ...mapGetters(['isCartReady', 'cart']),
+    ...mapGetters(["cartProducts"]),
     mainImageUrl() {
       if (this.product.images.length === 0) return "";
       const mainImage = this.product.images.find((image) => image.is_main);
       return mainImage ? mainImage.url : this.product.images[0].url;
     },
     isInCart() {
-      return Boolean(this.cart.find(item => item.id === this.product.id));
-    },
-    productCartObject() {
-      return new OrderProduct({
-        _id: this.product.id,
-        title: this.product.title,
-        amount: 1,
-        price: this.product.price,
-        images: this.product.images.map(
-          (image) =>
-            new OrderProductImage({
-              alt: image.alt,
-              url: image.url,
-              is_main: image.is_main,
-            })
-        ),
-      });
+      return Boolean(
+        this.cartProducts.find((item) => item._id === this.product.id)
+      );
     },
   },
   methods: {
     addProductToCart() {
-      this.isInCart
-      ? eventBus.$emit("cartVisibilityChange", true)
-      : this.$emit('addProductToCart', this.productCartObject);
+      if (!this.isInCart) {
+        this.$emit("addProductToCart", this.product.id);
+      }
+      eventBus.$emit("cartVisibilityChange", true);
     },
     initWaypoint() {
       const waypointElements = document.querySelectorAll(".waypoint");
@@ -117,6 +91,6 @@ export default {
   },
   mounted() {
     this.initWaypoint();
-  }
+  },
 };
 </script>
