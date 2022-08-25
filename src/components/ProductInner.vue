@@ -23,7 +23,7 @@
                   <div class="product-body">
                     <div
                       class="editor-content`"
-                      :v-html="product.description"
+                      v-html="product.description"
                     />
                     <div class="product-info col-product-info">
                       <div class="buy-qnt-row">
