@@ -30,9 +30,15 @@
       </div>
       <div class="catalog-products-section">
         <div class="c-box-1100">
-          <transition name="fade" mode="out-in">
+          <transition
+            name="fade"
+            mode="out-in"
+          >
             <spinner-cube v-if="busy" />
-            <div v-else class="catalog-products-container">
+            <div
+              v-else
+              class="catalog-products-container"
+            >
               <product-card
                 v-for="product in filteredProducts"
                 :key="product.id"
@@ -54,13 +60,13 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
     SpinnerCube,
-    ProductCard,
+    ProductCard
   },
   data() {
     return {
       filtersHidden: false,
       currentCat: "all",
-      busy: false,
+      busy: false
     };
   },
   computed: {
@@ -68,10 +74,8 @@ export default {
     filteredProducts() {
       return this.currentCat === "all"
         ? this.products
-        : this.products.filter(
-            (product) => product.category === this.currentCat
-          );
-    },
+        : this.products.filter(product => product.category === this.currentCat);
+    }
   },
   methods: {
     ...mapActions(["fetchProducts", "addItemToCartProducts"]),
@@ -92,10 +96,10 @@ export default {
     },
     addProductToCart(id) {
       this.addItemToCartProducts({ productId: id, amount: 1 });
-    },
+    }
   },
   created() {
     this.init();
-  },
+  }
 };
 </script>

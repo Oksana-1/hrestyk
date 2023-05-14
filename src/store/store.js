@@ -2,17 +2,17 @@ import Vue from "vue";
 import Vuex from "vuex";
 import PublicApi from "@/api/publicApi";
 import { OrderProduct } from "@/entities/Order";
-const api = new PublicApi();
 import {
   getLocalStorageItem,
   setLocalStorageItem,
   removeLocalStorageItem,
   mergeArrayWithItemById,
   cloneObj,
-  deleteItemFromArrayById,
+  deleteItemFromArrayById
 } from "@/utils/helpers";
 
 Vue.use(Vuex);
+const api = new PublicApi();
 
 export function createStore() {
   return new Vuex.Store({
@@ -20,18 +20,18 @@ export function createStore() {
       products: [],
       categories: [],
       product: null,
-      cartProducts: [],
+      cartProducts: []
     },
     getters: {
-      products: (state) => state.products,
-      categories: (state) => state.categories,
-      product: (state) => state.product,
-      cartProducts: (state) => state.cartProducts,
-      total: (state) =>
+      products: state => state.products,
+      categories: state => state.categories,
+      product: state => state.product,
+      cartProducts: state => state.cartProducts,
+      total: state =>
         state.cartProducts.reduce((sum, cartItem) => {
           sum += cartItem.price * cartItem.amount;
           return sum;
-        }, 0),
+        }, 0)
     },
     actions: {
       async fetchProducts({ commit }) {
@@ -56,17 +56,17 @@ export function createStore() {
         const localStorageItem = getLocalStorageItem("hrestykCart");
         if (localStorageItem) {
           const cartProducts = JSON.parse(localStorageItem).map(
-            (item) => new OrderProduct(item)
+            item => new OrderProduct(item)
           );
           commit("SET_CART_PRODUCTS", cartProducts);
         }
       },
       addItemToCartProducts({ state, dispatch }, { productId, amount }) {
         const cartProduct = state.cartProducts.find(
-          (item) => item.id === productId
+          item => item.id === productId
         );
         const product =
-          state.products.find((item) => item.id === productId) || state.product;
+          state.products.find(item => item.id === productId) || state.product;
         const clonedProduct = cartProduct
           ? cloneObj(cartProduct)
           : product
@@ -107,7 +107,7 @@ export function createStore() {
         } catch (e) {
           throw e;
         }
-      },
+      }
     },
     mutations: {
       SET_PRODUCTS: (state, data) => {
@@ -121,7 +121,7 @@ export function createStore() {
       },
       SET_CART_PRODUCTS: (state, data) => {
         state.cartProducts = data;
-      },
-    },
+      }
+    }
   });
 }

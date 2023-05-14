@@ -81,19 +81,25 @@
                 :href="social.fb"
                 class="social-link"
               >
-                <icon-base icon-name="fb"><icon-fb /></icon-base>
+                <icon-base icon-name="fb">
+                  <icon-fb />
+                </icon-base>
               </a>
               <a
                 :href="social.ig"
                 class="social-link"
               >
-                <icon-base icon-name="ig"><icon-ig /></icon-base>
+                <icon-base icon-name="ig">
+                  <icon-ig />
+                </icon-base>
               </a>
               <a
                 :href="social.twitter"
                 class="social-link"
               >
-                <icon-base icon-name="ig"><icon-twitter /></icon-base>
+                <icon-base icon-name="ig">
+                  <icon-twitter />
+                </icon-base>
               </a>
             </div>
           </nav>
@@ -109,7 +115,7 @@
           class="hr-cart-wrap cartContainer"
           :class="{
             hiddenCart: !cartIsShown,
-            cartIsEmpty: cartProducts.length === 0,
+            cartIsEmpty: cartProducts.length === 0
           }"
         >
           <button
@@ -151,12 +157,12 @@ export default {
     IconFb,
     IconIg,
     IconTwitter,
-    appCart: Cart,
+    appCart: Cart
   },
   directives: {
     "click-outside": {
-      bind: function (el, binding, vnode) {
-        el.clickOutsideEvent = function (event) {
+      bind: function(el, binding, vnode) {
+        el.clickOutsideEvent = function(event) {
           if (
             !(
               el === event.target ||
@@ -169,27 +175,27 @@ export default {
         };
         document.body.addEventListener("click", el.clickOutsideEvent);
       },
-      unbind: function (el) {
+      unbind: function(el) {
         document.body.removeEventListener("click", el.clickOutsideEvent);
-      },
-    },
+      }
+    }
   },
   data() {
     return {
       cartIsShown: false,
       mobMenuIsOpened: false,
       menu,
-      social,
+      social
     };
   },
   computed: {
-    ...mapGetters(["cartProducts"]),
+    ...mapGetters(["cartProducts"])
   },
   created() {
-    eventBus.$on("cartVisibilityChange", (cartIsShown) => {
+    eventBus.$on("cartVisibilityChange", cartIsShown => {
       this.cartIsShown = cartIsShown;
     });
-    eventBus.$on("mobMenuVisibilityChange", (mobMenuIsOpened) => {
+    eventBus.$on("mobMenuVisibilityChange", mobMenuIsOpened => {
       this.mobMenuIsOpened = mobMenuIsOpened;
     });
   },
@@ -208,7 +214,7 @@ export default {
       this.mobMenuIsOpened = !this.mobMenuIsOpened;
       eventBus.$emit("mobMenuVisibilityChange", this.mobMenuIsOpened);
       document.querySelector("body").classList.toggle("mobMenuOpened");
-    },
-  },
+    }
+  }
 };
 </script>

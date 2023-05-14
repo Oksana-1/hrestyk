@@ -41,8 +41,8 @@ import { deliveryTexts } from "@/entities/data/deliveryText";
 export default {
   data() {
     return {
-      deliveryTexts,
+      deliveryTexts
     };
-  },
+  }
 };
 </script>

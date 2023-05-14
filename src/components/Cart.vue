@@ -68,11 +68,11 @@ export default {
       busy: false,
       btnText,
       noteTexts,
-      currency,
+      currency
     };
   },
   computed: {
-    ...mapGetters(["cartProducts", "total"]),
+    ...mapGetters(["cartProducts", "total"])
   },
   methods: {
     ...mapActions(["addItemToCartProducts", "deleteItemFromCartProducts"]),
@@ -83,9 +83,9 @@ export default {
       this.deleteItemFromCartProducts(productId);
     },
     async changeProductInCart({ productId, amount }) {
-      this.addItemToCartProducts({productId, amount});
+      this.addItemToCartProducts({ productId, amount });
       eventBus.$emit("cartVisibilityChange", true);
-    },
-  },
+    }
+  }
 };
 </script>

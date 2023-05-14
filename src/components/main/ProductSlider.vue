@@ -10,7 +10,7 @@
         :per-page="1"
         :per-page-custom="[
           [768, 2],
-          [1024, 3],
+          [1024, 3]
         ]"
         :scroll-per-page="false"
         :pagination-enabled="false"
@@ -67,13 +67,13 @@ import { headerTexts } from "@/entities/data/texts";
 export default {
   components: {
     Carousel,
-    Slide,
+    Slide
   },
   data() {
     return {
       btnText,
-      headerTexts,
-    }
+      headerTexts
+    };
   },
   computed: {
     ...mapGetters(["products"]),
@@ -83,6 +83,6 @@ export default {
     productWithImages() {
       return this.products.filter(item => item.images.length > 0);
     }
-  },
+  }
 };
 </script>

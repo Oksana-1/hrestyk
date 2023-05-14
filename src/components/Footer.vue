@@ -59,19 +59,25 @@
             :href="social.fb"
             class="social-link"
           >
-            <icon-base icon-name="fb"><icon-fb /></icon-base>
+            <icon-base icon-name="fb">
+              <icon-fb />
+            </icon-base>
           </a>
           <a
             :href="social.ig"
             class="social-link"
           >
-            <icon-base icon-name="ig"><icon-ig /></icon-base>
+            <icon-base icon-name="ig">
+              <icon-ig />
+            </icon-base>
           </a>
           <a
             :href="social.twitter"
             class="social-link"
           >
-            <icon-base icon-name="twitter"><icon-twitter /></icon-base>
+            <icon-base icon-name="twitter">
+              <icon-twitter />
+            </icon-base>
           </a>
         </div>
       </div>
@@ -110,7 +116,9 @@
               view-box="0 0 382 382"
               width="15"
               height="15"
-            ><icon-email /></icon-base>
+            >
+              <icon-email />
+            </icon-base>
             <div class="contact-text">{{ contacts.email }}</div>
           </a>
           <a
@@ -122,7 +130,9 @@
               view-box="0 0 348 348"
               width="15"
               height="15"
-            ><icon-phone /></icon-base>
+            >
+              <icon-phone />
+            </icon-base>
             <div class="contact-text">{{ contacts.phoneDisplay }}</div>
           </a>
         </div>
@@ -155,7 +165,7 @@ export default {
       menu,
       social,
       contacts,
-      placeHolders,
+      placeHolders
     };
   },
   components: {
@@ -164,17 +174,17 @@ export default {
     IconIg,
     IconTwitter,
     IconPhone,
-    IconEmail,
+    IconEmail
   },
   validations: {
     phone: {
       required,
       numeric,
-      minLength: minLength(10),
+      minLength: minLength(10)
     },
     name: {
-      required,
-    },
+      required
+    }
   },
   methods: {
     ...mapMutations(["SEND_FORM"]),
@@ -185,14 +195,14 @@ export default {
       const footerFormData = {
         name: this.name,
         phone: this.phone,
-        message: this.message,
+        message: this.message
       };
       this.SEND_FORM(footerFormData);
     },
     submit() {
       this.sendForm();
-      this.$v.$touch()
+      this.$v.$touch();
     }
-  },
+  }
 };
 </script>

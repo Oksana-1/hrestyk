@@ -82,7 +82,7 @@ export default {
       btnText,
       headerTexts,
       noteTexts,
-      currency,
+      currency
     };
   },
   computed: {
@@ -104,7 +104,7 @@ export default {
           return "товарів";
         }
       }
-    },
+    }
   },
   methods: {
     ...mapActions(["addItemToCartProducts", "deleteItemFromCartProducts"]),
@@ -115,9 +115,9 @@ export default {
       this.deleteItemFromCartProducts(productId);
     },
     changeAmount({ productId, amount }) {
-      this.addItemToCartProducts({productId, amount})
-    },
-  },
+      this.addItemToCartProducts({ productId, amount });
+    }
+  }
 };
 </script>
 

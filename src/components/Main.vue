@@ -20,11 +20,11 @@ export default {
     appProductSlider: ProductSlider,
     appTopSlider: TopSlider,
     appAboutBanner: AboutBanner,
-    appSeoText: SeoText,
+    appSeoText: SeoText
   },
   data() {
     return {
-      busy: true,
+      busy: true
     };
   },
   methods: {
@@ -43,19 +43,19 @@ export default {
     },
     initWaypoint() {
       const waypointElements = document.querySelectorAll(".waypoint");
-      waypointElements.forEach((waypointElement) => {
+      waypointElements.forEach(waypointElement => {
         new Waypoint({
           element: waypointElement,
-          handler: function () {
+          handler: function() {
             waypointElement.classList.add("waypoint-done");
           },
-          offset: "80%",
+          offset: "80%"
         });
       });
-    },
+    }
   },
   mounted() {
     this.init();
-  },
+  }
 };
 </script>

@@ -13,11 +13,12 @@
 </template>
 <script>
 import { seoTexts } from "@/entities/data/seoTexts";
+
 export default {
   data() {
     return {
-      seoTexts,
+      seoTexts
     };
-  },
+  }
 };
 </script>

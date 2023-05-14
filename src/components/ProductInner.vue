@@ -32,7 +32,7 @@
                             <input
                               v-model.number="quantity"
                               :disabled="isInCart"
-                            />
+                            >
                           </label>
                           <div class="input-qnt-ctrl">
                             <button
@@ -47,7 +47,9 @@
                             />
                           </div>
                         </div>
-                        <div class="product-price">{{ product.price }} грн</div>
+                        <div class="product-price">
+                          {{ product.price }} грн
+                        </div>
                         <button
                           class="hrestyk-btn-dark buyBtn"
                           :disabled="
@@ -60,13 +62,16 @@
                         </button>
                       </div>
                     </div>
-                    <div class="descr-note" v-html="warnings.colorMismatch" />
+                    <div
+                      class="descr-note"
+                      v-html="warnings.colorMismatch"
+                    />
                     <div class="sep-line-img">
                       <img
                         class="fits"
                         src="@/assets/images/logo.png"
                         alt="Logo"
-                      />
+                      >
                     </div>
                   </div>
                 </div>
@@ -93,7 +98,7 @@ export default {
   components: {
     ProductImages,
     AboutBanner,
-    SpinnerCube,
+    SpinnerCube
   },
   data() {
     return {
@@ -103,12 +108,12 @@ export default {
         loop: true,
         width: 150,
         spaceBetween: 10,
-        slidesPerView: 3,
+        slidesPerView: 3
       },
       quantity: 1,
       busy: false,
       btnText,
-      warnings,
+      warnings
     };
   },
   watch: {
@@ -122,11 +127,11 @@ export default {
   computed: {
     ...mapGetters(["product", "cartProducts"]),
     cartProduct() {
-      return this.cartProducts.find((item) => item.id === this.productId);
+      return this.cartProducts.find(item => item.id === this.productId);
     },
     isInCart() {
       return Boolean(this.cartProduct);
-    },
+    }
   },
   methods: {
     ...mapActions(["fetchSingleProduct", "addItemToCartProducts"]),
@@ -161,26 +166,26 @@ export default {
       if (!this.isInCart) {
         this.addItemToCartProducts({
           productId: this.productId,
-          amount: this.quantity,
+          amount: this.quantity
         });
       }
       eventBus.$emit("cartVisibilityChange", true);
     },
     initWaypoint() {
       const waypointElements = document.querySelectorAll(".waypoint");
-      waypointElements.forEach((waypointElement) => {
+      waypointElements.forEach(waypointElement => {
         new Waypoint({
           element: waypointElement,
-          handler: function () {
+          handler: function() {
             waypointElement.classList.add("waypoint-done");
           },
-          offset: "80%",
+          offset: "80%"
         });
       });
-    },
+    }
   },
   mounted() {
     this.init();
-  },
+  }
 };
 </script>

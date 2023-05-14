@@ -1,3 +1,3 @@
 export const currency = {
-  UAH: "грн",
+  UAH: "грн"
 };

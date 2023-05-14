@@ -47,8 +47,8 @@ export default {
     return {
       btnText,
       thankYouText,
-      contacts,
+      contacts
     };
-  },
+  }
 };
 </script>

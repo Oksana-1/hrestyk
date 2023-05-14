@@ -2,7 +2,7 @@ export const headerTexts = {
   mainProductSlider: "Товари",
   aboutUs: "Наша історія",
   checkout: "Оформлення замовлення",
-  cart: "Кошик",
+  cart: "Кошик"
 };
 export const noteTexts = {
   beforeFormNote:
@@ -10,5 +10,5 @@ export const noteTexts = {
   paymentAndDeliveryNote: "Умови оплати і доставки",
   inYourCartNote: "У Вашому кошику",
   totalSum: "Загальна cума:",
-  emptyCart: "У Вашому кошику немає товарів",
+  emptyCart: "У Вашому кошику немає товарів"
 };

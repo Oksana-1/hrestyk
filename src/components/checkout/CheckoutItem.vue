@@ -79,31 +79,31 @@ export default {
   name: "CheckoutItem",
   props: {
     cartItem: OrderProduct,
-    busy: Boolean,
+    busy: Boolean
   },
   components: {
     IconBase,
-    IconNoImage,
+    IconNoImage
   },
   data() {
     return {
       amount: null,
-      currency,
+      currency
     };
   },
   computed: {
     mainUrl() {
       if (this.cartItem.images.length === 0) return "";
-      const mainImage = this.cartItem.images.find((image) => image.is_main);
+      const mainImage = this.cartItem.images.find(image => image.is_main);
       return mainImage ? mainImage.url : this.cartItem.images[0].url;
-    },
+    }
   },
   methods: {
     increase() {
       this.amount += 1;
       this.$emit("changeAmount", {
         productId: this.cartItem._id,
-        amount: this.amount,
+        amount: this.amount
       });
     },
     decrease() {
@@ -111,7 +111,7 @@ export default {
       this.amount -= 1;
       this.$emit("changeAmount", {
         productId: this.cartItem._id,
-        amount: this.amount,
+        amount: this.amount
       });
     },
     changeAmount() {
@@ -121,13 +121,13 @@ export default {
       }
       this.$emit("changeAmount", {
         productId: this.cartItem._id,
-        amount: this.amount,
+        amount: this.amount
       });
-    },
+    }
   },
   created() {
     this.amount = this.cartItem.amount;
-  },
+  }
 };
 </script>
 

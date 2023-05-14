@@ -14,7 +14,10 @@
         <div class="slide-fix">
           <div
             class="slide-img"
-            :style="{backgroundImage: `url('${require('../../assets/images/mainSlider/' + mainSlide.filename)}')`}"
+            :style="{
+              backgroundImage: `url('${require('../../assets/images/mainSlider/' +
+                mainSlide.filename)}')`
+            }"
           />
           <div class="slider-content">
             <div class="slider-title">
@@ -42,13 +45,13 @@ import { btnText } from "@/entities/data/btnTexts";
 export default {
   components: {
     Carousel,
-    Slide,
+    Slide
   },
   data() {
     return {
       mainSliderImages,
       btnText
-    }
-  },
+    };
+  }
 };
 </script>

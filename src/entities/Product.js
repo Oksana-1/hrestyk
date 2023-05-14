@@ -7,7 +7,7 @@ export default class Product {
     this.createdAt = product.createdAt;
     this.updatedAt = product.updatedAt ? product.updatedAt : null;
     this.description = product.description;
-    this.images = product.images.map((image) => new Image(image));
+    this.images = product.images.map(image => new Image(image));
     this.price = product.price;
     this.qty_available = product.qty_available;
     this.title = product.title;
@@ -18,6 +18,7 @@ export default class Product {
     ObjectCreationValidator.validate(this);
   }
 }
+
 class Image {
   constructor(image) {
     this.alt = image.alt;

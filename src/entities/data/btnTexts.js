@@ -8,5 +8,5 @@ export const btnText = {
   detailed: "Детальніше",
   send: "Відправити",
   checkout: "Оформити замовлення",
-  backToMain: "Повернутися на головну",
+  backToMain: "Повернутися на головну"
 };

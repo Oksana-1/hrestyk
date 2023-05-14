@@ -3,8 +3,9 @@
     <div class="about-img-fix animate opacity">
       <div
         class="about-img"
-        :style="
-          { backgroundImage : `url('${require('../../assets/images/about-img.jpg')}')` }"
+        :style="{
+          backgroundImage: `url('${require('../../assets/images/about-img.jpg')}')`
+        }"
       />
       <div class="about-content-cont">
         <div class="title-big">
@@ -23,15 +24,15 @@
   </div>
 </template>
 <script>
-  import { btnText } from "@/entities/data/btnTexts";
-  import {headerTexts} from "@/entities/data/texts";
+import { btnText } from "@/entities/data/btnTexts";
+import { headerTexts } from "@/entities/data/texts";
 
-  export default {
-    data() {
-      return {
-        btnText,
-        headerTexts
-      }
-    }
+export default {
+  data() {
+    return {
+      btnText,
+      headerTexts
+    };
   }
+};
 </script>

@@ -23,27 +23,29 @@ export default class PublicApi {
     try {
       const response = (await axios.get(PRODUCTS_URL)).data.data;
       return {
-        products: response.products.map((item) => new Product(item)),
-        categories: response.categories,
+        products: response.products.map(item => new Product(item)),
+        categories: response.categories
       };
     } catch (e) {
       console.error(e);
       throw e;
     }
   }
+
   async getSingleProduct(productId) {
     try {
       const response = (await axios.get(SINGLE_PRODUCT_URL + productId)).data
         .data;
       return {
         product: new Product(response.product),
-        categories: response.categories,
+        categories: response.categories
       };
     } catch (e) {
       console.error(e);
       throw e;
     }
   }
+
   async addToCart(order) {
     try {
       const response = await axios.post(ADD_TO_CART, order);

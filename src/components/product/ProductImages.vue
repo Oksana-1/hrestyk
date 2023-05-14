@@ -32,7 +32,7 @@
               <div
                 class="product-img"
                 :style="{
-                  backgroundImage: `url(${productImage.url})`,
+                  backgroundImage: `url(${productImage.url})`
                 }"
                 @click="changeMainImage(productImage.id)"
               />
@@ -76,14 +76,14 @@ export default {
   data() {
     return {
       mainImage: null
-    }
+    };
   },
   computed: {
     ...mapGetters(["product"]),
     mainImageUrl() {
-      if (this.product.images.length === 0) return '';
+      if (this.product.images.length === 0) return "";
       return this.mainImage ? this.mainImage.url : this.product.images[0].url;
-    },
+    }
   },
   methods: {
     setDefaultMainImage() {
@@ -91,8 +91,9 @@ export default {
       this.mainImage = this.product.images.find(image => image.is_main) || null;
     },
     changeMainImage(imageId) {
-      this.mainImage = this.product.images.find(image => image.id === imageId) || null;
-    },
+      this.mainImage =
+        this.product.images.find(image => image.id === imageId) || null;
+    }
   },
   created() {
     this.setDefaultMainImage();

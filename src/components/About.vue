@@ -4,7 +4,7 @@
       <div
         class="about-top-img"
         :style="{
-          backgroundImage: `url('${require('../assets/images/about-img.jpg')}')`,
+          backgroundImage: `url('${require('../assets/images/about-img.jpg')}')`
         }"
       />
       <div class="about-top-text">
@@ -61,7 +61,7 @@
         <div
           class="goods-img"
           :style="{
-            backgroundImage: `url('${require('../assets/images/product.jpg')}')`,
+            backgroundImage: `url('${require('../assets/images/product.jpg')}')`
           }"
         />
       </div>
@@ -69,28 +69,28 @@
   </div>
 </template>
 <script>
-import {aboutUsTitles, aboutUsTexts} from "@/entities/data/aboutUsTexts";
+import { aboutUsTitles, aboutUsTexts } from "@/entities/data/aboutUsTexts";
 
 export default {
   data() {
     return {
       aboutUsTitles,
       aboutUsTexts
-    }
+    };
   },
   methods: {
     initWaypoint() {
       const waypointElements = document.querySelectorAll(".waypoint");
-      waypointElements.forEach((waypointElement) => {
+      waypointElements.forEach(waypointElement => {
         new Waypoint({
           element: waypointElement,
-          handler: function () {
+          handler: function() {
             waypointElement.classList.add("waypoint-done");
           },
-          offset: "80%",
+          offset: "80%"
         });
       });
-    },
+    }
   },
   mounted() {
     this.initWaypoint();

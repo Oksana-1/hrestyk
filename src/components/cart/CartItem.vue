@@ -1,5 +1,8 @@
 <template>
-  <div class="cart-item" :class="{ busy }">
+  <div
+    class="cart-item"
+    :class="{ busy }"
+  >
     <div class="cart-item-img-fix">
       <div
         v-if="mainImageUrl"
@@ -27,17 +30,28 @@
               v-model.number="amount"
               :disabled="busy"
               @keyup="changeAmount"
-            />
+            >
           </label>
           <div class="input-qnt-ctrl">
-            <button class="input-qnt-up" :disabled="busy" @click="increase" />
-            <button class="input-qnt-down" :disabled="busy" @click="decrease" />
+            <button
+              class="input-qnt-up"
+              :disabled="busy"
+              @click="increase"
+            />
+            <button
+              class="input-qnt-down"
+              :disabled="busy"
+              @click="decrease"
+            />
           </div>
         </div>
         <div class="product-price">
           {{ `${product.price} ${currency.UAH}` }}
         </div>
-        <div class="cart-item-del" @click="$emit('deleteItem', product.id)">
+        <div
+          class="cart-item-del"
+          @click="$emit('deleteItem', product.id)"
+        >
           +
         </div>
       </div>
@@ -55,31 +69,31 @@ export default {
   name: "CartItem",
   props: {
     product: OrderProduct,
-    busy: Boolean,
+    busy: Boolean
   },
   components: {
     IconBase,
-    IconNoImage,
+    IconNoImage
   },
   data() {
     return {
       amount: null,
-      currency,
+      currency
     };
   },
   computed: {
     mainImageUrl() {
       if (this.product.images.length === 0) return "";
-      const mainImage = this.product.images.find((image) => image.is_main);
+      const mainImage = this.product.images.find(image => image.is_main);
       return mainImage ? mainImage.url : this.product.images[0].url;
-    },
+    }
   },
   methods: {
     increase() {
       this.amount++;
       this.$emit("changeAmount", {
         productId: this.product.id,
-        amount: this.amount,
+        amount: this.amount
       });
     },
     decrease() {
@@ -87,7 +101,7 @@ export default {
       this.amount -= 1;
       this.$emit("changeAmount", {
         productId: this.product.id,
-        amount: this.amount,
+        amount: this.amount
       });
     },
     changeAmount() {
@@ -97,13 +111,13 @@ export default {
       }
       this.$emit("changeAmount", {
         productId: this.product.id,
-        amount: this.amount,
+        amount: this.amount
       });
-    },
+    }
   },
   created() {
     this.amount = this.product.amount;
-  },
+  }
 };
 </script>
 

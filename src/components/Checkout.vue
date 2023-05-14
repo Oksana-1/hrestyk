@@ -130,7 +130,7 @@ import { formErrors } from "@/entities/data/errorTexts";
 
 export default {
   components: {
-    CheckoutCart,
+    CheckoutCart
   },
   data() {
     return {
@@ -144,22 +144,22 @@ export default {
       btnText,
       headerTexts,
       noteTexts,
-      placeHolders,
+      placeHolders
     };
   },
   validations: {
     email: {
       required,
-      email,
+      email
     },
     phone: {
       required,
       numeric,
-      minLength: minLength(10),
+      minLength: minLength(10)
     },
     name: {
-      required,
-    },
+      required
+    }
   },
   computed: {
     ...mapGetters(["cartProducts"]),
@@ -168,13 +168,13 @@ export default {
         name: this.name,
         email: this.email,
         phone: this.phone,
-        comments: this.comments,
+        comments: this.comments
       });
     },
     processingStatusObject() {
       return new ProcessingStatus({
         processingStatus: "ordered",
-        content: "Order sent by customer",
+        content: "Order sent by customer"
       });
     },
     getOrderObject() {
@@ -182,9 +182,9 @@ export default {
         userInfo: this.userInfoObject,
         products: this.cartProducts,
         processing: [this.processingStatusObject],
-        orderStatus: "ordered",
+        orderStatus: "ordered"
       });
-    },
+    }
   },
   methods: {
     ...mapActions(["setCartToLocalStorage", "addToCart"]),
@@ -193,7 +193,7 @@ export default {
       if (!this.$v.$invalid) {
         this.busy = false;
         try {
-          await this.addToCart(this.getOrderObject)
+          await this.addToCart(this.getOrderObject);
           this.setCartToLocalStorage([]);
           await this.$router.push("thankyou");
         } catch (e) {
@@ -201,7 +201,7 @@ export default {
           this.busy = true;
         }
       }
-    },
-  },
+    }
+  }
 };
 </script>

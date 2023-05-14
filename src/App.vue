@@ -18,14 +18,15 @@
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
 import { mapActions } from "vuex";
+
 export default {
   components: {
     appHeader: Header,
-    appFooter: Footer,
+    appFooter: Footer
   },
   data() {
     return {
-      contentClass: "",
+      contentClass: ""
     };
   },
   watch: {
@@ -50,27 +51,27 @@ export default {
       if (to.params.id) {
         this.contentClass = "catalog-inner-page";
       }
-    },
+    }
   },
   methods: {
     ...mapActions(["getCartFromLocalStorage"]),
     initLocal() {
       this.getCartFromLocalStorage();
-    },
+    }
   },
   created() {
     this.initLocal();
   },
   mounted() {
     let mainWrap = document.querySelector(".main-wrap");
-    window.addEventListener("scroll", function () {
+    window.addEventListener("scroll", function() {
       if (window.pageYOffset > 70) {
         mainWrap.classList.add("header-fixed");
       } else {
         mainWrap.classList.remove("header-fixed");
       }
     });
-  },
+  }
 };
 </script>
 <style lang="scss">
