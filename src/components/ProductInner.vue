@@ -1,7 +1,7 @@
 <template>
   <div class="product-content hr-content">
-    <spinner-cube v-if="busy" />
-    <error-block v-else-if="error" :error="error" />
+    <spinner-cube v-if="busy" class="top-utils-section" />
+    <error-block v-else-if="error" :error="error" class="top-utils-section" />
     <template v-else>
       <template v-if="product">
         <div class="catalog-category-section">

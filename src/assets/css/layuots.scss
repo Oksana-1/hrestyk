@@ -261,7 +261,13 @@
     }
   }
 }
-
+.top-utils-section {
+  padding-top: 170px;
+  padding-bottom: 30px;
+}
+.header-fixed .top-utils-section {
+  padding-top: 130px;
+}
 /*Catalog*/
 .catalog-category-section {
   background-color: $bkgnd;
