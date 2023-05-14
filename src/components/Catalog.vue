@@ -30,15 +30,10 @@
       </div>
       <div class="catalog-products-section">
         <div class="c-box-1100">
-          <transition
-            name="fade"
-            mode="out-in"
-          >
+          <transition name="fade" mode="out-in">
             <spinner-cube v-if="busy" />
-            <div
-              v-else
-              class="catalog-products-container"
-            >
+            <error-block v-else-if="error" :error="error" />
+            <div v-else class="catalog-products-container">
               <product-card
                 v-for="product in filteredProducts"
                 :key="product.id"
@@ -55,18 +50,21 @@
 <script>
 import ProductCard from "./catalog/ProductCart";
 import SpinnerCube from "@/components/ui/SpinnerCube";
+import ErrorBlock from "@/components/ui/ErrorBlock";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
     SpinnerCube,
-    ProductCard
+    ProductCard,
+    ErrorBlock
   },
   data() {
     return {
       filtersHidden: false,
       currentCat: "all",
-      busy: false
+      busy: false,
+      error: null
     };
   },
   computed: {
@@ -84,6 +82,7 @@ export default {
       try {
         await this.fetchProducts();
       } catch (e) {
+        this.error = e;
         console.error(e);
       } finally {
         this.busy = false;

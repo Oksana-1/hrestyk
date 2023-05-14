@@ -1,6 +1,7 @@
 <template>
   <div class="product-content hr-content">
     <spinner-cube v-if="busy" />
+    <error-block v-else-if="error" :error="error" />
     <template v-else>
       <template v-if="product">
         <div class="catalog-category-section">
@@ -21,10 +22,7 @@
               <div class="col-50">
                 <div class="col-inner col-product-desc">
                   <div class="product-body">
-                    <div
-                      class="editor-content`"
-                      v-html="product.description"
-                    />
+                    <div class="editor-content`" v-html="product.description" />
                     <div class="product-info col-product-info">
                       <div class="buy-qnt-row">
                         <div class="input-qnt">
@@ -32,7 +30,7 @@
                             <input
                               v-model.number="quantity"
                               :disabled="isInCart"
-                            >
+                            />
                           </label>
                           <div class="input-qnt-ctrl">
                             <button
@@ -47,9 +45,7 @@
                             />
                           </div>
                         </div>
-                        <div class="product-price">
-                          {{ product.price }} грн
-                        </div>
+                        <div class="product-price">{{ product.price }} грн</div>
                         <button
                           class="hrestyk-btn-dark buyBtn"
                           :disabled="
@@ -62,16 +58,13 @@
                         </button>
                       </div>
                     </div>
-                    <div
-                      class="descr-note"
-                      v-html="warnings.colorMismatch"
-                    />
+                    <div class="descr-note" v-html="warnings.colorMismatch" />
                     <div class="sep-line-img">
                       <img
                         class="fits"
                         src="@/assets/images/logo.png"
                         alt="Logo"
-                      >
+                      />
                     </div>
                   </div>
                 </div>
@@ -92,13 +85,15 @@ import ProductImages from "@/components/product/ProductImages";
 import SpinnerCube from "@/components/ui/SpinnerCube";
 import { btnText } from "@/entities/data/btnTexts";
 import { warnings } from "@/entities/data/warnings";
+import ErrorBlock from "@/components/ui/ErrorBlock";
 
 export default {
   name: "ProductInner",
   components: {
     ProductImages,
     AboutBanner,
-    SpinnerCube
+    SpinnerCube,
+    ErrorBlock
   },
   data() {
     return {
@@ -113,7 +108,8 @@ export default {
       quantity: 1,
       busy: false,
       btnText,
-      warnings
+      warnings,
+      error: null
     };
   },
   watch: {
@@ -154,6 +150,7 @@ export default {
         await this.fetchSingleProduct(this.productId);
         this.setProductAmount();
       } catch (e) {
+        this.error = e;
         console.error(e);
       } finally {
         this.busy = false;

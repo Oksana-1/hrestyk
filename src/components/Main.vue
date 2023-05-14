@@ -2,7 +2,11 @@
   <div class="main-content hr-content">
     <slot>
       <app-top-slider />
-      <app-product-slider v-if="!busy" />
+      <div class="product-slider-section">
+        <spinner-cube v-if="busy" color="#fff" />
+        <error-block v-else-if="error" :error="error" />
+        <app-product-slider v-else />
+      </div>
       <app-about-banner />
       <app-seo-text />
     </slot>
@@ -13,6 +17,8 @@ import ProductSlider from "./main/ProductSlider.vue";
 import TopSlider from "./main/TopSlider.vue";
 import AboutBanner from "./main/AboutBanner";
 import SeoText from "./main/SeoText";
+import SpinnerCube from "@/components/ui/SpinnerCube";
+import ErrorBlock from "@/components/ui/ErrorBlock";
 import { mapActions } from "vuex";
 
 export default {
@@ -20,11 +26,14 @@ export default {
     appProductSlider: ProductSlider,
     appTopSlider: TopSlider,
     appAboutBanner: AboutBanner,
-    appSeoText: SeoText
+    appSeoText: SeoText,
+    SpinnerCube,
+    ErrorBlock
   },
   data() {
     return {
-      busy: true
+      busy: true,
+      error: null
     };
   },
   methods: {
@@ -33,6 +42,7 @@ export default {
       try {
         await this.fetchProducts();
       } catch (e) {
+        this.error = e;
         console.error(e);
       } finally {
         this.busy = false;

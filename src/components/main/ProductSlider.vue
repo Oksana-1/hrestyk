@@ -1,5 +1,5 @@
 <template>
-  <div class="product-slider-section waypoint">
+  <div class="waypoint">
     <div class="c-box-1100">
       <div class="common-title">
         {{ headerTexts.mainProductSlider }}
